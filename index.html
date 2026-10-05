@@ -394,4 +394,796 @@
     }
   </script>
 </body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khatib & Alami - CENTRAL Directory</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Header Block -->
+    <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-center space-y-2 relative overflow-hidden">
+      <div class="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-500"></div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
+      <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
+      <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
+        <span>Printing & Archiving</span>
+        <span>•</span>
+        <span class="text-red-600 font-bold">S,Walid Mrad</span>
+      </div>
+    </header>
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Card 1: Total Records -->
+      <div class="bg-blue-600 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between items-center text-center">
+        <div class="flex items-center gap-2 text-blue-100 uppercase tracking-wider text-sm font-bold">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          TOTAL EMPLOYEES COUNT IN FILE
+        </div>
+        <div id="total-count" class="text-5xl font-extrabold my-2">0</div>
+        <div class="text-xs text-blue-200">إجمالي الموظفين المسجلين في النظام</div>
+      </div>
+
+      <!-- Card 2: Department Filter Stats -->
+      <div class="bg-red-500 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between items-center text-center">
+        <div class="flex items-center gap-2 text-red-100 uppercase tracking-wider text-sm font-bold">
+          <i data-lucide="building-2" class="w-5 h-5"></i>
+          عدد موظفي القسم المخصص (<span id="dept-stat-name">الكل</span>)
+        </div>
+        <div id="dept-count" class="text-5xl font-extrabold my-2">0</div>
+        <div class="text-xs text-red-100">عدد التسجيلات التابعة للقسم المختار</div>
+      </div>
+    </div>
+
+    <!-- Data Input Form Section -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+        <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
+        إدخال بيانات موظف جديد
+      </h2>
+
+      <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Department -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              اسم القسم / الإدارة <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="dept-input" required list="dept-list" placeholder="اسم القسم (مثل: IT Department...)" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            <datalist id="dept-list">
+              <option value="Printing & Archiving">
+              <option value="IT Department">
+              <option value="Human Resources">
+              <option value="Survey & Mapping">
+              <option value="Administration">
+            </datalist>
+          </div>
+
+          <!-- Floor / Level -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              الطابق / المبنى (Floor)
+            </label>
+            <input type="text" id="floor-input" placeholder="مثال: الطابق 1 / Floor 1" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+          <!-- Employee Name -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              اسم الموظف <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="emp-name-input" required placeholder="أدخل الاسم الثلاثي للموظف..." 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+          <!-- Extension Number -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              الرقم الداخلي (Extension Number)
+            </label>
+            <input type="text" id="ext-input" placeholder="مثال: 1234" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+          <!-- Cellular Number -->
+          <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              رقم الجوال (Cellular Number)
+            </label>
+            <input type="text" id="cell-input" placeholder="مثال: 03123456" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+        </div>
+
+        <!-- Buttons Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+            <i data-lucide="save" class="w-5 h-5"></i>
+            حفظ البيانات والتحقق من التكرار
+          </button>
+          
+          <button type="button" onclick="exportToCSV()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+            <i data-lucide="download" class="w-5 h-5"></i>
+            تنزيل شيت البيانات الحالي (Excel/CSV)
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Filter & Report Section -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <i data-lucide="printer" class="w-5 h-5 text-indigo-600"></i>
+          مركز فرز وطباعة تقارير الأقسام
+        </h2>
+
+        <!-- Department Filter -->
+        <div class="flex items-center gap-2">
+          <label class="text-sm font-bold text-slate-700 whitespace-nowrap">اختر القسم للفرز:</label>
+          <select id="dept-filter" onchange="filterData()" class="px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white font-medium">
+            <option value="ALL">جميع الأقسام</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Search Box -->
+      <div class="relative">
+        <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute right-3 top-3"></i>
+        <input type="text" id="search-box" oninput="filterData()" placeholder="بحث سريع باسم الموظف، الرقم الداخلي، الجوال، أو الطابق..." 
+               class="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+      </div>
+
+      <!-- Display Container for Grouped/Filtered Data -->
+      <div id="data-container" class="space-y-6">
+        <!-- Tables injected dynamically -->
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // State Management
+    let records = JSON.parse(localStorage.getItem('ka_central_records') || '[]');
+
+    // DOM Elements
+    const deptInput = document.getElementById('dept-input');
+    const floorInput = document.getElementById('floor-input');
+    const empNameInput = document.getElementById('emp-name-input');
+    const extInput = document.getElementById('ext-input');
+    const cellInput = document.getElementById('cell-input');
+    const totalCountEl = document.getElementById('total-count');
+    const deptCountEl = document.getElementById('dept-count');
+    const deptStatName = document.getElementById('dept-stat-name');
+    const deptFilter = document.getElementById('dept-filter');
+    const searchBox = document.getElementById('search-box');
+    const dataContainer = document.getElementById('data-container');
+
+    // Initial Load
+    window.onload = function() {
+      lucide.createIcons();
+      updateDeptDropdowns();
+      filterData();
+    };
+
+    // Save Record Function
+    function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const dept = deptInput.value.trim();
+      const floor = floorInput.value.trim() || 'غير محدد';
+      const empName = empNameInput.value.trim();
+      const ext = extInput.value.trim();
+      const cell = cellInput.value.trim();
+
+      if (!dept || !empName) {
+        alert('يرجى إدخال اسم القسم واسم الموظف!');
+        return;
+      }
+
+      // Check Duplicate
+      const isDuplicate = records.some(r => 
+        r.empName.toLowerCase() === empName.toLowerCase() && 
+        r.dept.toLowerCase() === dept.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        if (!confirm('تنبيه: هذا الموظف مسجل سابقاً في نفس القسم. هل تريد إضافته مرة أخرى؟')) {
+          return;
+        }
+      }
+
+      // Add New Record
+      records.push({
+        id: Date.now(),
+        dept: dept,
+        floor: floor,
+        empName: empName,
+        ext: ext || '-',
+        cell: cell || '-'
+      });
+
+      saveAndRefresh();
+
+      // Clear Inputs & Auto-Focus on Employee Name
+      empNameInput.value = '';
+      extInput.value = '';
+      cellInput.value = '';
+      empNameInput.focus();
+    }
+
+    // Save to LocalStorage & Refresh UI
+    function saveAndRefresh() {
+      localStorage.setItem('ka_central_records', JSON.stringify(records));
+      updateDeptDropdowns();
+      filterData();
+    }
+
+    // Update Dropdown options
+    function updateDeptDropdowns() {
+      const depts = [...new Set(records.map(r => r.dept))];
+      
+      const currentFilter = deptFilter.value;
+      deptFilter.innerHTML = '<option value="ALL">جميع الأقسام</option>';
+      depts.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        deptFilter.appendChild(opt);
+      });
+      deptFilter.value = currentFilter || 'ALL';
+    }
+
+    // Filter and Render Data Grouped By Department
+    function filterData() {
+      const selectedDept = deptFilter.value;
+      const searchQuery = searchBox.value.toLowerCase().trim();
+
+      deptStatName.textContent = selectedDept === 'ALL' ? 'الكل' : selectedDept;
+
+      let filtered = records.filter(r => {
+        const matchesDept = selectedDept === 'ALL' || r.dept === selectedDept;
+        const matchesSearch = r.empName.toLowerCase().includes(searchQuery) ||
+                              r.ext.toLowerCase().includes(searchQuery) ||
+                              r.cell.toLowerCase().includes(searchQuery) ||
+                              (r.floor && r.floor.toLowerCase().includes(searchQuery)) ||
+                              r.dept.toLowerCase().includes(searchQuery);
+        return matchesDept && matchesSearch;
+      });
+
+      // Update Counts
+      totalCountEl.textContent = records.length;
+      deptCountEl.textContent = selectedDept === 'ALL' 
+        ? records.length 
+        : records.filter(r => r.dept === selectedDept).length;
+
+      dataContainer.innerHTML = '';
+
+      if (filtered.length === 0) {
+        dataContainer.innerHTML = `
+          <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 text-slate-400 font-medium">
+            لا توجد سجلات مطابقة حالياً
+          </div>`;
+        return;
+      }
+
+      // Group filtered records by Department
+      const grouped = {};
+      filtered.forEach(r => {
+        if (!grouped[r.dept]) grouped[r.dept] = [];
+        grouped[r.dept].push(r);
+      });
+
+      // Render Table for each Department group
+      Object.keys(grouped).forEach(deptName => {
+        const deptRecords = grouped[deptName];
+        // Take the floor of the first record in group or list floors
+        const floors = [...new Set(deptRecords.map(r => r.floor).filter(f => f && f !== '-'))].join(' / ') || 'غير محدد';
+
+        const section = document.createElement('div');
+        section.className = 'overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white';
+
+        let rowsHtml = '';
+        deptRecords.forEach((r, idx) => {
+          rowsHtml += `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
+              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
+              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
+              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
+              <td class="p-3 text-center">
+                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        section.innerHTML = `
+          <!-- Single Department & Floor Header -->
+          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
+              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
+                الطابق: <strong class="text-slate-800">${floors}</strong>
+              </span>
+            </div>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full w-fit">
+              عدد الموظفين: ${deptRecords.length}
+            </span>
+          </div>
+
+          <table class="w-full text-right">
+            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
+              <tr>
+                <th class="p-3 text-center w-12">#</th>
+                <th class="p-3">اسم الموظف (Employee Name)</th>
+                <th class="p-3">الداخلي (Extension)</th>
+                <th class="p-3">الجوال (Cellular)</th>
+                <th class="p-3">الطابق (Floor)</th>
+                <th class="p-3 text-center w-20">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${rowsHtml}
+            </tbody>
+          </table>
+        `;
+
+        dataContainer.appendChild(section);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Delete Record
+    function deleteRecord(id) {
+      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
+        records = records.filter(r => r.id !== id);
+        saveAndRefresh();
+      }
+    }
+
+    // Export to Excel / CSV
+    function exportToCSV() {
+      if (records.length === 0) {
+        alert('لا توجد بيانات لتصديرها!');
+        return;
+      }
+
+      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
+      records.forEach(r => {
+        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khatib & Alami - CENTRAL Directory</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+
+    <!-- Header Block -->
+    <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-center space-y-2 relative overflow-hidden">
+      <div class="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-500"></div>
+      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
+      <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
+      <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
+        <span>Printing & Archiving</span>
+        <span>•</span>
+        <span class="text-red-600 font-bold">S,Walid Mrad</span>
+      </div>
+    </header>
+
+    <!-- Stats Row -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Card 1: Total Records -->
+      <div class="bg-blue-600 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between items-center text-center">
+        <div class="flex items-center gap-2 text-blue-100 uppercase tracking-wider text-sm font-bold">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          TOTAL EMPLOYEES COUNT IN FILE
+        </div>
+        <div id="total-count" class="text-5xl font-extrabold my-2">0</div>
+        <div class="text-xs text-blue-200">إجمالي الموظفين المسجلين في النظام</div>
+      </div>
+
+      <!-- Card 2: Department Filter Stats -->
+      <div class="bg-red-500 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between items-center text-center">
+        <div class="flex items-center gap-2 text-red-100 uppercase tracking-wider text-sm font-bold">
+          <i data-lucide="building-2" class="w-5 h-5"></i>
+          عدد موظفي القسم المخصص (<span id="dept-stat-name">الكل</span>)
+        </div>
+        <div id="dept-count" class="text-5xl font-extrabold my-2">0</div>
+        <div class="text-xs text-red-100">عدد التسجيلات التابعة للقسم المختار</div>
+      </div>
+    </div>
+
+    <!-- Data Input Form Section -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+        <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
+        إدخال بيانات موظف جديد
+      </h2>
+
+      <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          
+          <!-- Department -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              اسم القسم / الإدارة <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="dept-input" required list="dept-list" placeholder="اسم القسم (مثل: IT Department...)" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+            <datalist id="dept-list">
+              <option value="Printing & Archiving">
+              <option value="IT Department">
+              <option value="Human Resources">
+              <option value="Survey & Mapping">
+              <option value="Administration">
+            </datalist>
+          </div>
+
+          <!-- Floor / Level -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              الطابق / المبنى (Floor)
+            </label>
+            <input type="text" id="floor-input" placeholder="مثال: الطابق 1 / Floor 1" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+          <!-- Employee Name -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              اسم الموظف <span class="text-red-500">*</span>
+            </label>
+            <input type="text" id="emp-name-input" required placeholder="أدخل الاسم الثلاثي للموظف..." 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+          <!-- Extension Number -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              الرقم الداخلي (Extension Number)
+            </label>
+            <input type="text" id="ext-input" placeholder="مثال: 1234" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+          <!-- Cellular Number -->
+          <div class="md:col-span-2">
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              رقم الجوال (Cellular Number)
+            </label>
+            <input type="text" id="cell-input" placeholder="مثال: 03123456" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+          </div>
+
+        </div>
+
+        <!-- Buttons Row -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+            <i data-lucide="save" class="w-5 h-5"></i>
+            حفظ البيانات والتحقق من التكرار
+          </button>
+          
+          <button type="button" onclick="exportToCSV()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+            <i data-lucide="download" class="w-5 h-5"></i>
+            تنزيل شيت البيانات الحالي (Excel/CSV)
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Filter & Report Section -->
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
+          <i data-lucide="printer" class="w-5 h-5 text-indigo-600"></i>
+          مركز فرز وطباعة تقارير الأقسام
+        </h2>
+
+        <!-- Department Filter -->
+        <div class="flex items-center gap-2">
+          <label class="text-sm font-bold text-slate-700 whitespace-nowrap">اختر القسم للفرز:</label>
+          <select id="dept-filter" onchange="filterData()" class="px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white font-medium">
+            <option value="ALL">جميع الأقسام</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Live Search Box -->
+      <div class="relative">
+        <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute right-3 top-3"></i>
+        <input type="text" id="search-box" oninput="filterData()" placeholder="بحث سريع باسم الموظف، الرقم الداخلي، الجوال، أو الطابق..." 
+               class="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
+      </div>
+
+      <!-- Display Container for Grouped/Filtered Data -->
+      <div id="data-container" class="space-y-6">
+        <!-- Tables injected dynamically -->
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // State Management
+    let records = JSON.parse(localStorage.getItem('ka_central_records') || '[]');
+
+    // DOM Elements
+    const deptInput = document.getElementById('dept-input');
+    const floorInput = document.getElementById('floor-input');
+    const empNameInput = document.getElementById('emp-name-input');
+    const extInput = document.getElementById('ext-input');
+    const cellInput = document.getElementById('cell-input');
+    const totalCountEl = document.getElementById('total-count');
+    const deptCountEl = document.getElementById('dept-count');
+    const deptStatName = document.getElementById('dept-stat-name');
+    const deptFilter = document.getElementById('dept-filter');
+    const searchBox = document.getElementById('search-box');
+    const dataContainer = document.getElementById('data-container');
+
+    // Initial Load
+    window.onload = function() {
+      lucide.createIcons();
+      updateDeptDropdowns();
+      filterData();
+    };
+
+    // Save Record Function
+    function handleFormSubmit(e) {
+      e.preventDefault();
+
+      const dept = deptInput.value.trim();
+      const floor = floorInput.value.trim() || 'غير محدد';
+      const empName = empNameInput.value.trim();
+      const ext = extInput.value.trim();
+      const cell = cellInput.value.trim();
+
+      if (!dept || !empName) {
+        alert('يرجى إدخال اسم القسم واسم الموظف!');
+        return;
+      }
+
+      // Check Duplicate
+      const isDuplicate = records.some(r => 
+        r.empName.toLowerCase() === empName.toLowerCase() && 
+        r.dept.toLowerCase() === dept.toLowerCase()
+      );
+
+      if (isDuplicate) {
+        if (!confirm('تنبيه: هذا الموظف مسجل سابقاً في نفس القسم. هل تريد إضافته مرة أخرى؟')) {
+          return;
+        }
+      }
+
+      // Add New Record
+      records.push({
+        id: Date.now(),
+        dept: dept,
+        floor: floor,
+        empName: empName,
+        ext: ext || '-',
+        cell: cell || '-'
+      });
+
+      saveAndRefresh();
+
+      // Clear Inputs & Auto-Focus on Employee Name
+      empNameInput.value = '';
+      extInput.value = '';
+      cellInput.value = '';
+      empNameInput.focus();
+    }
+
+    // Save to LocalStorage & Refresh UI
+    function saveAndRefresh() {
+      localStorage.setItem('ka_central_records', JSON.stringify(records));
+      updateDeptDropdowns();
+      filterData();
+    }
+
+    // Update Dropdown options
+    function updateDeptDropdowns() {
+      const depts = [...new Set(records.map(r => r.dept))];
+      
+      const currentFilter = deptFilter.value;
+      deptFilter.innerHTML = '<option value="ALL">جميع الأقسام</option>';
+      depts.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        deptFilter.appendChild(opt);
+      });
+      deptFilter.value = currentFilter || 'ALL';
+    }
+
+    // Filter and Render Data Grouped By Department
+    function filterData() {
+      const selectedDept = deptFilter.value;
+      const searchQuery = searchBox.value.toLowerCase().trim();
+
+      deptStatName.textContent = selectedDept === 'ALL' ? 'الكل' : selectedDept;
+
+      let filtered = records.filter(r => {
+        const matchesDept = selectedDept === 'ALL' || r.dept === selectedDept;
+        const matchesSearch = r.empName.toLowerCase().includes(searchQuery) ||
+                              r.ext.toLowerCase().includes(searchQuery) ||
+                              r.cell.toLowerCase().includes(searchQuery) ||
+                              (r.floor && r.floor.toLowerCase().includes(searchQuery)) ||
+                              r.dept.toLowerCase().includes(searchQuery);
+        return matchesDept && matchesSearch;
+      });
+
+      // Update Counts
+      totalCountEl.textContent = records.length;
+      deptCountEl.textContent = selectedDept === 'ALL' 
+        ? records.length 
+        : records.filter(r => r.dept === selectedDept).length;
+
+      dataContainer.innerHTML = '';
+
+      if (filtered.length === 0) {
+        dataContainer.innerHTML = `
+          <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 text-slate-400 font-medium">
+            لا توجد سجلات مطابقة حالياً
+          </div>`;
+        return;
+      }
+
+      // Group filtered records by Department
+      const grouped = {};
+      filtered.forEach(r => {
+        if (!grouped[r.dept]) grouped[r.dept] = [];
+        grouped[r.dept].push(r);
+      });
+
+      // Render Table for each Department group
+      Object.keys(grouped).forEach(deptName => {
+        const deptRecords = grouped[deptName];
+        // Take the floor of the first record in group or list floors
+        const floors = [...new Set(deptRecords.map(r => r.floor).filter(f => f && f !== '-'))].join(' / ') || 'غير محدد';
+
+        const section = document.createElement('div');
+        section.className = 'overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white';
+
+        let rowsHtml = '';
+        deptRecords.forEach((r, idx) => {
+          rowsHtml += `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
+              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
+              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
+              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
+              <td class="p-3 text-center">
+                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        section.innerHTML = `
+          <!-- Single Department & Floor Header -->
+          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
+              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
+                الطابق: <strong class="text-slate-800">${floors}</strong>
+              </span>
+            </div>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full w-fit">
+              عدد الموظفين: ${deptRecords.length}
+            </span>
+          </div>
+
+          <table class="w-full text-right">
+            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
+              <tr>
+                <th class="p-3 text-center w-12">#</th>
+                <th class="p-3">اسم الموظف (Employee Name)</th>
+                <th class="p-3">الداخلي (Extension)</th>
+                <th class="p-3">الجوال (Cellular)</th>
+                <th class="p-3">الطابق (Floor)</th>
+                <th class="p-3 text-center w-20">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${rowsHtml}
+            </tbody>
+          </table>
+        `;
+
+        dataContainer.appendChild(section);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Delete Record
+    function deleteRecord(id) {
+      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
+        records = records.filter(r => r.id !== id);
+        saveAndRefresh();
+      }
+    }
+
+    // Export to Excel / CSV
+    function exportToCSV() {
+      if (records.length === 0) {
+        alert('لا توجد بيانات لتصديرها!');
+        return;
+      }
+
+      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
+      records.forEach(r => {
+        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
 </html>
