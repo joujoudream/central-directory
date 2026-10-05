@@ -57,12 +57,14 @@
 
     <!-- Data Input Form Section -->
     <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-      <h2 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+      <h2 id="form-title" class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
         <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
         إدخال بيانات موظف جديد
       </h2>
 
       <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
+        <input type="hidden" id="edit-id" value="">
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           
           <!-- Department -->
@@ -120,15 +122,20 @@
         </div>
 
         <!-- Buttons Row -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-          <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+          <button id="submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
             <i data-lucide="save" class="w-5 h-5"></i>
-            حفظ البيانات والتحقق من التكرار
+            <span id="submit-btn-text">حفظ البيانات</span>
           </button>
           
-          <button type="button" onclick="exportToCSV()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+            <i data-lucide="x" class="w-5 h-5"></i>
+            إلغاء التعديل
+          </button>
+
+          <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
             <i data-lucide="download" class="w-5 h-5"></i>
-            تنزيل شيت البيانات الحالي (Excel/CSV)
+            تنزيل شيت Excel
           </button>
         </div>
       </form>
@@ -167,15 +174,28 @@
   </div>
 
   <script>
-    // State Management
-    let records = JSON.parse(localStorage.getItem('ka_central_records') || '[]');
+    // State Management & Auto Clean Old Records
+    let rawRecords = JSON.parse(localStorage.getItem('ka_central_records') || '[]');
+    let records = rawRecords.map(r => ({
+      id: r.id || Date.now() + Math.random(),
+      dept: (r.dept && r.dept !== 'undefined') ? r.dept : 'Printing & Archiving',
+      floor: (r.floor && r.floor !== 'undefined') ? r.floor : '-',
+      empName: (r.empName && r.empName !== 'undefined') ? r.empName : 'غير محدد',
+      ext: (r.ext && r.ext !== 'undefined') ? r.ext : '-',
+      cell: (r.cell && r.cell !== 'undefined') ? r.cell : '-'
+    }));
 
-    // DOM Elements
+    // Elements
+    const editIdInput = document.getElementById('edit-id');
     const deptInput = document.getElementById('dept-input');
     const floorInput = document.getElementById('floor-input');
     const empNameInput = document.getElementById('emp-name-input');
     const extInput = document.getElementById('ext-input');
     const cellInput = document.getElementById('cell-input');
+    const formTitle = document.getElementById('form-title');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitBtnText = document.getElementById('submit-btn-text');
+    const cancelEditBtn = document.getElementById('cancel-edit-btn');
     const totalCountEl = document.getElementById('total-count');
     const deptCountEl = document.getElementById('dept-count');
     const deptStatName = document.getElementById('dept-stat-name');
@@ -183,70 +203,87 @@
     const searchBox = document.getElementById('search-box');
     const dataContainer = document.getElementById('data-container');
 
-    // Initial Load
     window.onload = function() {
-      lucide.createIcons();
-      updateDeptDropdowns();
-      filterData();
+      saveAndRefresh();
     };
 
-    // Save Record Function
     function handleFormSubmit(e) {
       e.preventDefault();
 
+      const editId = editIdInput.value;
       const dept = deptInput.value.trim();
-      const floor = floorInput.value.trim() || 'غير محدد';
+      const floor = floorInput.value.trim() || '-';
       const empName = empNameInput.value.trim();
-      const ext = extInput.value.trim();
-      const cell = cellInput.value.trim();
+      const ext = extInput.value.trim() || '-';
+      const cell = cellInput.value.trim() || '-';
 
       if (!dept || !empName) {
         alert('يرجى إدخال اسم القسم واسم الموظف!');
         return;
       }
 
-      // Check Duplicate
-      const isDuplicate = records.some(r => 
-        r.empName.toLowerCase() === empName.toLowerCase() && 
-        r.dept.toLowerCase() === dept.toLowerCase()
-      );
-
-      if (isDuplicate) {
-        if (!confirm('تنبيه: هذا الموظف مسجل سابقاً في نفس القسم. هل تريد إضافته مرة أخرى؟')) {
-          return;
+      if (editId) {
+        // Edit Existing Record
+        const index = records.findIndex(r => r.id == editId);
+        if (index !== -1) {
+          records[index] = { id: Number(editId), dept, floor, empName, ext, cell };
         }
+      } else {
+        // Add New Record
+        records.push({ id: Date.now(), dept, floor, empName, ext, cell });
       }
 
-      // Add New Record
-      records.push({
-        id: Date.now(),
-        dept: dept,
-        floor: floor,
-        empName: empName,
-        ext: ext || '-',
-        cell: cell || '-'
-      });
-
       saveAndRefresh();
+      resetForm();
+    }
 
-      // Clear Inputs & Auto-Focus on Employee Name
+    function editRecord(id) {
+      const rec = records.find(r => r.id == id);
+      if (!rec) return;
+
+      editIdInput.value = rec.id;
+      deptInput.value = rec.dept !== '-' ? rec.dept : '';
+      floorInput.value = rec.floor !== '-' ? rec.floor : '';
+      empNameInput.value = rec.empName !== '-' ? rec.empName : '';
+      extInput.value = rec.ext !== '-' ? rec.ext : '';
+      cellInput.value = rec.cell !== '-' ? rec.cell : '';
+
+      formTitle.innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> تعديل بيانات الموظف (${rec.empName})`;
+      submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2";
+      submitBtnText.textContent = "تحديث بيانات الموظف";
+      cancelEditBtn.classList.remove('hidden');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      lucide.createIcons();
+    }
+
+    function cancelEdit() {
+      resetForm();
+    }
+
+    function resetForm() {
+      editIdInput.value = '';
       empNameInput.value = '';
       extInput.value = '';
       cellInput.value = '';
-      empNameInput.focus();
+      floorInput.value = '';
+
+      formTitle.innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i> إدخال بيانات موظف جديد`;
+      submitBtn.className = "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2";
+      submitBtnText.textContent = "حفظ البيانات";
+      cancelEditBtn.classList.add('hidden');
+
+      lucide.createIcons();
     }
 
-    // Save to LocalStorage & Refresh UI
     function saveAndRefresh() {
       localStorage.setItem('ka_central_records', JSON.stringify(records));
       updateDeptDropdowns();
       filterData();
     }
 
-    // Update Dropdown options
     function updateDeptDropdowns() {
       const depts = [...new Set(records.map(r => r.dept))];
-      
       const currentFilter = deptFilter.value;
       deptFilter.innerHTML = '<option value="ALL">جميع الأقسام</option>';
       depts.forEach(d => {
@@ -258,7 +295,6 @@
       deptFilter.value = currentFilter || 'ALL';
     }
 
-    // Filter and Render Data Grouped By Department
     function filterData() {
       const selectedDept = deptFilter.value;
       const searchQuery = searchBox.value.toLowerCase().trim();
@@ -270,12 +306,11 @@
         const matchesSearch = r.empName.toLowerCase().includes(searchQuery) ||
                               r.ext.toLowerCase().includes(searchQuery) ||
                               r.cell.toLowerCase().includes(searchQuery) ||
-                              (r.floor && r.floor.toLowerCase().includes(searchQuery)) ||
+                              r.floor.toLowerCase().includes(searchQuery) ||
                               r.dept.toLowerCase().includes(searchQuery);
         return matchesDept && matchesSearch;
       });
 
-      // Update Counts
       totalCountEl.textContent = records.length;
       deptCountEl.textContent = selectedDept === 'ALL' 
         ? records.length 
@@ -291,14 +326,12 @@
         return;
       }
 
-      // Group filtered records by Department
       const grouped = {};
       filtered.forEach(r => {
         if (!grouped[r.dept]) grouped[r.dept] = [];
         grouped[r.dept].push(r);
       });
 
-      // Render Table for each Department group
       Object.keys(grouped).forEach(deptName => {
         const deptRecords = grouped[deptName];
         const floors = [...new Set(deptRecords.map(r => r.floor).filter(f => f && f !== '-'))].join(' / ') || 'غير محدد';
@@ -315,7 +348,10 @@
               <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
               <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
               <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
-              <td class="p-3 text-center">
+              <td class="p-3 text-center flex items-center justify-center gap-2">
+                <button onclick="editRecord(${r.id})" class="text-blue-600 hover:text-blue-800 p-1 rounded transition" title="تعديل البيانات">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                </button>
                 <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
                   <i data-lucide="trash-2" class="w-4 h-4"></i>
                 </button>
@@ -325,7 +361,6 @@
         });
 
         section.innerHTML = `
-          <!-- Single Department & Floor Header -->
           <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
             <div class="flex items-center gap-3">
               <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
@@ -347,7 +382,7 @@
                 <th class="p-3">الداخلي (Extension)</th>
                 <th class="p-3">الجوال (Cellular)</th>
                 <th class="p-3">الطابق (Floor)</th>
-                <th class="p-3 text-center w-20">إجراءات</th>
+                <th class="p-3 text-center w-24">إجراءات</th>
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
@@ -362,15 +397,14 @@
       lucide.createIcons();
     }
 
-    // Delete Record
     function deleteRecord(id) {
       if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
-        records = records.filter(r => r.id !== id);
+        records = records.filter(r => r.id != id);
         saveAndRefresh();
+        resetForm();
       }
     }
 
-    // Export to Excel / CSV
     function exportToCSV() {
       if (records.length === 0) {
         alert('لا توجد بيانات لتصديرها!');
