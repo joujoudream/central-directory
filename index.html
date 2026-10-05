@@ -26,34 +26,11 @@
       <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
       <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
       <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
-        <span>Printing & Archiving</span>
-        <span>•</span>
         <span class="text-red-600 font-bold">S,Walid Mrad</span>
+        <span>•</span>
+        <span>Printing & Archiving</span>
       </div>
     </header>
-
-    <!-- Stats Row -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Card 1: Total Records -->
-      <div class="bg-blue-600 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between items-center text-center">
-        <div class="flex items-center gap-2 text-blue-100 uppercase tracking-wider text-sm font-bold">
-          <i data-lucide="users" class="w-5 h-5"></i>
-          TOTAL EMPLOYEES COUNT IN FILE
-        </div>
-        <div id="total-count" class="text-5xl font-extrabold my-2">0</div>
-        <div class="text-xs text-blue-200">إجمالي الموظفين المسجلين في النظام</div>
-      </div>
-
-      <!-- Card 2: Department Filter Stats -->
-      <div class="bg-red-500 text-white rounded-2xl p-6 shadow-md flex flex-col justify-between items-center text-center">
-        <div class="flex items-center gap-2 text-red-100 uppercase tracking-wider text-sm font-bold">
-          <i data-lucide="building-2" class="w-5 h-5"></i>
-          عدد موظفي القسم المخصص (<span id="dept-stat-name">الكل</span>)
-        </div>
-        <div id="dept-count" class="text-5xl font-extrabold my-2">0</div>
-        <div class="text-xs text-red-100">عدد التسجيلات التابعة للقسم المختار</div>
-      </div>
-    </div>
 
     <!-- Data Input Form Section -->
     <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
@@ -72,10 +49,11 @@
             <label class="block text-sm font-semibold text-slate-700 mb-1">
               اسم القسم / الإدارة <span class="text-red-500">*</span>
             </label>
-            <input type="text" id="dept-input" required list="dept-list" placeholder="اسم القسم (مثل: IT Department...)" 
+            <input type="text" id="dept-input" required list="dept-list" placeholder="اسم القسم (مثل: Electrical Department...)" 
                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             <datalist id="dept-list">
               <option value="Printing & Archiving">
+              <option value="Electrical Department">
               <option value="IT Department">
               <option value="Human Resources">
               <option value="Survey & Mapping">
@@ -141,12 +119,12 @@
       </form>
     </section>
 
-    <!-- Filter & Report Section -->
+    <!-- Filter & Directory Display Section -->
     <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
         <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
           <i data-lucide="printer" class="w-5 h-5 text-indigo-600"></i>
-          مركز فرز وطباعة تقارير الأقسام
+          دليل الأقسام والموظفين
         </h2>
 
         <!-- Department Filter -->
@@ -165,7 +143,7 @@
                class="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
       </div>
 
-      <!-- Display Container for Grouped/Filtered Data -->
+      <!-- Display Container for Data -->
       <div id="data-container" class="space-y-6">
         <!-- Tables injected dynamically -->
       </div>
@@ -174,7 +152,7 @@
   </div>
 
   <script>
-    // State Management & Auto Clean Old Records
+    // State Management
     let rawRecords = JSON.parse(localStorage.getItem('ka_central_records') || '[]');
     let records = rawRecords.map(r => ({
       id: r.id || Date.now() + Math.random(),
@@ -196,9 +174,6 @@
     const submitBtn = document.getElementById('submit-btn');
     const submitBtnText = document.getElementById('submit-btn-text');
     const cancelEditBtn = document.getElementById('cancel-edit-btn');
-    const totalCountEl = document.getElementById('total-count');
-    const deptCountEl = document.getElementById('dept-count');
-    const deptStatName = document.getElementById('dept-stat-name');
     const deptFilter = document.getElementById('dept-filter');
     const searchBox = document.getElementById('search-box');
     const dataContainer = document.getElementById('data-container');
@@ -299,8 +274,6 @@
       const selectedDept = deptFilter.value;
       const searchQuery = searchBox.value.toLowerCase().trim();
 
-      deptStatName.textContent = selectedDept === 'ALL' ? 'الكل' : selectedDept;
-
       let filtered = records.filter(r => {
         const matchesDept = selectedDept === 'ALL' || r.dept === selectedDept;
         const matchesSearch = r.empName.toLowerCase().includes(searchQuery) ||
@@ -310,11 +283,6 @@
                               r.dept.toLowerCase().includes(searchQuery);
         return matchesDept && matchesSearch;
       });
-
-      totalCountEl.textContent = records.length;
-      deptCountEl.textContent = selectedDept === 'ALL' 
-        ? records.length 
-        : records.filter(r => r.dept === selectedDept).length;
 
       dataContainer.innerHTML = '';
 
@@ -361,7 +329,7 @@
         });
 
         section.innerHTML = `
-          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex items-center justify-between gap-2">
             <div class="flex items-center gap-3">
               <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
               <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
@@ -369,9 +337,6 @@
                 الطابق: <strong class="text-slate-800">${floors}</strong>
               </span>
             </div>
-            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full w-fit">
-              عدد الموظفين: ${deptRecords.length}
-            </span>
           </div>
 
           <table class="w-full text-right">
