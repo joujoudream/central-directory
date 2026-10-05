@@ -63,14 +63,14 @@
       </h2>
 
       <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           
           <!-- Department -->
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1">
               اسم القسم / الإدارة <span class="text-red-500">*</span>
             </label>
-            <input type="text" id="dept-input" required list="dept-list" placeholder="أدخل اسم القسم (مثل: الأرشيف، المساحة...)" 
+            <input type="text" id="dept-input" required list="dept-list" placeholder="اسم القسم (مثل: IT Department...)" 
                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             <datalist id="dept-list">
               <option value="Printing & Archiving">
@@ -79,6 +79,15 @@
               <option value="Survey & Mapping">
               <option value="Administration">
             </datalist>
+          </div>
+
+          <!-- Floor / Level -->
+          <div>
+            <label class="block text-sm font-semibold text-slate-700 mb-1">
+              الطابق / المبنى (Floor)
+            </label>
+            <input type="text" id="floor-input" placeholder="مثال: الطابق 1 / Floor 1" 
+                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
           </div>
 
           <!-- Employee Name -->
@@ -100,7 +109,7 @@
           </div>
 
           <!-- Cellular Number -->
-          <div>
+          <div class="md:col-span-2">
             <label class="block text-sm font-semibold text-slate-700 mb-1">
               رقم الجوال (Cellular Number)
             </label>
@@ -145,27 +154,13 @@
       <!-- Live Search Box -->
       <div class="relative">
         <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute right-3 top-3"></i>
-        <input type="text" id="search-box" oninput="filterData()" placeholder="بحث سريع باسم الموظف، الرقم الداخلي، أو الجوال..." 
+        <input type="text" id="search-box" oninput="filterData()" placeholder="بحث سريع باسم الموظف، الرقم الداخلي، الجوال، أو الطابق..." 
                class="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
       </div>
 
-      <!-- Data Table -->
-      <div class="overflow-x-auto rounded-xl border border-slate-200">
-        <table class="w-full text-right text-sm">
-          <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
-            <tr>
-              <th class="p-3">#</th>
-              <th class="p-3">القسم (Department)</th>
-              <th class="p-3">اسم الموظف (Employee Name)</th>
-              <th class="p-3">الداخلي (Extension)</th>
-              <th class="p-3">الجوال (Cellular)</th>
-              <th class="p-3 text-center">إجراءات</th>
-            </tr>
-          </thead>
-          <tbody id="table-body" class="divide-y divide-slate-100 bg-white">
-            <!-- Data Rows injected dynamically -->
-          </tbody>
-        </table>
+      <!-- Display Container for Grouped/Filtered Data -->
+      <div id="data-container" class="space-y-6">
+        <!-- Tables injected dynamically -->
       </div>
     </section>
 
@@ -177,6 +172,7 @@
 
     // DOM Elements
     const deptInput = document.getElementById('dept-input');
+    const floorInput = document.getElementById('floor-input');
     const empNameInput = document.getElementById('emp-name-input');
     const extInput = document.getElementById('ext-input');
     const cellInput = document.getElementById('cell-input');
@@ -185,7 +181,7 @@
     const deptStatName = document.getElementById('dept-stat-name');
     const deptFilter = document.getElementById('dept-filter');
     const searchBox = document.getElementById('search-box');
-    const tableBody = document.getElementById('table-body');
+    const dataContainer = document.getElementById('data-container');
 
     // Initial Load
     window.onload = function() {
@@ -199,6 +195,7 @@
       e.preventDefault();
 
       const dept = deptInput.value.trim();
+      const floor = floorInput.value.trim() || 'غير محدد';
       const empName = empNameInput.value.trim();
       const ext = extInput.value.trim();
       const cell = cellInput.value.trim();
@@ -224,6 +221,7 @@
       records.push({
         id: Date.now(),
         dept: dept,
+        floor: floor,
         empName: empName,
         ext: ext || '-',
         cell: cell || '-'
@@ -249,7 +247,6 @@
     function updateDeptDropdowns() {
       const depts = [...new Set(records.map(r => r.dept))];
       
-      // Update Filter Options
       const currentFilter = deptFilter.value;
       deptFilter.innerHTML = '<option value="ALL">جميع الأقسام</option>';
       depts.forEach(d => {
@@ -261,7 +258,7 @@
       deptFilter.value = currentFilter || 'ALL';
     }
 
-    // Filter and Render Data
+    // Filter and Render Data Grouped By Department
     function filterData() {
       const selectedDept = deptFilter.value;
       const searchQuery = searchBox.value.toLowerCase().trim();
@@ -273,6 +270,7 @@
         const matchesSearch = r.empName.toLowerCase().includes(searchQuery) ||
                               r.ext.toLowerCase().includes(searchQuery) ||
                               r.cell.toLowerCase().includes(searchQuery) ||
+                              (r.floor && r.floor.toLowerCase().includes(searchQuery)) ||
                               r.dept.toLowerCase().includes(searchQuery);
         return matchesDept && matchesSearch;
       });
@@ -283,34 +281,83 @@
         ? records.length 
         : records.filter(r => r.dept === selectedDept).length;
 
-      // Render Table Rows
-      tableBody.innerHTML = '';
+      dataContainer.innerHTML = '';
+
       if (filtered.length === 0) {
-        tableBody.innerHTML = `
-          <tr>
-            <td colspan="6" class="text-center p-6 text-slate-400 font-medium">
-              لا توجد سجلات مطابقة حالياً
-            </td>
-          </tr>`;
+        dataContainer.innerHTML = `
+          <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 text-slate-400 font-medium">
+            لا توجد سجلات مطابقة حالياً
+          </div>`;
         return;
       }
 
-      filtered.forEach((r, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-50 transition border-b border-slate-100';
-        tr.innerHTML = `
-          <td class="p-3 font-bold text-slate-400">${idx + 1}</td>
-          <td class="p-3 font-bold text-indigo-700">${r.dept}</td>
-          <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
-          <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
-          <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
-          <td class="p-3 text-center">
-            <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
-              <i data-lucide="trash-2" class="w-4 h-4"></i>
-            </button>
-          </td>
+      // Group filtered records by Department
+      const grouped = {};
+      filtered.forEach(r => {
+        if (!grouped[r.dept]) grouped[r.dept] = [];
+        grouped[r.dept].push(r);
+      });
+
+      // Render Table for each Department group
+      Object.keys(grouped).forEach(deptName => {
+        const deptRecords = grouped[deptName];
+        // Take the floor of the first record in group or list floors
+        const floors = [...new Set(deptRecords.map(r => r.floor).filter(f => f && f !== '-'))].join(' / ') || 'غير محدد';
+
+        const section = document.createElement('div');
+        section.className = 'overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white';
+
+        let rowsHtml = '';
+        deptRecords.forEach((r, idx) => {
+          rowsHtml += `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
+              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
+              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
+              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
+              <td class="p-3 text-center">
+                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        section.innerHTML = `
+          <!-- Single Department & Floor Header -->
+          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex flex-col md:flex-row md:items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
+              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
+                الطابق: <strong class="text-slate-800">${floors}</strong>
+              </span>
+            </div>
+            <span class="text-xs font-bold text-indigo-700 bg-indigo-100 px-2.5 py-1 rounded-full w-fit">
+              عدد الموظفين: ${deptRecords.length}
+            </span>
+          </div>
+
+          <table class="w-full text-right">
+            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
+              <tr>
+                <th class="p-3 text-center w-12">#</th>
+                <th class="p-3">اسم الموظف (Employee Name)</th>
+                <th class="p-3">الداخلي (Extension)</th>
+                <th class="p-3">الجوال (Cellular)</th>
+                <th class="p-3">الطابق (Floor)</th>
+                <th class="p-3 text-center w-20">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${rowsHtml}
+            </tbody>
+          </table>
         `;
-        tableBody.appendChild(tr);
+
+        dataContainer.appendChild(section);
       });
 
       lucide.createIcons();
@@ -331,9 +378,9 @@
         return;
       }
 
-      let csvContent = "\uFEFFالقسم,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
+      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
       records.forEach(r => {
-        csvContent += `"${r.dept}","${r.empName}","${r.ext}","${r.cell}"\n`;
+        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
       });
 
       const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
