@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>طباعة دليل الموظفين حسب الطابق - Khatib & Alami</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    /* إعدادات الطباعة */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background-color: white !important;
+        padding: 0 !important;
+      }
+      .page-break {
+        page-break-after: always;
+        break-after: page;
+      }
+      .card-print {
+        box-shadow: none !important;
+        border: 1px solid #cbd5e1 !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 p-4 md:p-8">
+
+  <!-- شريط التحكم والعناصر المستثناة من الطباعة -->
+  <div class="max-w-5xl mx-auto mb-6 no-print flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-2xl shadow-sm border border-slate-200">
+    <div class="flex items-center gap-3">
+      <a href="index.html" class="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-bold transition">
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        الرجوع للصفحة الرئيسية
+      </a>
+      <h1 class="text-lg font-bold text-slate-800">تقرير الطباعة حسب الطابق</h1>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <!-- تصفية بطابق محدد -->
+      <select id="floor-select" onchange="renderFloorData()" class="px-3 py-2 border border-slate-300 rounded-xl font-medium text-sm outline-none focus:ring-2 focus:ring-indigo-500">
+        <option value="ALL">جميع الطوابق</option>
+      </select>
+
+      <!-- زر الطباعة -->
+      <button onclick="window.print()" class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm font-bold shadow-sm transition">
+        <i data-lucide="printer" class="w-4 h-4"></i>
+        طباعة الآن
+      </button>
+    </div>
+  </div>
+
+  <!-- الترويسة المخصصة للطباعة -->
+  <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6 text-center space-y-2 relative overflow-hidden">
+    <div class="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-500"></div>
+    <h1 class="text-2xl font-extrabold text-slate-900">Khatib & Alami Company</h1>
+    <div class="text-md font-bold text-indigo-600 uppercase tracking-widest">CENTRAL DIRECTORY - FLOOR REPORT</div>
+    <div class="text-xs font-semibold text-slate-500 flex items-center justify-center gap-2 pt-1">
+      <span>Printing & Archiving</span>
+      <span>•</span>
+      <span class="text-red-600 font-bold">S,Walid Mrad</span>
+    </div>
+  </div>
+
+  <!-- الحاوية الرئيسية لعرض الطوابق -->
+  <div id="floors-container" class="max-w-5xl mx-auto space-y-8">
+    <!-- يتم إدراج بيانات كل طابق هنا ديناميكياً -->
+  </div>
+
+  <script>
+    // جلب البيانات المخزنة من LocalStorage
+    function getRecords() {
+      const keys = ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records'];
+      for (let k of keys) {
+        const data = localStorage.getItem(k);
+        if (data) {
+          try {
+            const parsed = JSON.parse(data);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          } catch(e) {}
+        }
+      }
+      return [];
+    }
+
+    const records = getRecords();
+
+    window.onload = function() {
+      populateFloorDropdown();
+      renderFloorData();
+      lucide.createIcons();
+    };
+
+    function populateFloorDropdown() {
+      const select = document.getElementById('floor-select');
+      const floors = [...new Set(records.map(r => r.floor || 'غير محدد'))].sort();
+      
+      floors.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f;
+        opt.textContent = `طابق: ${f}`;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderFloorData() {
+      const container = document.getElementById('floors-container');
+      const selectedFloor = document.getElementById('floor-select').value;
+      container.innerHTML = '';
+
+      if (records.length === 0) {
+        container.innerHTML = `
+          <div class="text-center p-10 bg-white rounded-2xl border border-slate-200 text-slate-400 font-bold">
+            لا توجد بيانات مسجلة لطباعتها حالياً.
+          </div>`;
+        return;
+      }
+
+      // تجميع البيانات حسب الطابق
+      const groupedByFloor = {};
+      records.forEach(r => {
+        const fName = r.floor || 'غير محدد';
+        if (selectedFloor !== 'ALL' && fName !== selectedFloor) return;
+
+        if (!groupedByFloor[fName]) {
+          groupedByFloor[fName] = [];
+        }
+        groupedByFloor[fName].push(r);
+      });
+
+      const floorKeys = Object.keys(groupedByFloor).sort();
+
+      if (floorKeys.length === 0) {
+        container.innerHTML = `
+          <div class="text-center p-10 bg-white rounded-2xl border border-slate-200 text-slate-400 font-bold">
+            لا توجد سجلات مطابقة للطابق المحدد.
+          </div>`;
+        return;
+      }
+
+      floorKeys.forEach((floorName, index) => {
+        const emps = groupedByFloor[floorName];
+
+        const card = document.createElement('div');
+        card.className = `bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-print ${index < floorKeys.length - 1 ? 'page-break' : ''}`;
+
+        let rowsHtml = '';
+        emps.forEach((e, idx) => {
+          rowsHtml += `
+            <tr class="border-b border-slate-100 text-sm hover:bg-slate-50">
+              <td class="p-3 text-center font-bold text-slate-400">${idx + 1}</td>
+              <td class="p-3 font-semibold text-slate-800">${e.empName || e.name || '-'}</td>
+              <td class="p-3 text-slate-700 font-medium">${e.dept || e.department || '-'}</td>
+              <td class="p-3 font-mono font-semibold text-indigo-700">${e.ext || e.extension || '-'}</td>
+              <td class="p-3 font-mono text-slate-600">${e.cell || e.cellular || '-'}</td>
+            </tr>
+          `;
+        });
+
+        card.innerHTML = `
+          <!-- ترويسة الطابق -->
+          <div class="bg-indigo-900 text-white p-4 flex items-center justify-between border-b border-indigo-800">
+            <div class="flex items-center gap-2">
+              <i data-lucide="layers" class="w-5 h-5 text-amber-300"></i>
+              <h2 class="text-lg font-bold">الطابق / المبنى: <span class="text-amber-300">${floorName}</span></h2>
+            </div>
+            <span class="bg-indigo-800 text-indigo-100 text-xs px-3 py-1 rounded-full font-semibold">
+              عدد الموظفين: ${emps.length}
+            </span>
+          </div>
+
+          <!-- جدول الموظفين لهذا الطابق -->
+          <table class="w-full text-right">
+            <thead class="bg-slate-100 text-slate-700 text-xs font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-3 text-center w-12">#</th>
+                <th class="p-3">اسم الموظف</th>
+                <th class="p-3">القسم / الإدارة</th>
+                <th class="p-3">الرقم الداخلي (Ext)</th>
+                <th class="p-3">رقم الجوال</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${rowsHtml}
+            </tbody>
+          </table>
+        `;
+
+        container.appendChild(card);
+      });
+
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>
