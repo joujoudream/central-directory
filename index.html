@@ -26,9 +26,9 @@
       <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
       <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
       <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
-        <span>Printing & Archiving</span>
-        <span>•</span>
         <span class="text-red-600 font-bold">S,Walid Mrad</span>
+        <span>•</span>
+        <span>Printing & Archiving</span>
       </div>
     </header>
 
@@ -120,13 +120,13 @@
             تنزيل شيت Excel
           </button>
 
-          <!-- Total Employees Badge/Card (Next to Green Button) -->
-          <div class="w-full bg-slate-100 border border-slate-200 rounded-xl p-3 flex items-center justify-between px-5 shadow-inner order-3 md:order-1">
-            <div class="flex items-center gap-2 text-slate-700 font-bold text-sm">
-              <i data-lucide="users" class="w-5 h-5 text-indigo-600"></i>
+          <!-- Total Employees Badge/Card (Blue Background with Yellow Text) -->
+          <div class="w-full bg-blue-900 border border-blue-800 rounded-xl p-3 flex items-center justify-between px-5 shadow-sm order-3 md:order-1">
+            <div class="flex items-center gap-2 text-amber-300 font-bold text-sm">
+              <i data-lucide="users" class="w-5 h-5 text-amber-300"></i>
               <span>مجموع عدد الموظفين:</span>
             </div>
-            <span id="total-count" class="text-2xl font-extrabold text-indigo-600 font-mono">0</span>
+            <span id="total-count" class="text-2xl font-extrabold text-amber-300 font-mono">0</span>
           </div>
 
         </div>
@@ -329,90 +329,4 @@
         deptRecords.forEach((r, idx) => {
           rowsHtml += `
             <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
-              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
-              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
-              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
-              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
-              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
-              <td class="p-3 text-center flex items-center justify-center gap-2">
-                <button onclick="editRecord(${r.id})" class="text-blue-600 hover:text-blue-800 p-1 rounded transition" title="تعديل البيانات">
-                  <i data-lucide="edit-3" class="w-4 h-4"></i>
-                </button>
-                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-
-        section.innerHTML = `
-          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
-              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
-                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
-                الطابق: <strong class="text-slate-800">${floors}</strong>
-              </span>
-            </div>
-          </div>
-
-          <table class="w-full text-right">
-            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
-              <tr>
-                <th class="p-3 text-center w-12">#</th>
-                <th class="p-3">اسم الموظف (Employee Name)</th>
-                <th class="p-3">الداخلي (Extension)</th>
-                <th class="p-3">الجوال (Cellular)</th>
-                <th class="p-3">الطابق (Floor)</th>
-                <th class="p-3 text-center w-24">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              ${rowsHtml}
-            </tbody>
-          </table>
-        `;
-
-        dataContainer.appendChild(section);
-      });
-
-      lucide.createIcons();
-    }
-
-    function deleteRecord(id) {
-      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
-        records = records.filter(r => r.id != id);
-        saveAndRefresh();
-        resetForm();
-      }
-    }
-
-    function exportToCSV() {
-      if (records.length === 0) {
-        alert('لا توجد بيانات لتصديرها!');
-        return;
-      }
-
-      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
-      records.forEach(r => {
-        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
-</body>
-  <div style="background-color: #1e3a8a; color: #ffffff; padding: 12px 20px; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: bold;">
-    <i class="fas fa-users" style="font-size: 1.2rem; color: #facc15;"></i>
-    <span>مجموع عدد الموظفين:</span>
-    <span id="total-employees-count" style="color: #facc15; font-size: 1.3rem; margin-right: 5px;">323</span>
-</div>
-</html>
+              <td class="p-3 font-bold text-slate
