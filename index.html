@@ -104,34 +104,40 @@
           </div>
         </div>
 
-        <!-- Action Row (Count Card + Excel Button + Save Button) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        <!-- Action Row -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3 pt-2">
           
-          <!-- Save Button (Red) -->
-          <button id="submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3">
-            <i data-lucide="save" class="w-5 h-5"></i>
-            <span id="submit-btn-text">حفظ البيانات</span>
-          </button>
-          
-          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3">
-            <i data-lucide="x" class="w-5 h-5"></i>
-            إلغاء التعديل
-          </button>
+          <!-- Total Employees Badge -->
+          <div class="w-full bg-blue-900 border border-blue-800 rounded-xl p-3 flex items-center justify-between px-4 shadow-sm">
+            <div class="flex items-center gap-2 text-amber-300 font-bold text-xs md:text-sm">
+              <i data-lucide="users" class="w-4 h-4 text-amber-300"></i>
+              <span>عدد الموظفين:</span>
+            </div>
+            <span id="total-count" class="text-xl font-extrabold text-amber-300 font-mono">0</span>
+          </div>
+
+          <!-- Print By Floor Button (Blue) -->
+          <a href="print_by_floor.html" target="_blank" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+            <i data-lucide="printer" class="w-4 h-4"></i>
+            طباعة حسب الطابق
+          </a>
 
           <!-- Export Excel Button (Green) -->
-          <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-2 md:order-2">
-            <i data-lucide="download" class="w-5 h-5"></i>
+          <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+            <i data-lucide="download" class="w-4 h-4"></i>
             تنزيل شيت Excel
           </button>
 
-          <!-- Total Employees Badge/Card (Blue Background with Yellow Text) -->
-          <div class="w-full bg-blue-900 border border-blue-800 rounded-xl p-3 flex items-center justify-between px-5 shadow-sm order-3 md:order-1">
-            <div class="flex items-center gap-2 text-amber-300 font-bold text-sm">
-              <i data-lucide="users" class="w-5 h-5 text-amber-300"></i>
-              <span>مجموع عدد الموظفين:</span>
-            </div>
-            <span id="total-count" class="text-2xl font-extrabold text-amber-300 font-mono">0</span>
-          </div>
+          <!-- Save Button (Red) -->
+          <button id="submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+            <i data-lucide="save" class="w-4 h-4"></i>
+            <span id="submit-btn-text">حفظ البيانات</span>
+          </button>
+          
+          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+            <i data-lucide="x" class="w-4 h-4"></i>
+            إلغاء التعديل
+          </button>
 
         </div>
       </form>
@@ -141,7 +147,7 @@
     <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
         <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <i data-lucide="printer" class="w-5 h-5 text-indigo-600"></i>
+          <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
           دليل الأقسام والموظفين
         </h2>
 
@@ -257,7 +263,7 @@
       cellInput.value = rec.cell !== '-' ? rec.cell : '';
 
       formTitle.innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> تعديل بيانات الموظف (${rec.empName})`;
-      submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3";
+      submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm";
       submitBtnText.textContent = "تحديث بيانات الموظف";
       cancelEditBtn.classList.remove('hidden');
 
@@ -277,7 +283,7 @@
       floorInput.value = '';
 
       formTitle.innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i> إدخال بيانات موظف جديد`;
-      submitBtn.className = "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3";
+      submitBtn.className = "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm";
       submitBtnText.textContent = "حفظ البيانات";
       cancelEditBtn.classList.add('hidden');
 
@@ -346,94 +352,3 @@
 
         const section = document.createElement('div');
         section.className = 'overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white';
-
-        let rowsHtml = '';
-        deptRecords.forEach((r, idx) => {
-          rowsHtml += `
-            <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
-              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
-              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
-              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
-              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
-              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
-              <td class="p-3 text-center flex items-center justify-center gap-2">
-                <button onclick="editRecord(${r.id})" class="text-blue-600 hover:text-blue-800 p-1 rounded transition" title="تعديل البيانات">
-                  <i data-lucide="edit-3" class="w-4 h-4"></i>
-                </button>
-                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-
-        section.innerHTML = `
-          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
-              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
-                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
-                الطابق: <strong class="text-slate-800">${floors}</strong>
-              </span>
-            </div>
-          </div>
-
-          <table class="w-full text-right">
-            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
-              <tr>
-                <th class="p-3 text-center w-12">#</th>
-                <th class="p-3">اسم الموظف (Employee Name)</th>
-                <th class="p-3">الداخلي (Extension)</th>
-                <th class="p-3">الجوال (Cellular)</th>
-                <th class="p-3">الطابق (Floor)</th>
-                <th class="p-3 text-center w-24">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              ${rowsHtml}
-            </tbody>
-          </table>
-        `;
-
-        dataContainer.appendChild(section);
-      });
-
-      lucide.createIcons();
-    }
-
-    function deleteRecord(id) {
-      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
-        records = records.filter(r => r.id != id);
-        saveAndRefresh();
-        resetForm();
-      }
-    }
-
-    function exportToCSV() {
-      if (records.length === 0) {
-        alert('لا توجد بيانات لتصديرها!');
-        return;
-      }
-
-      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
-      records.forEach(r => {
-        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
-</body>
-</html>
-<a href="print_by_floor.html" target="_blank" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
-  <i data-lucide="printer" class="w-5 h-5"></i>
-  طباعة حسب الطابق
-</a>
