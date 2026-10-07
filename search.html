@@ -164,16 +164,17 @@
 </div>
 
 <script>
-    const BIN_ID = '66f28cf0e41b4d34e4368925';
-    const API_KEY = `$2a$10$S.o4WDQTShleBFIsnDoMuOdhR826Gxd.zOO0ACAqKgSR.p2aXnqgK`; 
-
+    const BIN_ID = '66f28cf0e41b4d34e4368925'; 
     let allEmployees = [];
 
     async function loadData() {
         const resultsList = document.getElementById('resultsList');
         
-        // 1. المحاولة من الذاكرة المحلية للجهاز أولاً
-        let localData = localStorage.getItem('central_employees') || localStorage.getItem('khatib_central_data');
+        // 1. البحث في الذاكرة المحلية للجهاز أولاً (الخيارات المتعددة للمسميات)
+        let localData = localStorage.getItem('central_employees') || 
+                        localStorage.getItem('khatib_central_data') || 
+                        localStorage.getItem('employees');
+
         if (localData) {
             try {
                 allEmployees = JSON.parse(localData);
@@ -186,21 +187,19 @@
             }
         }
 
-        // 2. إذا لم تتوفر البيانات محلياً، يتم الجلب من السحابة JSONBin
+        // 2. إذا لم توجد بيانات محلياً، يتم جلبها مباشرة وبدون مفتاح (Public Call)
         try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-                headers: { 'X-Master-Key': API_KEY }
-            });
+            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
             
             if (response.ok) {
                 const data = await response.json();
                 allEmployees = data.record || [];
                 renderResults(allEmployees);
             } else {
-                resultsList.innerHTML = `<div class="no-results">تعذر جلب البيانات. يرجى التأكد من الـ Master Key في الكود.</div>`;
+                resultsList.innerHTML = `<div class="no-results">لا توجد بيانات محلياً. يرجى فتح الصفحة الرئيسية مرة واحدة على هذا الجهاز.</div>`;
             }
         } catch (error) {
-            resultsList.innerHTML = `<div class="no-results">حدث خطأ في الاتصال بالشبكة.</div>`;
+            resultsList.innerHTML = `<div class="no-results">لا توجد بيانات محفوظة على هذا الجهاز بعد.</div>`;
         }
     }
 
@@ -210,7 +209,7 @@
 
         resultsCount.textContent = `عدد النتائج: ${employees.length}`;
 
-        if (employees.length === 0) {
+        if (!employees || employees.length === 0) {
             resultsList.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
             return;
         }
