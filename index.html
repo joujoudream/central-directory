@@ -42,15 +42,15 @@
       <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
         <input type="hidden" id="edit-id" value="">
 
-        <!-- Row 1: Employee Name (Right) -> Department (Middle) -> Floor (Left) -->
+        <!-- Row 1: Floor (Right) -> Department (Middle) -> Employee Name (Left) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           
-          <!-- 1. Employee Name (Right) -->
+          <!-- 1. Floor / Level (Right) -->
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1">
-              اسم الموظف <span class="text-red-500">*</span>
+              الطابق / المبنى (Floor)
             </label>
-            <input type="text" id="emp-name-input" required placeholder="أدخل الاسم الثلاثي للموظف..." 
+            <input type="text" id="floor-input" placeholder="مثال: الطابق 1 / Floor 1" 
                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
           </div>
 
@@ -72,12 +72,12 @@
             </datalist>
           </div>
 
-          <!-- 3. Floor / Level (Left) -->
+          <!-- 3. Employee Name (Left) -->
           <div>
             <label class="block text-sm font-semibold text-slate-700 mb-1">
-              الطابق / المبنى (Floor)
+              اسم الموظف <span class="text-red-500">*</span>
             </label>
-            <input type="text" id="floor-input" placeholder="مثال: الطابق 1 / Floor 1" 
+            <input type="text" id="emp-name-input" required placeholder="أدخل الاسم الثلاثي للموظف..." 
                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
           </div>
 
