@@ -26,9 +26,9 @@
       <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
       <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
       <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
-        <span class="text-red-600 font-bold">S,Walid Mrad</span>
-        <span>•</span>
         <span>Printing & Archiving</span>
+        <span>•</span>
+        <span class="text-red-600 font-bold">S,Walid Mrad</span>
       </div>
     </header>
 
@@ -166,16 +166,33 @@
   </div>
 
   <script>
-    // State Management
-    let rawRecords = JSON.parse(localStorage.getItem('ka_central_records') || '[]');
-    let records = rawRecords.map(r => ({
-      id: r.id || Date.now() + Math.random(),
-      dept: (r.dept && r.dept !== 'undefined') ? r.dept : 'Printing & Archiving',
-      floor: (r.floor && r.floor !== 'undefined') ? r.floor : '-',
-      empName: (r.empName && r.empName !== 'undefined') ? r.empName : 'غير محدد',
-      ext: (r.ext && r.ext !== 'undefined') ? r.ext : '-',
-      cell: (r.cell && r.cell !== 'undefined') ? r.cell : '-'
-    }));
+    // Load records from all possible legacy storage keys to guarantee no data loss
+    function loadExistingRecords() {
+      const possibleKeys = ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records'];
+      let found = [];
+      for (let key of possibleKeys) {
+        const item = localStorage.getItem(key);
+        if (item) {
+          try {
+            const parsed = JSON.parse(item);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              found = parsed;
+              break;
+            }
+          } catch(e) {}
+        }
+      }
+      return found.map(r => ({
+        id: r.id || Date.now() + Math.random(),
+        dept: (r.dept && r.dept !== 'undefined') ? r.dept : (r.department || 'Printing & Archiving'),
+        floor: (r.floor && r.floor !== 'undefined') ? r.floor : '-',
+        empName: (r.empName || r.name || r.employeeName || 'غير محدد'),
+        ext: (r.ext || r.extension || '-'),
+        cell: (r.cell || r.cellular || r.phone || '-')
+      }));
+    }
+
+    let records = loadExistingRecords();
 
     // Elements
     const editIdInput = document.getElementById('edit-id');
@@ -213,13 +230,11 @@
       }
 
       if (editId) {
-        // Edit Existing Record
         const index = records.findIndex(r => r.id == editId);
         if (index !== -1) {
           records[index] = { id: Number(editId), dept, floor, empName, ext, cell };
         }
       } else {
-        // Add New Record
         records.push({ id: Date.now(), dept, floor, empName, ext, cell });
       }
 
@@ -267,7 +282,12 @@
     }
 
     function saveAndRefresh() {
-      localStorage.setItem('ka_central_records', JSON.stringify(records));
+      // Save across all keys to sync perfectly
+      const dataStr = JSON.stringify(records);
+      ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records'].forEach(k => {
+        localStorage.setItem(k, dataStr);
+      });
+
       if (totalCountEl) {
         totalCountEl.textContent = records.length;
       }
@@ -294,11 +314,11 @@
 
       let filtered = records.filter(r => {
         const matchesDept = selectedDept === 'ALL' || r.dept === selectedDept;
-        const matchesSearch = r.empName.toLowerCase().includes(searchQuery) ||
-                              r.ext.toLowerCase().includes(searchQuery) ||
-                              r.cell.toLowerCase().includes(searchQuery) ||
-                              r.floor.toLowerCase().includes(searchQuery) ||
-                              r.dept.toLowerCase().includes(searchQuery);
+        const matchesSearch = (r.empName && r.empName.toLowerCase().includes(searchQuery)) ||
+                              (r.ext && r.ext.toLowerCase().includes(searchQuery)) ||
+                              (r.cell && r.cell.toLowerCase().includes(searchQuery)) ||
+                              (r.floor && r.floor.toLowerCase().includes(searchQuery)) ||
+                              (r.dept && r.dept.toLowerCase().includes(searchQuery));
         return matchesDept && matchesSearch;
       });
 
