@@ -133,7 +133,7 @@
             <i data-lucide="save" class="w-4 h-4"></i>
             <span id="submit-btn-text">حفظ البيانات</span>
           </button>
-          
+
           <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
             <i data-lucide="x" class="w-4 h-4"></i>
             إلغاء التعديل
@@ -176,29 +176,53 @@
   </div>
 
   <script>
+    // وظيفة شاملة تفحص وتجمع السجلات القديمة من جميع الأسماء المحتملة في localStorage
     function loadExistingRecords() {
-      const possibleKeys = ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records'];
-      let found = [];
-      for (let key of possibleKeys) {
+      const keysToSearch = [
+        'ka_central_records', 
+        'central_directory_records', 
+        'employees', 
+        'records', 
+        'ka_records', 
+        'central_records'
+      ];
+      
+      let allRecords = [];
+      let uniqueIds = new Set();
+
+      keysToSearch.forEach(key => {
         const item = localStorage.getItem(key);
         if (item) {
           try {
             const parsed = JSON.parse(item);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              found = parsed;
-              break;
+            if (Array.isArray(parsed)) {
+              parsed.forEach(r => {
+                // التأكد من جلب حقول السجل بغض النظر عن اختلاف تسميتها القديمة
+                const empName = r.empName || r.name || r.employeeName || '';
+                const dept = r.dept || r.department || '';
+                const ext = r.ext || r.extension || '-';
+                const cell = r.cell || r.cellular || r.phone || '-';
+                const floor = r.floor || '-';
+                const id = r.id || (empName + ext);
+
+                if (empName && !uniqueIds.has(id)) {
+                  uniqueIds.add(id);
+                  allRecords.push({
+                    id: r.id || Date.now() + Math.random(),
+                    dept: dept || 'غير محدد',
+                    floor: floor || '-',
+                    empName: empName,
+                    ext: ext,
+                    cell: cell
+                  });
+                }
+              });
             }
           } catch(e) {}
         }
-      }
-      return found.map(r => ({
-        id: r.id || Date.now() + Math.random(),
-        dept: (r.dept && r.dept !== 'undefined') ? r.dept : (r.department || 'Printing & Archiving'),
-        floor: (r.floor && r.floor !== 'undefined') ? r.floor : '-',
-        empName: (r.empName || r.name || r.employeeName || 'غير محدد'),
-        ext: (r.ext || r.extension || '-'),
-        cell: (r.cell || r.cellular || r.phone || '-')
-      }));
+      });
+
+      return allRecords;
     }
 
     let records = loadExistingRecords();
@@ -292,7 +316,16 @@
 
     function saveAndRefresh() {
       const dataStr = JSON.stringify(records);
-      ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records'].forEach(k => {
+      
+      // حفظ النسخة المحدثة تحت كافة المفاتيح لضمان عدم فقدانها مستقبلاً
+      [
+        'ka_central_records', 
+        'central_directory_records', 
+        'employees', 
+        'records', 
+        'ka_records', 
+        'central_records'
+      ].forEach(k => {
         localStorage.setItem(k, dataStr);
       });
 
@@ -352,3 +385,90 @@
 
         const section = document.createElement('div');
         section.className = 'overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white';
+
+        let rowsHtml = '';
+        deptRecords.forEach((r, idx) => {
+          rowsHtml += `
+            <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
+              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
+              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
+              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
+              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
+              <td class="p-3 text-center flex items-center justify-center gap-2">
+                <button onclick="editRecord(${r.id})" class="text-blue-600 hover:text-blue-800 p-1 rounded transition" title="تعديل البيانات">
+                  <i data-lucide="edit-3" class="w-4 h-4"></i>
+                </button>
+                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
+                  <i data-lucide="trash-2" class="w-4 h-4"></i>
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+
+        section.innerHTML = `
+          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-3">
+              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
+              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
+                الطابق: <strong class="text-slate-800">${floors}</strong>
+              </span>
+            </div>
+          </div>
+
+          <table class="w-full text-right">
+            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
+              <tr>
+                <th class="p-3 text-center w-12">#</th>
+                <th class="p-3">اسم الموظف (Employee Name)</th>
+                <th class="p-3">الداخلي (Extension)</th>
+                <th class="p-3">الجوال (Cellular)</th>
+                <th class="p-3">الطابق (Floor)</th>
+                <th class="p-3 text-center w-24">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              ${rowsHtml}
+            </tbody>
+          </table>
+        `;
+
+        dataContainer.appendChild(section);
+      });
+
+      lucide.createIcons();
+    }
+
+    function deleteRecord(id) {
+      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
+        records = records.filter(r => r.id != id);
+        saveAndRefresh();
+        resetForm();
+      }
+    }
+
+    function exportToCSV() {
+      if (records.length === 0) {
+        alert('لا توجد بيانات لتصديرها!');
+        return;
+      }
+
+      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
+      records.forEach(r => {
+        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
