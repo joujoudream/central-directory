@@ -26,9 +26,9 @@
       <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
       <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
       <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
-        <span class="text-red-600 font-bold">S,Walid Mrad</span>
-        <span>•</span>
         <span>Printing & Archiving</span>
+        <span>•</span>
+        <span class="text-red-600 font-bold">S,Walid Mrad</span>
       </div>
     </header>
 
@@ -49,11 +49,12 @@
             <label class="block text-sm font-semibold text-slate-700 mb-1">
               اسم القسم / الإدارة <span class="text-red-500">*</span>
             </label>
-            <input type="text" id="dept-input" required list="dept-list" placeholder="اسم القسم (مثل: Electrical Department...)" 
+            <input type="text" id="dept-input" required list="dept-list" placeholder="GIS Department" 
                    class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
             <datalist id="dept-list">
               <option value="Printing & Archiving">
               <option value="Electrical Department">
+              <option value="GIS Department">
               <option value="IT Department">
               <option value="Human Resources">
               <option value="Survey & Mapping">
@@ -99,22 +100,35 @@
 
         </div>
 
-        <!-- Buttons Row -->
+        <!-- Action Row (Count Card + Excel Button + Save Button) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-          <button id="submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+          
+          <!-- Save Button (Red) -->
+          <button id="submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3">
             <i data-lucide="save" class="w-5 h-5"></i>
             <span id="submit-btn-text">حفظ البيانات</span>
           </button>
           
-          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3">
             <i data-lucide="x" class="w-5 h-5"></i>
             إلغاء التعديل
           </button>
 
-          <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2">
+          <!-- Export Excel Button (Green) -->
+          <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-2 md:order-2">
             <i data-lucide="download" class="w-5 h-5"></i>
             تنزيل شيت Excel
           </button>
+
+          <!-- Total Employees Badge/Card (Next to Green Button) -->
+          <div class="w-full bg-slate-100 border border-slate-200 rounded-xl p-3 flex items-center justify-between px-5 shadow-inner order-3 md:order-1">
+            <div class="flex items-center gap-2 text-slate-700 font-bold text-sm">
+              <i data-lucide="users" class="w-5 h-5 text-indigo-600"></i>
+              <span>مجموع عدد الموظفين:</span>
+            </div>
+            <span id="total-count" class="text-2xl font-extrabold text-indigo-600 font-mono">0</span>
+          </div>
+
         </div>
       </form>
     </section>
@@ -177,6 +191,7 @@
     const deptFilter = document.getElementById('dept-filter');
     const searchBox = document.getElementById('search-box');
     const dataContainer = document.getElementById('data-container');
+    const totalCountEl = document.getElementById('total-count');
 
     window.onload = function() {
       saveAndRefresh();
@@ -224,7 +239,7 @@
       cellInput.value = rec.cell !== '-' ? rec.cell : '';
 
       formTitle.innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> تعديل بيانات الموظف (${rec.empName})`;
-      submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2";
+      submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3";
       submitBtnText.textContent = "تحديث بيانات الموظف";
       cancelEditBtn.classList.remove('hidden');
 
@@ -244,7 +259,7 @@
       floorInput.value = '';
 
       formTitle.innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i> إدخال بيانات موظف جديد`;
-      submitBtn.className = "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2";
+      submitBtn.className = "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl shadow-sm transition flex items-center justify-center gap-2 order-1 md:order-3";
       submitBtnText.textContent = "حفظ البيانات";
       cancelEditBtn.classList.add('hidden');
 
@@ -253,6 +268,9 @@
 
     function saveAndRefresh() {
       localStorage.setItem('ka_central_records', JSON.stringify(records));
+      if (totalCountEl) {
+        totalCountEl.textContent = records.length;
+      }
       updateDeptDropdowns();
       filterData();
     }
