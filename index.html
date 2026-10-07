@@ -393,3 +393,39 @@
         `;
 
         dataContainer.appendChild(section);
+      });
+
+      lucide.createIcons();
+    }
+
+    function deleteRecord(id) {
+      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
+        records = records.filter(r => r.id != id);
+        saveAndRefresh();
+        resetForm();
+      }
+    }
+
+    function exportToCSV() {
+      if (records.length === 0) {
+        alert('لا توجد بيانات لتصديرها!');
+        return;
+      }
+
+      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
+      records.forEach(r => {
+        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
+</body>
+</html>
