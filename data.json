@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Walid Murad",
+    "department": "Administration Department",
+    "extension": "750",
+    "mobile": "-",
+    "floor": "First Basement"
+  },
+  {
+    "name": "Walid Moualem",
+    "department": "Administration Department",
+    "extension": "712",
+    "mobile": "-",
+    "floor": "First Basement"
+  },
+  {
+    "name": "Walid Hamieh",
+    "department": "Mechanical",
+    "extension": "359",
+    "mobile": "-",
+    "floor": "Third Floor"
+  }
+]
