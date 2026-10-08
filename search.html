@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البحث السريع للسنترال - Khatib & Alami</title>
+    <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -28,98 +28,99 @@
             color: var(--text-main);
             padding: 20px;
             display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
         }
 
         .container {
             width: 100%;
-            max-width: 900px;
-            margin: 0 auto;
+            max-width: 850px;
         }
 
-        .header {
+        .header-card {
             background: var(--card-bg);
-            padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 24px;
             text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
-            border-top: 5px solid var(--primary);
+            border: 1px solid var(--border);
         }
 
-        .header h1 {
-            font-size: 26px;
+        .company-title {
+            font-size: 24px;
             font-weight: 800;
             color: #1e293b;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
-        .header p {
-            color: var(--primary);
-            font-weight: 700;
+        .page-subtitle {
             font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
         }
 
         .search-card {
             background: var(--card-bg);
-            padding: 20px;
             border-radius: 16px;
+            padding: 20px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
+            border: 1px solid var(--border);
         }
 
         .search-input {
             width: 100%;
             padding: 16px 20px;
-            font-size: 18px;
-            border: 2px solid var(--border);
+            font-size: 16px;
+            border: 2px solid var(--primary);
             border-radius: 12px;
             outline: none;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
+            color: var(--text-main);
+            background-color: #fff;
         }
 
         .search-input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
         }
 
         .results-count {
             margin-top: 10px;
             font-size: 14px;
             color: var(--text-muted);
-            text-align: left;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        .results-list {
+        .results-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
         }
 
         .employee-card {
             background: var(--card-bg);
-            border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 16px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .employee-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
             border-color: var(--primary);
         }
 
         .emp-name {
             font-size: 18px;
             font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 8px;
+            color: #1e293b;
+            margin-bottom: 12px;
             border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 6px;
+            padding-bottom: 8px;
         }
 
         .emp-info {
@@ -134,103 +135,106 @@
             color: var(--text-main);
         }
 
-        .no-results, .loading {
+        .no-results {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            padding: 30px;
             text-align: center;
-            padding: 40px;
+            border-radius: 12px;
             color: var(--text-muted);
             font-size: 16px;
-            background: var(--card-bg);
-            border-radius: 12px;
-            grid-column: 1 / -1;
+            border: 1px dashed var(--border);
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>Khatib & Alami Company</h1>
-        <p>شاشة البحث السريع للسنترال</p>
+    <div class="container">
+        <!-- الهيدر -->
+        <div class="header-card">
+            <h1 class="company-title">Khatib & Alami Company</h1>
+            <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
+        </div>
+
+        <!-- مربع البحث -->
+        <div class="search-card">
+            <input type="text" id="searchInput" class="search-input" placeholder="ابحث باسم الموظف، الداخلي، الجوال، القسم أو الطابق..." autofocus>
+            <div class="results-count" id="resultsCount">عدد النتائج: 0</div>
+        </div>
+
+        <!-- قائمة النتائج -->
+        <div class="results-container" id="resultsList"></div>
     </div>
 
-    <div class="search-card">
-        <input type="text" id="searchInput" class="search-input" placeholder="ابحث باسم الموظف، الداخلي، الجوال، القسم أو الطابق..." autofocus>
-        <div class="results-count" id="resultsCount">عدد النتائج: 0</div>
-    </div>
+    <script>
+        // بيانات افتراضية تعمل فوراً
+        const defaultEmployees = [
+            { name: "Walid Murad", department: "Administration Department", extension: "750", mobile: "-", floor: "First Basement" },
+            { name: "Walid Moualem", department: "Administration Department", extension: "712", mobile: "-", floor: "First Basement" },
+            { name: "Walid Hamieh", department: "Mechanical", extension: "359", mobile: "-", floor: "Third Floor" }
+        ];
 
-    <div id="resultsList" class="results-list">
-        <div class="loading">جاري تحميل البيانات...</div>
-    </div>
-</div>
-
-<script>
-    // $2a$10$S.o4WDQTShleBFIsnDoMuOdhR826Gxd.zOO0ACAqKgSR.p2aXnqgK
-    const BIN_ID = '6ac62bd5ac6210605a1c0f8a'; 
-    let allEmployees = [];
-
-    async function loadData() {
-        const resultsList = document.getElementById('resultsList');
-        
-        try {
-            const response = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`);
-            
-            if (response.ok) {
-                const data = await response.json();
-                allEmployees = data.record || [];
-                renderResults(allEmployees);
-            } else {
-                resultsList.innerHTML = `<div class="no-results">تعذر جلب البيانات. يرجى التأكد من الـ Bin ID الخاص بك.</div>`;
+        // جلب البيانات من ذاكرة المتصفح (localStorage) أو استخدام البيانات الافتراضية
+        function getEmployeeData() {
+            const localData = localStorage.getItem('central_employees');
+            if (localData) {
+                try {
+                    const parsed = JSON.parse(localData);
+                    if (parsed && parsed.length > 0) return parsed;
+                } catch(e) {
+                    console.error("خطأ في قراءة الذاكرة المحلية", e);
+                }
             }
-        } catch (error) {
-            resultsList.innerHTML = `<div class="no-results">حدث خطأ في الاتصال بالشبكة.</div>`;
-        }
-    }
-
-    function renderResults(employees) {
-        const resultsList = document.getElementById('resultsList');
-        const resultsCount = document.getElementById('resultsCount');
-
-        resultsCount.textContent = `عدد النتائج: ${employees.length}`;
-
-        if (!employees || employees.length === 0) {
-            resultsList.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
-            return;
+            return defaultEmployees;
         }
 
-        resultsList.innerHTML = employees.map(emp => `
-            <div class="employee-card">
-                <div class="emp-name">${emp.name || emp.empName || 'غير محدد'}</div>
-                <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department || emp.dept || '-'}</strong></div>
-                <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension || emp.ext || '-'}</strong></div>
-                <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile || emp.phone || '-'}</strong></div>
-                <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor || '-'}</strong></div>
-            </div>
-        `).join('');
-    }
+        const allEmployees = getEmployeeData();
 
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        const query = e.target.value.toLowerCase().trim();
-        
-        if (!query) {
-            renderResults(allEmployees);
-            return;
+        function renderResults(employees) {
+            const resultsList = document.getElementById('resultsList');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.textContent = `عدد النتائج: ${employees.length}`;
+
+            if (!employees || employees.length === 0) {
+                resultsList.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
+                return;
+            }
+
+            resultsList.innerHTML = employees.map(emp => `
+                <div class="employee-card">
+                    <div class="emp-name">${emp.name || 'غير محدد'}</div>
+                    <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department || '-'}</strong></div>
+                    <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension || '-'}</strong></div>
+                    <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile || '-'}</strong></div>
+                    <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor || '-'}</strong></div>
+                </div>
+            `).join('');
         }
 
-        const filtered = allEmployees.filter(emp => {
-            const name = (emp.name || emp.empName || '').toLowerCase();
-            const dept = (emp.department || emp.dept || '').toLowerCase();
-            const ext = (emp.extension || emp.ext || '').toString().toLowerCase();
-            const mobile = (emp.mobile || emp.phone || '').toString().toLowerCase();
-            const floor = (emp.floor || '').toLowerCase();
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase().trim();
+            
+            if (!query) {
+                renderResults(allEmployees);
+                return;
+            }
 
-            return name.includes(query) || dept.includes(query) || ext.includes(query) || mobile.includes(query) || floor.includes(query);
+            const filtered = allEmployees.filter(emp => {
+                const name = (emp.name || '').toLowerCase();
+                const dept = (emp.department || '').toLowerCase();
+                const ext = (emp.extension || '').toString().toLowerCase();
+                const mobile = (emp.mobile || '').toString().toLowerCase();
+                const floor = (emp.floor || '').toLowerCase();
+
+                return name.includes(query) || dept.includes(query) || ext.includes(query) || mobile.includes(query) || floor.includes(query);
+            });
+
+            renderResults(filtered);
         });
 
-        renderResults(filtered);
-    });
-
-    loadData();
-</script>
-
+        // تشغيل العرض عند فتح الصفحة مباشرة
+        renderResults(allEmployees);
+    </script>
 </body>
 </html>
