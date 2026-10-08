@@ -169,45 +169,50 @@
     <script>
         let allEmployees = [];
 
-        // قاموس مرن لترجمة الأسماء والكلمات الأكثر استخداماً
-        const dictionary = {
+        // قاموس للترجمة المباشرة للكلمات والأسماء العربية
+        const arabicToEnglishDictionary = {
             "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
             "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
             "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
-            "دغيلي": "doughesly", "معلم": "moualem", "حمية": "hamieh",
-            "ادارة": "administration", "إدارة": "administration", "الادارة": "administration", "الإدارة": "administration",
+            "دغيلي": "doughesly", "معلم": "moualem", "حمية": "hamieh", "خالد": "khaled",
+            "عمر": "omar", "عمرو": "amr", "سارة": "sara", "إيلي": "elie", "ايلي": "elie",
+            "ادارة": "administration", "إدارة": "administration", "الادارة": "administration",
             "ميكانيك": "mechanical", "الميكانيك": "mechanical",
             "بيئة": "environmental", "البيئة": "environmental",
-            "ارضي": "basement", "سفلي": "basement", "قبو": "basement",
+            "ارضي": "basement", "أرضي": "basement", "سفلي": "basement",
             "اول": "first", "الأول": "first", "الاول": "first",
-            "ثاني": "second", "الثاني": "second",
-            "ثالث": "third", "الثالث": "third",
-            "طابق": "floor"
+            "ثاني": "second", "الثاني": "second", "ثالث": "third", "الثالث": "third"
         };
 
-        function convertArabicToEn(text) {
-            if (!text) return '';
-            let t = text.trim().toLowerCase();
+        // دالة تبسيط النص الإنجليزي لتجاهل اختلاف حروف العلة والحروف المكررة
+        function normalizeEnglishText(str) {
+            if (!str) return '';
+            return str.toLowerCase()
+                      .replace(/[aeiouy]/g, '') // إزالة حروف العلة لتسهيل المطابقة المرنة
+                      .replace(/(.)\1+/g, '$1')  // دمج الحروف المكررة (مثلاً mm تصبح m)
+                      .trim();
+        }
 
-            // استبدال الكلمات المعرفة بالقاموس أولاً
-            Object.keys(dictionary).forEach(key => {
-                if (t.includes(key)) {
-                    t = t.replace(new RegExp(key, 'g'), dictionary[key]);
+        // ترجمة النص العربي إن وجد
+        function translateArabicInput(text) {
+            if (!text) return '';
+            let words = text.trim().toLowerCase().split(/\s+/);
+            
+            let translatedWords = words.map(word => {
+                if (arabicToEnglishDictionary[word]) {
+                    return arabicToEnglishDictionary[word];
                 }
+                const charMap = {
+                    'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+                    'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
+                    'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+                    'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
+                };
+                return word.split('').map(char => charMap[char] || char).join('');
             });
 
-            // تحويل الحروف المتبقية
-            const charMap = {
-                'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a',
-                'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h', 'خ': 'kh',
-                'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z', 'س': 's', 'ش': 'sh',
-                'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a', 'غ': 'gh',
-                'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
-                'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a',
-                'ة': 'h'
-            };
-
-            return t.split('').map(char => charMap[char] || char).join('');
+            return translatedWords.join(' ');
         }
 
         async function fetchEmployeesData() {
@@ -256,8 +261,11 @@
 
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const rawQuery = e.target.value.toLowerCase().trim();
-            const translatedQuery = convertArabicToEn(rawQuery);
+            const translatedQuery = translateArabicInput(rawQuery);
             
+            // النص المبسط للبحث المرن (Fuzzy matching)
+            const normalizedQuery = normalizeEnglishText(translatedQuery || rawQuery);
+
             if (!rawQuery) {
                 renderResults(allEmployees);
                 return;
@@ -270,14 +278,20 @@
                 const mobile = (emp.mobile || '').toString().toLowerCase();
                 const floor = (emp.floor || '').toLowerCase();
 
-                // مطابقة إضافية ذكية لاسم محمد بكافة طرق كتابته بالإنجليزية
-                let extraMatch = false;
-                if (rawQuery.includes('محمد')) {
-                    extraMatch = name.includes('moham') || name.includes('muham') || name.includes('mouham');
-                }
+                // تبسيط الاسم والقسم الموجودين في البيانات
+                const normalizedName = normalizeEnglishText(name);
+                const normalizedDept = normalizeEnglishText(dept);
 
-                return name.includes(rawQuery) || name.includes(translatedQuery) || extraMatch ||
-                       dept.includes(rawQuery) || dept.includes(translatedQuery) ||
+                // البحث بالنص المباشر أو البحث التجريدي المرن (الذي يتجاهل اختلاف الحروف مثل a, o, u)
+                const isNameMatch = name.includes(rawQuery) || 
+                                    name.includes(translatedQuery) || 
+                                    (normalizedQuery.length >= 2 && normalizedName.includes(normalizedQuery));
+
+                const isDeptMatch = dept.includes(rawQuery) || 
+                                    dept.includes(translatedQuery) || 
+                                    (normalizedQuery.length >= 2 && normalizedDept.includes(normalizedQuery));
+
+                return isNameMatch || isDeptMatch ||
                        ext.includes(rawQuery) ||
                        mobile.includes(rawQuery) ||
                        floor.includes(rawQuery) || floor.includes(translatedQuery);
