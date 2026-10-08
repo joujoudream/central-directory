@@ -158,7 +158,7 @@
 
         <!-- مربع البحث -->
         <div class="search-card">
-            <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
+            <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
             <div class="results-count" id="resultsCount">جاري جلب البيانات...</div>
         </div>
 
@@ -169,20 +169,38 @@
     <script>
         let allEmployees = [];
 
-        // خريطة تحويل الأسماء الشائعة وحروف اللغة العربية إلى إنجليزية لسهولة المطابقة
+        // قاموس مرن لترجمة الأسماء والكلمات الأكثر استخداماً
+        const dictionary = {
+            "احمد": "ahmad", "أحمد": "ahmad",
+            "وليد": "walid",
+            "مراد": "murad",
+            "درويش": "darwish",
+            "دحروج": "dahrouj",
+            "دغيلي": "doughesly",
+            "معلم": "moualem",
+            "حمية": "hamieh",
+            "ادارة": "administration", "إدارة": "administration", "الادارة": "administration", "الإدارة": "administration",
+            "ميكانيك": "mechanical", "الميكانيك": "mechanical",
+            "بيئة": "environmental", "البيئة": "environmental",
+            "ارضي": "basement", "سفلي": "basement", "قبو": "basement",
+            "اول": "first", "الأول": "first", "الاول": "first",
+            "ثاني": "second", "الثاني": "second",
+            "ثالث": "third", "الثالث": "third",
+            "طابق": "floor"
+        };
+
         function convertArabicToEn(text) {
             if (!text) return '';
             let t = text.trim().toLowerCase();
 
-            // استبدال بعض الكلمات الشائعة أولاً
-            t = t.replace(/وليد/g, 'walid')
-                 .replace(/مراد/g, 'murad')
-                 .replace(/معلم/g, 'moualem')
-                 .replace(/حمية/g, 'hamieh')
-                 .replace(/ادارة|إدارة/g, 'administration')
-                 .replace(/ميكانيك/g, 'mechanical');
+            // استبدال الكلمات المعرفة بالقاموس أولاً
+            Object.keys(dictionary).forEach(key => {
+                if (t.includes(key)) {
+                    t = t.replace(new RegExp(key, 'g'), dictionary[key]);
+                }
+            });
 
-            // تحويل باقي الحروف العربية تلقائياً
+            // تحويل الحروف المتبقية
             const charMap = {
                 'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a',
                 'ب': 'b', 'ت': 't', 'ث': 'th', 'ج': 'j', 'ح': 'h', 'خ': 'kh',
@@ -256,7 +274,6 @@
                 const mobile = (emp.mobile || '').toString().toLowerCase();
                 const floor = (emp.floor || '').toLowerCase();
 
-                // مطابقة الاستعلام باللغة الأصلية أو بعد تحويلها من العربية
                 return name.includes(rawQuery) || name.includes(translatedQuery) ||
                        dept.includes(rawQuery) || dept.includes(translatedQuery) ||
                        ext.includes(rawQuery) ||
