@@ -171,14 +171,10 @@
 
         // قاموس مرن لترجمة الأسماء والكلمات الأكثر استخداماً
         const dictionary = {
-            "احمد": "ahmad", "أحمد": "ahmad",
-            "وليد": "walid",
-            "مراد": "murad",
-            "درويش": "darwish",
-            "دحروج": "dahrouj",
-            "دغيلي": "doughesly",
-            "معلم": "moualem",
-            "حمية": "hamieh",
+            "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
+            "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
+            "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
+            "دغيلي": "doughesly", "معلم": "moualem", "حمية": "hamieh",
             "ادارة": "administration", "إدارة": "administration", "الادارة": "administration", "الإدارة": "administration",
             "ميكانيك": "mechanical", "الميكانيك": "mechanical",
             "بيئة": "environmental", "البيئة": "environmental",
@@ -274,7 +270,13 @@
                 const mobile = (emp.mobile || '').toString().toLowerCase();
                 const floor = (emp.floor || '').toLowerCase();
 
-                return name.includes(rawQuery) || name.includes(translatedQuery) ||
+                // مطابقة إضافية ذكية لاسم محمد بكافة طرق كتابته بالإنجليزية
+                let extraMatch = false;
+                if (rawQuery.includes('محمد')) {
+                    extraMatch = name.includes('moham') || name.includes('muham') || name.includes('mouham');
+                }
+
+                return name.includes(rawQuery) || name.includes(translatedQuery) || extraMatch ||
                        dept.includes(rawQuery) || dept.includes(translatedQuery) ||
                        ext.includes(rawQuery) ||
                        mobile.includes(rawQuery) ||
