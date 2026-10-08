@@ -159,7 +159,7 @@
         <!-- مربع البحث -->
         <div class="search-card">
             <input type="text" id="searchInput" class="search-input" placeholder="ابحث باسم الموظف، الداخلي، الجوال، القسم أو الطابق..." autofocus>
-            <div class="results-count" id="resultsCount">عدد النتائج: 0</div>
+            <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
         </div>
 
         <!-- قائمة النتائج -->
@@ -167,28 +167,28 @@
     </div>
 
     <script>
-        // بيانات افتراضية تعمل فوراً
+        let allEmployees = [];
+
+        // بيانات احتياطية تعمل فوراً في حال عدم وجود اتصال
         const defaultEmployees = [
             { name: "Walid Murad", department: "Administration Department", extension: "750", mobile: "-", floor: "First Basement" },
             { name: "Walid Moualem", department: "Administration Department", extension: "712", mobile: "-", floor: "First Basement" },
             { name: "Walid Hamieh", department: "Mechanical", extension: "359", mobile: "-", floor: "Third Floor" }
         ];
 
-        // جلب البيانات من ذاكرة المتصفح (localStorage) أو استخدام البيانات الافتراضية
-        function getEmployeeData() {
+        // جلب البيانات من localStorage أولاً أو من البيانات الافتراضية
+        function loadInitialData() {
             const localData = localStorage.getItem('central_employees');
             if (localData) {
                 try {
                     const parsed = JSON.parse(localData);
                     if (parsed && parsed.length > 0) return parsed;
-                } catch(e) {
-                    console.error("خطأ في قراءة الذاكرة المحلية", e);
-                }
+                } catch(e) {}
             }
             return defaultEmployees;
         }
 
-        const allEmployees = getEmployeeData();
+        allEmployees = loadInitialData();
 
         function renderResults(employees) {
             const resultsList = document.getElementById('resultsList');
@@ -233,7 +233,7 @@
             renderResults(filtered);
         });
 
-        // تشغيل العرض عند فتح الصفحة مباشرة
+        // تشغيل العرض الأولي
         renderResults(allEmployees);
     </script>
 </body>
