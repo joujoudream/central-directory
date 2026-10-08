@@ -159,7 +159,7 @@
         <!-- مربع البحث -->
         <div class="search-card">
             <input type="text" id="searchInput" class="search-input" placeholder="ابحث باسم الموظف، الداخلي، الجوال، القسم أو الطابق..." autofocus>
-            <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
+            <div class="results-count" id="resultsCount">جاري جلب البيانات...</div>
         </div>
 
         <!-- قائمة النتائج -->
@@ -169,26 +169,29 @@
     <script>
         let allEmployees = [];
 
-        // بيانات احتياطية تعمل فوراً في حال عدم وجود اتصال
-        const defaultEmployees = [
-            { name: "Walid Murad", department: "Administration Department", extension: "750", mobile: "-", floor: "First Basement" },
-            { name: "Walid Moualem", department: "Administration Department", extension: "712", mobile: "-", floor: "First Basement" },
-            { name: "Walid Hamieh", department: "Mechanical", extension: "359", mobile: "-", floor: "Third Floor" }
-        ];
-
-        // جلب البيانات من localStorage أولاً أو من البيانات الافتراضية
-        function loadInitialData() {
-            const localData = localStorage.getItem('central_employees');
-            if (localData) {
-                try {
-                    const parsed = JSON.parse(localData);
-                    if (parsed && parsed.length > 0) return parsed;
-                } catch(e) {}
+        // جلب البيانات مباشرة من ملف data.json المرفوع على GitHub
+        async function fetchEmployeesData() {
+            const resultsCount = document.getElementById('resultsCount');
+            try {
+                const response = await fetch('data.json?v=' + new Date().getTime());
+                if (!response.ok) throw new Error('فشل جلب الملف');
+                
+                allEmployees = await response.json();
+                renderResults(allEmployees);
+            } catch (error) {
+                console.error("خطأ في جلب البيانات:", error);
+                resultsCount.textContent = "تعذر تحميل البيانات من السيرفر. جاري عرض البيانات المحفوظة محلياً...";
+                
+                // خيار احتياطي في حال عدم الاتصال
+                const localData = localStorage.getItem('central_employees');
+                if (localData) {
+                    allEmployees = JSON.parse(localData);
+                    renderResults(allEmployees);
+                } else {
+                    document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين.</div>`;
+                }
             }
-            return defaultEmployees;
         }
-
-        allEmployees = loadInitialData();
 
         function renderResults(employees) {
             const resultsList = document.getElementById('resultsList');
@@ -233,8 +236,8 @@
             renderResults(filtered);
         });
 
-        // تشغيل العرض الأولي
-        renderResults(allEmployees);
+        // تشغيل جلب البيانات فور فتح الصفحة
+        fetchEmployeesData();
     </script>
 </body>
 </html>
