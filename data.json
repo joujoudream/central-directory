@@ -1,23 +1,72 @@
 [
   {
-    "name": "Walid Murad",
-    "department": "Administration Department",
-    "extension": "750",
+    "name": "Wissam Bishouy",
+    "department": "IT Department",
+    "extension": "170",
     "mobile": "-",
-    "floor": "First Basement"
+    "floor": "First Floor"
   },
   {
-    "name": "Walid Moualem",
-    "department": "Administration Department",
-    "extension": "712",
+    "name": "Bassel El Khatib",
+    "department": "IT Department",
+    "extension": "109",
     "mobile": "-",
-    "floor": "First Basement"
+    "floor": "First Floor"
   },
   {
-    "name": "Walid Hamieh",
-    "department": "Mechanical",
-    "extension": "359",
+    "name": "Razan Dimechkieh",
+    "department": "IT Department",
+    "extension": "186",
     "mobile": "-",
-    "floor": "Third Floor"
+    "floor": "First Floor"
+  },
+  {
+    "name": "Shadi Abou Harfoush",
+    "department": "IT Department",
+    "extension": "115",
+    "mobile": "-",
+    "floor": "First Floor"
+  },
+  {
+    "name": "Mohamad Berjawi",
+    "department": "IT Department",
+    "extension": "110",
+    "mobile": "-",
+    "floor": "First Floor"
+  },
+  {
+    "name": "Tamara El Achi",
+    "department": "IT Department",
+    "extension": "107",
+    "mobile": "-",
+    "floor": "First Floor"
+  },
+  {
+    "name": "Mohamad Balkis",
+    "department": "IT Department",
+    "extension": "116",
+    "mobile": "-",
+    "floor": "First Floor"
+  },
+  {
+    "name": "Rania Khoury",
+    "department": "IT Department",
+    "extension": "106",
+    "mobile": "-",
+    "floor": "First Floor"
+  },
+  {
+    "name": "Ghassan Chatila",
+    "department": "IT Department",
+    "extension": "116",
+    "mobile": "-",
+    "floor": "First Floor"
+  },
+  {
+    "name": "Adnan Yassin",
+    "department": "IT Department",
+    "extension": "114",
+    "mobile": "-",
+    "floor": "First Floor"
   }
 ]
