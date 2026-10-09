@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <a href="./" class="btn btn-primary w-100 btn-custom"><i class="fa-solid fa-magnifying-glass me-1"></i> البحث السريع للسنترال</a>
+                    <a href="https://joujoudream.github.io/central-directory/" class="btn btn-primary w-100 btn-custom"><i class="fa-solid fa-magnifying-glass me-1"></i> البحث السريع للسنترال</a>
                 </div>
                 <div class="col-md-3">
                     <button type="button" onclick="window.print()" class="btn text-white w-100 btn-custom" style="background-color: #5c59e8;"><i class="fa-solid fa-print me-1"></i> طباعة حسب الطابق</button>
@@ -95,7 +95,7 @@
                     </tr>
                 </thead>
                 <tbody id="employeesTable">
-                    <!-- Data will load here in real-time -->
+                    <!-- Data loads here in real-time -->
                 </tbody>
             </table>
         </div>
@@ -103,7 +103,6 @@
 </div>
 
 <script>
-    // إعدادات Firebase الخاصة بمشروعك
     const firebaseConfig = {
         apiKey: "AIzaSyDUARnAS5V2JDikOY0fuxcIHjAMc83GcCc",
         authDomain: "khatib-central.firebaseapp.com",
@@ -114,7 +113,6 @@
         appId: "1:1066879142020:web:1134d927ce453d6e179ad1"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database().ref("employees");
 
@@ -122,7 +120,6 @@
     const employeesTable = document.getElementById("employeesTable");
     const empCount = document.getElementById("empCount");
 
-    // 1. الحفظ والإضافة / التعديل
     empForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const id = document.getElementById("empId").value;
@@ -135,14 +132,12 @@
         };
 
         if (id) {
-            // تعديل موظف حالي
             db.child(id).update(empData).then(() => {
                 alert("تم تعديل البيانات بنجاح!");
                 empForm.reset();
                 document.getElementById("empId").value = "";
             });
         } else {
-            // إضافة موظف جديد
             db.push(empData).then(() => {
                 alert("تم إضافة الموظف بنجاح!");
                 empForm.reset();
@@ -150,7 +145,6 @@
         }
     });
 
-    // 2. قراءة البيانات فورياً ومزامنتها للجميع
     db.on("value", (snapshot) => {
         employeesTable.innerHTML = "";
         let count = 0;
@@ -176,7 +170,6 @@
         empCount.innerText = count;
     });
 
-    // 3. دالة التعديل
     window.editEmp = (id, name, dept, floor, ext, mob) => {
         document.getElementById("empId").value = id;
         document.getElementById("name").value = name;
@@ -187,7 +180,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // 4. دالة الحذف
     window.deleteEmp = (id) => {
         if (confirm("هل أنت تأكد من حذف هذا الموظف؟")) {
             db.child(id).remove();
