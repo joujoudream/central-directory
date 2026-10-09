@@ -1,87 +1,151 @@
+HTML
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Khatib & Alami - CENTRAL Directory</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDKs -->
+
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .header-box { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 20px; text-align: center; margin-bottom: 25px; }
-        .card-custom { border: none; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .btn-custom { border-radius: 8px; font-weight: bold; }
+        body {
+            background-color: #f4f7f6;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        .header-box, .card-custom {
+            background: white;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        .header-box {
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .btn-custom {
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .table th, .table td {
+            white-space: nowrap;
+        }
     </style>
 </head>
-<body>
 
+<body>
 <div class="container my-4">
-    <!-- Header -->
+
     <div class="header-box">
-        <h2 class="fw-bold text-dark mb-1">Khatib & Alami Company</h2>
-        <h5 class="text-primary fw-bold mb-2">CENTRAL</h5>
-        <p class="text-muted small mb-0"><span class="text-danger fw-bold">S,Walid Mrad</span> ▪ Printing & Archiving</p>
+        <h2 class="fw-bold">Khatib &amp; Alami Company</h2>
+        <h5 class="text-primary fw-bold">CENTRAL</h5>
+        <p class="text-muted small mb-0">
+            <span class="text-danger fw-bold">S, Walid Mrad</span>
+            ▪ Printing &amp; Archiving
+        </p>
     </div>
 
-    <!-- Form Section -->
     <div class="card card-custom p-4 mb-4">
-        <h5 class="fw-bold text-end mb-3 text-secondary"><i class="fa-solid fa-user-plus me-2"></i> إدخال بيانات موظف جديد</h5>
+        <h5 class="fw-bold text-secondary mb-3">
+            <i class="fa-solid fa-user-plus"></i>
+            إدخال بيانات موظف جديد
+        </h5>
+
         <form id="employeeForm">
             <input type="hidden" id="empId">
+
             <div class="row g-3">
                 <div class="col-md-4">
-                    <label class="form-label text-muted small">الطابق / المبنى (Floor) *</label>
-                    <input type="text" id="floor" class="form-control" placeholder="مثال: الطابق 1 / Floor 1" required>
+                    <label class="form-label">الطابق / المبنى *</label>
+                    <input type="text" id="floor" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label class="form-label text-muted small">اسم القسم / الإدارة *</label>
-                    <input type="text" id="department" class="form-control" placeholder="GIS Department" required>
+                    <label class="form-label">القسم / الإدارة *</label>
+                    <input type="text" id="department" class="form-control" required>
                 </div>
+
                 <div class="col-md-4">
-                    <label class="form-label text-muted small">اسم الموظف *</label>
-                    <input type="text" id="name" class="form-control" placeholder="أدخل الاسم الثلاثي للموظف..." required>
+                    <label class="form-label">اسم الموظف *</label>
+                    <input type="text" id="name" class="form-control" required>
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label text-muted small">الرقم الداخلي (Extension Number)</label>
-                    <input type="text" id="extension" class="form-control" placeholder="مثال: 1234">
+                    <label class="form-label">الرقم الداخلي</label>
+                    <input type="text" id="extension" class="form-control">
                 </div>
+
                 <div class="col-md-6">
-                    <label class="form-label text-muted small">رقم الجوال (Cellular Number)</label>
-                    <input type="text" id="mobile" class="form-control" placeholder="مثال: 03123456">
+                    <label class="form-label">رقم الجوال</label>
+                    <input type="text" id="mobile" class="form-control">
                 </div>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="row g-2 mt-4 align-items-center">
-                <div class="col-md-2">
+            <div class="row g-2 mt-3">
+                <div class="col-md-3">
                     <div class="bg-primary text-white text-center p-2 rounded fw-bold">
-                        عدد الموظفين: <span id="empCount">0</span>
+                        عدد الموظفين: <span id="empCount">...</span>
                     </div>
                 </div>
+
                 <div class="col-md-3">
-                    <a href="https://joujoudream.github.io/central-directory/" class="btn btn-primary w-100 btn-custom"><i class="fa-solid fa-magnifying-glass me-1"></i> البحث السريع للسنترال</a>
+                    <a href="search.html"
+                       class="btn btn-primary w-100 btn-custom">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        البحث السريع للسنترال
+                    </a>
                 </div>
-                <div class="col-md-3">
-                    <button type="button" onclick="window.print()" class="btn text-white w-100 btn-custom" style="background-color: #5c59e8;"><i class="fa-solid fa-print me-1"></i> طباعة حسب الطابق</button>
-                </div>
+
                 <div class="col-md-2">
-                    <button type="button" class="btn btn-success w-100 btn-custom"><i class="fa-solid fa-file-excel me-1"></i> تنزيل شيت Excel</button>
+                    <a href="print_by_floor.html"
+                       class="btn text-white w-100 btn-custom"
+                       style="background:#5c59e8">
+                        <i class="fa-solid fa-print"></i>
+                        طباعة حسب الطابق
+                    </a>
                 </div>
+
                 <div class="col-md-2">
-                    <button type="submit" id="saveBtn" class="btn btn-danger w-100 btn-custom"><i class="fa-solid fa-floppy-disk me-1"></i> حفظ البيانات</button>
+                    <button type="button" id="exportBtn"
+                            class="btn btn-success w-100 btn-custom">
+                        <i class="fa-solid fa-file-excel"></i>
+                        تنزيل CSV
+                    </button>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" id="saveBtn"
+                            class="btn btn-danger w-100 btn-custom">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        حفظ البيانات
+                    </button>
                 </div>
             </div>
+
+            <div id="status" class="mt-3" role="status"></div>
         </form>
     </div>
 
-    <!-- Table Directory -->
     <div class="card card-custom p-4">
-        <h5 class="fw-bold mb-3"><i class="fa-solid fa-book-open me-2"></i> دليل الأقسام والموظفين</h5>
+        <h5 class="fw-bold mb-3">
+            <i class="fa-solid fa-book-open"></i>
+            دليل الأقسام والموظفين
+        </h5>
+
+        <input type="search" id="tableSearch"
+               class="form-control mb-3"
+               placeholder="ابحث بالاسم أو القسم أو الطابق أو الرقم...">
+
         <div class="table-responsive">
             <table class="table table-hover align-middle">
                 <thead class="table-light">
@@ -91,11 +155,11 @@
                         <th>الطابق</th>
                         <th>الداخلي</th>
                         <th>الجوال</th>
-                        <th class="text-center">إجراءات</th>
+                        <th>إجراءات</th>
                     </tr>
                 </thead>
                 <tbody id="employeesTable">
-                    <!-- Data loads here in real-time -->
+                    <tr><td colspan="6" class="text-center">جارٍ تحميل البيانات...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -103,88 +167,253 @@
 </div>
 
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDUARnAS5V2JDikOY0fuxcIHjAMc83GcCc",
-        authDomain: "khatib-central.firebaseapp.com",
-        databaseURL: "https://khatib-central-default-rtdb.firebaseio.com",
-        projectId: "khatib-central",
-        storageBucket: "khatib-central.firebasestorage.app",
-        messagingSenderId: "1066879142020",
-        appId: "1:1066879142020:web:1134d927ce453d6e179ad1"
-    };
+"use strict";
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database().ref("employees");
+const firebaseConfig = {
+    apiKey: "AIzaSyDUARnAS5V2JDikOY0fuxcIHjAMc83GcCc",
+    authDomain: "khatib-central.firebaseapp.com",
+    databaseURL: "https://khatib-central-default-rtdb.firebaseio.com",
+    projectId: "khatib-central",
+    storageBucket: "khatib-central.firebasestorage.app",
+    messagingSenderId: "1066879142020",
+    appId: "1:1066879142020:web:1134d927ce453d6e179ad1"
+};
 
-    const empForm = document.getElementById("employeeForm");
-    const employeesTable = document.getElementById("employeesTable");
-    const empCount = document.getElementById("empCount");
+const form = document.getElementById("employeeForm");
+const table = document.getElementById("employeesTable");
+const countElement = document.getElementById("empCount");
+const statusElement = document.getElementById("status");
+const searchInput = document.getElementById("tableSearch");
 
-    empForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const id = document.getElementById("empId").value;
-        const empData = {
-            name: document.getElementById("name").value,
-            department: document.getElementById("department").value,
-            floor: document.getElementById("floor").value,
-            extension: document.getElementById("extension").value,
-            mobile: document.getElementById("mobile").value
-        };
+let db;
+let allEmployees = [];
 
-        if (id) {
-            db.child(id).update(empData).then(() => {
-                alert("تم تعديل البيانات بنجاح!");
-                empForm.reset();
-                document.getElementById("empId").value = "";
-            });
+function showStatus(message, type = "info") {
+    statusElement.className = "alert alert-" + type + " mt-3";
+    statusElement.textContent = message;
+}
+
+function safeText(value) {
+    return value == null ? "" : String(value);
+}
+
+function addCell(row, value) {
+    const cell = document.createElement("td");
+    cell.textContent = safeText(value) || "-";
+    row.appendChild(cell);
+    return cell;
+}
+
+function renderEmployees() {
+    const term = searchInput.value.trim().toLowerCase();
+
+    const filtered = allEmployees.filter(emp => {
+        const d = emp.data;
+        return [
+            d.name, d.department, d.floor,
+            d.extension, d.mobile
+        ].some(value => safeText(value).toLowerCase().includes(term));
+    });
+
+    table.replaceChildren();
+
+    if (filtered.length === 0) {
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+        cell.colSpan = 6;
+        cell.className = "text-center text-muted";
+        cell.textContent = allEmployees.length
+            ? "لا توجد نتائج مطابقة."
+            : "لا توجد بيانات محمّلة من قاعدة البيانات.";
+        row.appendChild(cell);
+        table.appendChild(row);
+        return;
+    }
+
+    filtered.forEach(emp => {
+        const d = emp.data;
+        const row = document.createElement("tr");
+
+        const nameCell = addCell(row, d.name);
+        nameCell.className = "fw-bold";
+        addCell(row, d.department);
+        addCell(row, d.floor);
+
+        const extCell = row.insertCell();
+        if (d.extension) {
+            const link = document.createElement("a");
+            link.href = "tel:" + safeText(d.extension);
+            link.className = "btn btn-sm btn-outline-primary";
+            link.textContent = safeText(d.extension);
+            extCell.appendChild(link);
         } else {
-            db.push(empData).then(() => {
-                alert("تم إضافة الموظف بنجاح!");
-                empForm.reset();
-            });
+            extCell.textContent = "-";
         }
+
+        const mobileCell = row.insertCell();
+        if (d.mobile) {
+            const link = document.createElement("a");
+            link.href = "tel:" + safeText(d.mobile);
+            link.className = "btn btn-sm btn-outline-success";
+            link.textContent = safeText(d.mobile);
+            mobileCell.appendChild(link);
+        } else {
+            mobileCell.textContent = "-";
+        }
+
+        const actions = row.insertCell();
+        actions.className = "text-center";
+
+        const edit = document.createElement("button");
+        edit.type = "button";
+        edit.className = "btn btn-sm btn-warning me-1";
+        edit.textContent = "تعديل";
+        edit.addEventListener("click", () => editEmployee(emp.id));
+        actions.appendChild(edit);
+
+        const del = document.createElement("button");
+        del.type = "button";
+        del.className = "btn btn-sm btn-danger";
+        del.textContent = "حذف";
+        del.addEventListener("click", () => deleteEmployee(emp.id));
+        actions.appendChild(del);
+
+        table.appendChild(row);
+    });
+}
+
+function editEmployee(id) {
+    const emp = allEmployees.find(item => item.id === id);
+    if (!emp) return;
+
+    document.getElementById("empId").value = id;
+    document.getElementById("name").value = safeText(emp.data.name);
+    document.getElementById("department").value = safeText(emp.data.department);
+    document.getElementById("floor").value = safeText(emp.data.floor);
+    document.getElementById("extension").value = safeText(emp.data.extension);
+    document.getElementById("mobile").value = safeText(emp.data.mobile);
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function deleteEmployee(id) {
+    if (!confirm("هل أنت متأكد من حذف هذا الموظف؟")) return;
+
+    try {
+        await db.child(id).remove();
+        showStatus("تم حذف الموظف.", "success");
+    } catch (error) {
+        console.error(error);
+        showStatus("تعذّر الحذف. تحقق من اتصال Firebase وصلاحياته.", "danger");
+    }
+}
+
+form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const id = document.getElementById("empId").value;
+    const data = {
+        name: document.getElementById("name").value.trim(),
+        department: document.getElementById("department").value.trim(),
+        floor: document.getElementById("floor").value.trim(),
+        extension: document.getElementById("extension").value.trim(),
+        mobile: document.getElementById("mobile").value.trim()
+    };
+
+    if (!data.name || !data.department || !data.floor) {
+        showStatus("يرجى تعبئة الاسم والقسم والطابق.", "warning");
+        return;
+    }
+
+    const saveButton = document.getElementById("saveBtn");
+    saveButton.disabled = true;
+
+    try {
+        if (id) {
+            await db.child(id).update(data);
+            showStatus("تم تعديل بيانات الموظف بنجاح.", "success");
+        } else {
+            await db.push(data);
+            showStatus("تمت إضافة الموظف بنجاح.", "success");
+        }
+
+        form.reset();
+        document.getElementById("empId").value = "";
+    } catch (error) {
+        console.error(error);
+        showStatus("تعذّر الحفظ. تحقق من اتصال Firebase وصلاحيات الكتابة.", "danger");
+    } finally {
+        saveButton.disabled = false;
+    }
+});
+
+searchInput.addEventListener("input", renderEmployees);
+
+document.getElementById("exportBtn").addEventListener("click", () => {
+    const headers = ["الاسم", "القسم", "الطابق", "الداخلي", "الجوال"];
+    const rows = allEmployees.map(emp => [
+        emp.data.name, emp.data.department, emp.data.floor,
+        emp.data.extension, emp.data.mobile
+    ]);
+
+    const escapeCSV = value =>
+        '"' + safeText(value).replace(/"/g, '""') + '"';
+
+    const csv = "\uFEFF" + [headers, ...rows]
+        .map(row => row.map(escapeCSV).join(","))
+        .join("\r\n");
+
+    const blob = new Blob([csv], {
+        type: "text/csv;charset=utf-8;"
     });
 
-    db.on("value", (snapshot) => {
-        employeesTable.innerHTML = "";
-        let count = 0;
-        snapshot.forEach((childSnapshot) => {
-            count++;
-            const id = childSnapshot.key;
-            const data = childSnapshot.val();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "central-employees.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+});
 
-            employeesTable.innerHTML += `
-                <tr>
-                    <td class="fw-bold">${data.name}</td>
-                    <td>${data.department}</td>
-                    <td>${data.floor}</td>
-                    <td><a href="tel:${data.extension}" class="btn btn-sm btn-outline-primary">${data.extension || '-'}</a></td>
-                    <td><a href="tel:${data.mobile}" class="btn btn-sm btn-outline-success">${data.mobile || '-'}</a></td>
-                    <td class="text-center">
-                        <button type="button" onclick="editEmp('${id}', '${data.name}', '${data.department}', '${data.floor}', '${data.extension}', '${data.mobile}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen"></i></button>
-                        <button type="button" onclick="deleteEmp('${id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
-                    </td>
-                </tr>
-            `;
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database().ref("employees");
+
+    db.on("value", snapshot => {
+        allEmployees = [];
+
+        snapshot.forEach(child => {
+            const data = child.val();
+            if (data && typeof data === "object") {
+                allEmployees.push({
+                    id: child.key,
+                    data: data
+                });
+            }
         });
-        empCount.innerText = count;
+
+        countElement.textContent = allEmployees.length;
+        renderEmployees();
+
+        showStatus(
+            "تم تحميل " + allEmployees.length +
+            " موظف من قاعدة البيانات.",
+            "success"
+        );
+    }, error => {
+        console.error(error);
+        countElement.textContent = "!";
+        showStatus(
+            "تعذّر تحميل الموظفين من Firebase. تحقق من صلاحيات القراءة وإعدادات قاعدة البيانات.",
+            "danger"
+        );
     });
 
-    window.editEmp = (id, name, dept, floor, ext, mob) => {
-        document.getElementById("empId").value = id;
-        document.getElementById("name").value = name;
-        document.getElementById("department").value = dept;
-        document.getElementById("floor").value = floor;
-        document.getElementById("extension").value = ext;
-        document.getElementById("mobile").value = mob;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    window.deleteEmp = (id) => {
-        if (confirm("هل أنت تأكد من حذف هذا الموظف؟")) {
-            db.child(id).remove();
-        }
-    };
+} catch (error) {
+    console.error(error);
+    countElement.textContent = "!";
+    showStatus("تعذّر تشغيل Firebase. تحقق من الإعدادات.", "danger");
+}
 </script>
 </body>
 </html>
