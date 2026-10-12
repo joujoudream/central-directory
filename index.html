@@ -71,24 +71,15 @@
 
     let allEmployees = [];
 
-    // جلب البيانات بمرونة تامة سواء كانت كائن (Object) أو مصفوفة (Array)
+    // جلب كل البيانات من Firebase وتخزينها بمصفوفة
     db.on("value", (snapshot) => {
         allEmployees = [];
-        const data = snapshot.val();
+        snapshot.forEach((childSnapshot) => {
+            const data = childSnapshot.val();
+            allEmployees.push(data);
+        });
         
-        if (data) {
-            if (Array.isArray(data)) {
-                allEmployees = data.filter(item => item !== null);
-            } else {
-                Object.keys(data).forEach(key => {
-                    if (data[key]) {
-                        allEmployees.push(data[key]);
-                    }
-                });
-            }
-        }
-        
-        // عرض كافة النتائج مباشرة عند فتح الصفحة
+        // عرض كافة النتائج فوراً عند فتح الصفحة
         displayResults(allEmployees);
     });
 
@@ -130,7 +121,7 @@
         });
     }
 
-    // تصفية النتائج بسلاسة فور الكتابة
+    // تصفية النتائج فور الكتابة
     searchInput.addEventListener("input", (e) => {
         const term = e.target.value.trim().toLowerCase();
         if (term === "") {
