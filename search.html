@@ -50,7 +50,6 @@
 </div>
 
 <script>
-    // إعدادات Firebase الخاصة بمشروعك
     const firebaseConfig = {
         apiKey: "AIzaSyDUARnAS5V2JDikOY0fuxcIHjAMc83GcCc",
         authDomain: "khatib-central.firebaseapp.com",
@@ -70,7 +69,7 @@
 
     let allEmployees = [];
 
-    // جلب البيانات فورياً من قاعدة البيانات وعرضها بالكامل مباشرة
+    // جلب البيانات من قاعدة البيانات بشكل صحيح
     db.on("value", (snapshot) => {
         allEmployees = [];
         snapshot.forEach((childSnapshot) => {
@@ -84,13 +83,16 @@
     function filterAndDisplay(query) {
         const term = query.trim().toLowerCase();
         
-        const filtered = allEmployees.filter(emp => 
-            (emp.name && emp.name.toLowerCase().includes(term)) ||
-            (emp.department && emp.department.toLowerCase().includes(term)) ||
-            (emp.floor && emp.floor.toLowerCase().includes(term)) ||
-            (emp.extension && emp.extension.toString().includes(term)) ||
-            (emp.mobile && emp.mobile.toString().includes(term))
-        );
+        const filtered = allEmployees.filter(emp => {
+            if (!emp) return false;
+            const name = emp.name ? emp.name.toLowerCase() : "";
+            const dept = emp.department ? emp.department.toLowerCase() : "";
+            const floor = emp.floor ? emp.floor.toLowerCase() : "";
+            const ext = emp.extension ? emp.extension.toString().toLowerCase() : "";
+            const mobile = emp.mobile ? emp.mobile.toString().toLowerCase() : "";
+
+            return name.includes(term) || dept.includes(term) || floor.includes(term) || ext.includes(term) || mobile.includes(term);
+        });
 
         resultCount.innerText = filtered.length;
         resultsContainer.innerHTML = "";
@@ -104,18 +106,19 @@
             return;
         }
 
+        // عرض أول 100 نتيجة كحد أقصى لسرعة المتصفح، أو الكل حسب الرغبة
         filtered.forEach(emp => {
             resultsContainer.innerHTML += `
                 <div class="result-card">
                     <div class="row align-items-center">
                         <div class="col-md-3 mb-2 mb-md-0">
-                            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-user me-2 text-primary"></i>${emp.name}</h5>
+                            <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-user me-2 text-primary"></i>${emp.name || '-'}</h5>
                         </div>
                         <div class="col-md-3 mb-2 mb-md-0 text-muted">
-                            <i class="fa-solid fa-building me-1"></i> ${emp.department}
+                            <i class="fa-solid fa-building me-1"></i> ${emp.department || '-'}
                         </div>
                         <div class="col-md-2 mb-2 mb-md-0 text-muted">
-                            <i class="fa-solid fa-layer-group me-1"></i> ${emp.floor}
+                            <i class="fa-solid fa-layer-group me-1"></i> ${emp.floor || '-'}
                         </div>
                         <div class="col-md-2 mb-2 mb-md-0">
                             <span class="badge bg-light text-dark p-2 border w-100"><i class="fa-solid fa-phone me-1 text-primary"></i> الداخلي: ${emp.extension || '-'}</span>
