@@ -79,6 +79,23 @@
         </form>
     </div>
 
+    <!-- Search & Filter Controls -->
+    <div class="card card-custom p-3 mb-4">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="fa-solid fa-search text-muted"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="بحث سريع بالاسم، القسم، أو الطابق...">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <select id="deptFilter" class="form-select">
+                    <option value="">اختر القسم للفرز...</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
     <!-- Table Directory -->
     <div class="card card-custom p-4" id="directorySection">
         <h5 class="fw-bold mb-3"><i class="fa-solid fa-book-open me-2"></i> دليل الأقسام والموظفين</h5>
@@ -103,7 +120,6 @@
 </div>
 
 <script>
-    // إعدادات Firebase الخاصة بمشروعك
     const firebaseConfig = {
         apiKey: "AIzaSyDUARnAS5V2JDikOY0fuxcIHjAMc83GcCc",
         authDomain: "khatib-central.firebaseapp.com",
@@ -114,15 +130,17 @@
         appId: "1:1066879142020:web:1134d927ce453d6e179ad1"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database().ref("employees");
 
     const empForm = document.getElementById("employeeForm");
     const employeesTable = document.getElementById("employeesTable");
     const empCount = document.getElementById("empCount");
+    const searchInput = document.getElementById("searchInput");
+    const deptFilter = document.getElementById("deptFilter");
 
-    // 1. الحفظ والإضافة / التعديل
+    let allEmployees = [];
+
     empForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const id = document.getElementById("empId").value;
@@ -148,15 +166,29 @@
         }
     });
 
-    // 2. قراءة البيانات فورياً ومزامنتها للجميع
     db.on("value", (snapshot) => {
-        employeesTable.innerHTML = "";
-        let count = 0;
+        allEmployees = [];
+        const departmentsSet = new Set();
+        
         snapshot.forEach((childSnapshot) => {
-            count++;
             const id = childSnapshot.key;
             const data = childSnapshot.val();
+            allEmployees.push({ id, ...data });
+            if (data.department) departmentsSet.add(data.department);
+        });
 
+        // Populate department filter dropdown
+        deptFilter.innerHTML = '<option value="">اختر القسم للفرز...</option>';
+        departmentsSet.forEach(dept => {
+            deptFilter.innerHTML += `<option value="${dept}">${dept}</option>`;
+        });
+
+        renderTable(allEmployees);
+    });
+
+    function renderTable(dataList) {
+        employeesTable.innerHTML = "";
+        dataList.forEach((data) => {
             employeesTable.innerHTML += `
                 <tr>
                     <td class="fw-bold">${data.name}</td>
@@ -165,16 +197,38 @@
                     <td><a href="tel:${data.extension}" class="btn btn-sm btn-outline-primary">${data.extension || '-'}</a></td>
                     <td><a href="tel:${data.mobile}" class="btn btn-sm btn-outline-success">${data.mobile || '-'}</a></td>
                     <td class="text-center">
-                        <button type="button" onclick="editEmp('${id}', '${data.name}', '${data.department}', '${data.floor}', '${data.extension}', '${data.mobile}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen"></i></button>
-                        <button type="button" onclick="deleteEmp('${id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
+                        <button type="button" onclick="editEmp('${data.id}', '${data.name}', '${data.department}', '${data.floor}', '${data.extension}', '${data.mobile}')" class="btn btn-sm btn-warning me-1"><i class="fa-solid fa-pen"></i></button>
+                        <button type="button" onclick="deleteEmp('${data.id}')" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             `;
         });
-        empCount.innerText = count;
+        empCount.innerText = dataList.length;
+    }
+
+    // Search and Filter logic
+    searchInput.addEventListener("input", (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = allEmployees.filter(emp => 
+            (emp.name && emp.name.toLowerCase().includes(term)) ||
+            (emp.department && emp.department.toLowerCase().includes(term)) ||
+            (emp.floor && emp.floor.toLowerCase().includes(term)) ||
+            (emp.extension && emp.extension.toString().includes(term)) ||
+            (emp.mobile && emp.mobile.toString().includes(term))
+        );
+        renderTable(filtered);
     });
 
-    // 3. دالة التعديل
+    deptFilter.addEventListener("change", (e) => {
+        const selectedDept = e.target.value;
+        if (!selectedDept) {
+            renderTable(allEmployees);
+        } else {
+            const filtered = allEmployees.filter(emp => emp.department === selectedDept);
+            renderTable(filtered);
+        }
+    });
+
     window.editEmp = (id, name, dept, floor, ext, mob) => {
         document.getElementById("empId").value = id;
         document.getElementById("name").value = name;
@@ -185,7 +239,6 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    // 4. دالة الحذف
     window.deleteEmp = (id) => {
         if (confirm("هل أنت تأكد من حذف هذا الموظف؟")) {
             db.child(id).remove();
