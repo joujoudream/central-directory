@@ -69,45 +69,33 @@
 
     let allEmployees = [];
 
-    // جلب البيانات من قاعدة البيانات بشكل صحيح
+    // جلب البيانات من Firebase وتحويلها بشكل صحيح لقائمة
     db.on("value", (snapshot) => {
         allEmployees = [];
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
             allEmployees.push(data);
         });
-        filterAndDisplay(searchInput.value);
+        
+        // عرض كافة البيانات فوراً عند التحميل
+        displayResults(allEmployees);
     });
 
-    // تصفية وعرض النتائج
-    function filterAndDisplay(query) {
-        const term = query.trim().toLowerCase();
-        
-        const filtered = allEmployees.filter(emp => {
-            if (!emp) return false;
-            const name = emp.name ? emp.name.toLowerCase() : "";
-            const dept = emp.department ? emp.department.toLowerCase() : "";
-            const floor = emp.floor ? emp.floor.toLowerCase() : "";
-            const ext = emp.extension ? emp.extension.toString().toLowerCase() : "";
-            const mobile = emp.mobile ? emp.mobile.toString().toLowerCase() : "";
-
-            return name.includes(term) || dept.includes(term) || floor.includes(term) || ext.includes(term) || mobile.includes(term);
-        });
-
-        resultCount.innerText = filtered.length;
+    // دالة عرض النتائج في الصفحة
+    function displayResults(dataList) {
+        resultCount.innerText = dataList.length;
         resultsContainer.innerHTML = "";
 
-        if (filtered.length === 0) {
+        if (dataList.length === 0) {
             resultsContainer.innerHTML = `
                 <div class="text-center text-muted py-5">
                     <i class="fa-solid fa-triangle-exclamation fa-2x mb-2 text-warning"></i>
-                    <p class="fs-5">لا توجد نتائج مطابقة للبحث</p>
+                    <p class="fs-5">لا توجد بيانات مطابقة</p>
                 </div>`;
             return;
         }
 
-        // عرض أول 100 نتيجة كحد أقصى لسرعة المتصفح، أو الكل حسب الرغبة
-        filtered.forEach(emp => {
+        dataList.forEach(emp => {
             resultsContainer.innerHTML += `
                 <div class="result-card">
                     <div class="row align-items-center">
@@ -132,8 +120,26 @@
         });
     }
 
+    // تصفية النتائج عند الكتابة في خانة البحث
     searchInput.addEventListener("input", (e) => {
-        filterAndDisplay(e.target.value);
+        const term = e.target.value.trim().toLowerCase();
+        if (term === "") {
+            displayResults(allEmployees);
+            return;
+        }
+
+        const filtered = allEmployees.filter(emp => {
+            if (!emp) return false;
+            const name = emp.name ? emp.name.toLowerCase() : "";
+            const dept = emp.department ? emp.department.toLowerCase() : "";
+            const floor = emp.floor ? emp.floor.toLowerCase() : "";
+            const ext = emp.extension ? emp.extension.toString().toLowerCase() : "";
+            const mobile = emp.mobile ? emp.mobile.toString().toLowerCase() : "";
+
+            return name.includes(term) || dept.includes(term) || floor.includes(term) || ext.includes(term) || mobile.includes(term);
+        });
+
+        displayResults(filtered);
     });
 </script>
 </body>
