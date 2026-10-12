@@ -60,7 +60,9 @@
         appId: "1:1066879142020:web:1134d927ce453d6e179ad1"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const db = firebase.database().ref("employees");
 
     const searchInput = document.getElementById("searchInput");
@@ -69,19 +71,26 @@
 
     let allEmployees = [];
 
-    // جلب البيانات من Firebase وتحويلها بشكل صحيح لقائمة
+    // جلب البيانات بمرونة تامة
     db.on("value", (snapshot) => {
         allEmployees = [];
-        snapshot.forEach((childSnapshot) => {
-            const data = childSnapshot.val();
-            allEmployees.push(data);
-        });
+        const data = snapshot.val();
         
-        // عرض كافة البيانات فوراً عند التحميل
+        if (data) {
+            if (Array.isArray(data)) {
+                allEmployees = data.filter(item => item !== null);
+            } else {
+                Object.keys(data).forEach(key => {
+                    if (data[key]) {
+                        allEmployees.push(data[key]);
+                    }
+                });
+            }
+        }
+        
         displayResults(allEmployees);
     });
 
-    // دالة عرض النتائج في الصفحة
     function displayResults(dataList) {
         resultCount.innerText = dataList.length;
         resultsContainer.innerHTML = "";
@@ -95,7 +104,10 @@
             return;
         }
 
-        dataList.forEach(emp => {
+        // عرض أول 150 نتيجة لحماية المتصفح من التعليق إذا كانت القائمة ضخمة جداً
+        const displayList = dataList.slice(0, 150);
+
+        displayList.forEach(emp => {
             resultsContainer.innerHTML += `
                 <div class="result-card">
                     <div class="row align-items-center">
@@ -120,7 +132,6 @@
         });
     }
 
-    // تصفية النتائج عند الكتابة في خانة البحث
     searchInput.addEventListener("input", (e) => {
         const term = e.target.value.trim().toLowerCase();
         if (term === "") {
