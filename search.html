@@ -46,10 +46,6 @@
     <!-- Results Container -->
     <div id="resultsContainer">
         <!-- Results will load here dynamically -->
-        <div class="text-center text-muted py-5" id="noResults">
-            <i class="fa-solid fa-address-book fa-3x mb-3 text-secondary"></i>
-            <p class="fs-5">ابدأ الكتابة في خانة البحث لعرض بيانات الموظفين...</p>
-        </div>
     </div>
 </div>
 
@@ -74,17 +70,17 @@
 
     let allEmployees = [];
 
-    // جلب البيانات فورياً من قاعدة البيانات
+    // جلب البيانات فورياً من قاعدة البيانات وعرضها بالكامل مباشرة
     db.on("value", (snapshot) => {
         allEmployees = [];
         snapshot.forEach((childSnapshot) => {
             const data = childSnapshot.val();
             allEmployees.push(data);
         });
-        filterAndDisplay("");
+        filterAndDisplay(searchInput.value);
     });
 
-    // تصفية وعرض النتائج بناءً على البحث
+    // تصفية وعرض النتائج
     function filterAndDisplay(query) {
         const term = query.trim().toLowerCase();
         
