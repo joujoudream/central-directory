@@ -34,7 +34,7 @@
             <div class="col-md-6 mb-3 mb-md-0">
                 <label for="floorSelect" class="form-label fw-bold">اختر الطابق للطباعة:</label>
                 <select id="floorSelect" class="form-select form-select-lg">
-                    <option value="">جاري تحميل الطوابق...</option>
+                    <option value="ALL">عرض كل الطوابق</option>
                 </select>
             </div>
             <div class="col-md-6 text-md-end">
@@ -49,7 +49,7 @@
     <div class="print-container">
         <div class="text-center mb-4 pb-3 border-bottom">
             <h2 class="fw-bold text-dark">Khatib & Alami Company</h2>
-            <h4 class="text-primary fw-bold" id="printTitle">دليل الموظفين حسب الطابق</h4>
+            <h4 class="text-primary fw-bold" id="printTitle">دليل الموظفين - كل الطوابق</h4>
         </div>
 
         <div id="printResultsList">
@@ -79,46 +79,39 @@
     const printResultsList = document.getElementById("printResultsList");
     const printTitle = document.getElementById("printTitle");
 
-    // جلب البيانات بمرونة تامة لضمان ظهور كل الموظفين
+    // جلب البيانات بطريقة مبسطة ومباشرة لضمان ظهور الجميع
     db.on("value", (snapshot) => {
         allEmployees = [];
-        const data = snapshot.val();
-        
-        if (data) {
-            if (Array.isArray(data)) {
-                allEmployees = data.filter(item => item !== null);
-            } else {
-                Object.keys(data).forEach(key => {
-                    if (data[key]) {
-                        allEmployees.push(data[key]);
-                    }
-                });
+        snapshot.forEach((childSnapshot) => {
+            const emp = childSnapshot.val();
+            if (emp) {
+                allEmployees.push(emp);
             }
-        }
+        });
 
         populateFloors();
     });
 
-    // تعبئة قائمة الطوابق المتاحة
+    // تعبئة قائمة الطوابق
     function populateFloors() {
         const floors = [...new Set(allEmployees.map(emp => emp.floor).filter(Boolean))].sort();
+        
+        let currentSelected = floorSelect.value || "ALL";
         floorSelect.innerHTML = '<option value="ALL">عرض كل الطوابق</option>';
         
         floors.forEach(floor => {
             floorSelect.innerHTML += `<option value="${floor}">${floor}</option>`;
         });
 
-        if (floors.length > 0) {
-            floorSelect.value = "ALL";
-            filterByFloor("ALL");
-        }
+        floorSelect.value = currentSelected;
+        filterByFloor(floorSelect.value);
 
-        floorSelect.addEventListener("change", (e) => {
+        floorSelect.onchange = (e) => {
             filterByFloor(e.target.value);
-        });
+        };
     }
 
-    // تصفية وعرض الموظفين حسب الطابق المختار
+    // تصفية وعرض الموظفين حسب الطابق
     function filterByFloor(selectedFloor) {
         let filtered = allEmployees;
         if (selectedFloor !== "ALL") {
@@ -131,7 +124,7 @@
         printResultsList.innerHTML = "";
 
         if (filtered.length === 0) {
-            printResultsList.innerHTML = `<div class="text-center text-muted py-4">لا توجد بيانات لهذا الطابق</div>`;
+            printResultsList.innerHTML = `<div class="text-center text-muted py-4">لا توجد بيانات مطابقة</div>`;
             return;
         }
 
