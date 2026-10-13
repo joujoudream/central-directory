@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>طباعة دليل الموظفين حسب الطابق - Khatib & Alami</title>
+    <title>طباعة دليل الموظفين حسب الطابق</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -12,17 +12,24 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
-        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .print-container { background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); padding: 30px; margin-top: 30px; }
-        .employee-row { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 18px; }
-        .employee-row:last-child { border-bottom: none; }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); margin-top: 20px; }
         
-        /* إعدادات الطباعة لتكبير الخط وجعله واضحاً ومرتباً ورقة الطباعة */
+        /* تكبير الخطوط للطباعة وللعرض الواضح */
+        .large-text {
+            font-size: 20px !important;
+            font-weight: bold;
+        }
+        .medium-text {
+            font-size: 18px !important;
+        }
+
         @media print {
-            body { background: white; font-size: 16pt; }
             .no-print { display: none !important; }
-            .print-container { box-shadow: none; padding: 0; margin: 0; width: 100%; }
-            .employee-row { font-size: 18pt; padding: 10px 5px; border-bottom: 2px solid #ccc; }
+            body { background: white; }
+            .table-container { box-shadow: none; padding: 0; margin: 0; }
+            .large-text { font-size: 18pt !important; }
+            .medium-text { font-size: 16pt !important; }
         }
     </style>
 </head>
@@ -30,31 +37,45 @@
 
 <div class="container my-4">
     <!-- أزرار التحكم والفلترة (تختفي عند الطباعة) -->
-    <div class="no-print card p-4 mb-4 shadow-sm">
+    <div class="no-print card p-3 mb-4 shadow-sm">
         <div class="row align-items-center">
-            <div class="col-md-6 mb-3 mb-md-0">
+            <div class="col-md-6">
                 <label for="floorSelect" class="form-label fw-bold">اختر الطابق للطباعة:</label>
-                <select id="floorSelect" class="form-select form-select-lg">
-                    <option value="">جاري تحميل الطوابق...</option>
+                <select id="floorSelect" class="form-select">
+                    <option value="">جاري التحميل...</option>
                 </select>
             </div>
-            <div class="col-md-6 text-md-end">
-                <button onclick="window.print()" class="btn btn-primary btn-lg px-5">
-                    <i class="fa-solid fa-print me-2"></i> طباعة القائمة
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <button onclick="window.print()" class="btn btn-primary px-4">
+                    <i class="fa-solid fa-print me-2"></i> طباعة الصفحة
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- حاوية محتوى الطباعة -->
-    <div class="print-container">
-        <div class="text-center mb-4 pb-3 border-bottom">
-            <h2 class="fw-bold text-dark">Khatib & Alami Company</h2>
-            <h4 class="text-primary fw-bold" id="printTitle">دليل الموظفين حسب الطابق</h4>
+    <!-- حاوية جدول الطباعة -->
+    <div class="table-container">
+        <div class="text-center mb-4">
+            <h3>Khatib & Alami Company</h3>
+            <h5 class="text-muted">CENTRAL DIRECTORY - FLOOR REPORT</h5>
+            <h4 id="reportTitle" class="text-primary mt-2"></h4>
         </div>
 
-        <div id="printResultsList">
-            <!-- ستظهر البيانات هنا مرتبة بالشكل المطلوب -->
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th style="width: 8%;">#</th>
+                        <th style="width: 32%;">اسم الموظف</th>
+                        <th style="width: 25%;">القسم / الإدارة</th>
+                        <th style="width: 15%;">الرقم الداخلي (Ext)</th>
+                        <th style="width: 20%;">رقم الجوال</th>
+                    </tr>
+                </thead>
+                <tbody id="employeesTableBody">
+                    <!-- سيتم تعبئة البيانات هنا تلقائياً -->
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -77,14 +98,13 @@
 
     let allEmployees = [];
     const floorSelect = document.getElementById("floorSelect");
-    const printResultsList = document.getElementById("printResultsList");
-    const printTitle = document.getElementById("printTitle");
+    const employeesTableBody = document.getElementById("employeesTableBody");
+    const reportTitle = document.getElementById("reportTitle");
 
-    // جلب البيانات من فايربيس
+    // جلب البيانات تماماً مثل الكود القديم المستقر
     db.on("value", (snapshot) => {
         allEmployees = [];
         const data = snapshot.val();
-        
         if (data) {
             if (Array.isArray(data)) {
                 allEmployees = data.filter(item => item !== null);
@@ -96,68 +116,61 @@
                 });
             }
         }
-
-        populateFloors();
+        setupFloors();
     });
 
-    // تعبئة قائمة الطوابق المتاحة
-    function populateFloors() {
+    function setupFloors() {
         const floors = [...new Set(allEmployees.map(emp => emp.floor).filter(Boolean))].sort();
-        floorSelect.innerHTML = '<option value="ALL">عرض كل الطوابق</option>';
         
+        let currentVal = floorSelect.value;
+        floorSelect.innerHTML = '<option value="ALL">عرض كل الطوابق</option>';
         floors.forEach(floor => {
             floorSelect.innerHTML += `<option value="${floor}">${floor}</option>`;
         });
-
-        if (floors.length > 0) {
-            floorSelect.value = floors[0];
-            filterByFloor(floors[0]);
+        
+        if (currentVal && floors.includes(currentVal)) {
+            floorSelect.value = currentVal;
+        } else {
+            floorSelect.value = "ALL";
         }
 
-        floorSelect.addEventListener("change", (e) => {
-            filterByFloor(e.target.value);
-        });
+        renderTable(floorSelect.value);
+
+        floorSelect.onchange = (e) => {
+            renderTable(e.target.value);
+        };
     }
 
-    // تصفية وعرض الموظفين حسب الطابق المختار
-    function filterByFloor(selectedFloor) {
+    function renderTable(selectedFloor) {
         let filtered = allEmployees;
         if (selectedFloor !== "ALL") {
             filtered = allEmployees.filter(emp => emp.floor === selectedFloor);
-            printTitle.innerText = `دليل الموظفين - ${selectedFloor}`;
+            reportTitle.innerText = `الطابق / المبنى: ${selectedFloor} (عدد الموظفين: ${filtered.length})`;
         } else {
-            printTitle.innerText = `دليل الموظفين - كل الطوابق`;
+            reportTitle.innerText = `جميع الطوابق (عدد الموظفين: ${filtered.length})`;
         }
 
-        printResultsList.innerHTML = "";
+        employeesTableBody.innerHTML = "";
 
         if (filtered.length === 0) {
-            printResultsList.innerHTML = `<div class="text-center text-muted py-4">لا توجد بيانات لهذا الطابق</div>`;
+            employeesTableBody.innerHTML = `<tr><td colspan="5" class="text-muted py-4">لا توجد بيانات متاحة</td></tr>`;
             return;
         }
 
-        filtered.forEach(emp => {
+        filtered.forEach((emp, index) => {
             const name = emp.name || '-';
             const dept = emp.department || '-';
             const ext = emp.extension || '-';
             const mobile = emp.mobile || '-';
 
-            // الترتيب المطلوب: اسم الموظف - القسم - الرقم الداخلي - الرقم الخليوي
-            printResultsList.innerHTML += `
-                <div class="employee-row row align-items-center">
-                    <div class="col-md-4 fw-bold text-dark">
-                        <i class="fa-solid fa-user me-2 text-primary no-print"></i>${name}
-                    </div>
-                    <div class="col-md-3 text-secondary">
-                        <span class="badge bg-light text-dark border">${dept}</span>
-                    </div>
-                    <div class="col-md-2 text-muted">
-                        <i class="fa-solid fa-phone me-1 text-success no-print"></i> الداخلي: ${ext}
-                    </div>
-                    <div class="col-md-3 text-muted">
-                        <i class="fa-solid fa-mobile-screen-button me-1 text-info no-print"></i> ${mobile}
-                    </div>
-                </div>
+            employeesTableBody.innerHTML += `
+                <tr>
+                    <td class="medium-text">${index + 1}</td>
+                    <td class="large-text text-dark">${name}</td>
+                    <td class="medium-text text-secondary">${dept}</td>
+                    <td class="large-text text-success">${ext}</td>
+                    <td class="large-text text-danger">${mobile}</td>
+                </tr>
             `;
         });
     }
