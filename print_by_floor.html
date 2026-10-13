@@ -17,7 +17,6 @@
         .employee-row { padding: 12px 15px; border-bottom: 1px solid #eee; font-size: 18px; }
         .employee-row:last-child { border-bottom: none; }
         
-        /* إعدادات الطباعة لتكبير الخط وجعله واضحاً ومرتباً ورقة الطباعة */
         @media print {
             body { background: white; font-size: 16pt; }
             .no-print { display: none !important; }
@@ -80,7 +79,7 @@
     const printResultsList = document.getElementById("printResultsList");
     const printTitle = document.getElementById("printTitle");
 
-    // جلب البيانات من فايربيس
+    // جلب البيانات بمرونة تامة لضمان ظهور كل الموظفين
     db.on("value", (snapshot) => {
         allEmployees = [];
         const data = snapshot.val();
@@ -110,8 +109,8 @@
         });
 
         if (floors.length > 0) {
-            floorSelect.value = floors[0];
-            filterByFloor(floors[0]);
+            floorSelect.value = "ALL";
+            filterByFloor("ALL");
         }
 
         floorSelect.addEventListener("change", (e) => {
