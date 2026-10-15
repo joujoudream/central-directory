@@ -77,7 +77,7 @@
 </div>
 
 <script>
-    // جلب السجلات من localStorage بنفس طريقة الصفحة الرئيسية
+    // جلب السجلات من الذاكرة المحلية للجهاز بنفس مفاتيح صفحة الإدارة
     function loadExistingRecords() {
         const keysToSearch = [
             'ka_central_records', 
@@ -157,7 +157,7 @@
         employeesTableBody.innerHTML = "";
 
         if (filtered.length === 0) {
-            employeesTableBody.innerHTML = `<tr><td colspan="3" class="text-muted py-4">لا توجد بيانات متاحة</td></tr>`;
+            employeesTableBody.innerHTML = `<tr><td colspan="3" class="text-muted py-4">لا توجد بيانات متاحة على هذا الجهاز</td></tr>`;
             return;
         }
 
