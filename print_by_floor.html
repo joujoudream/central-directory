@@ -6,10 +6,6 @@
     <title>تقرير الطباعة حسب الطابق - Khatib & Alami</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
 
     <style>
         body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -37,8 +33,8 @@
         <div class="row align-items-center">
             <div class="col-md-4 mb-2 mb-md-0">
                 <label for="floorSelect" class="form-label fw-bold">اختر الطابق للطباعة:</label>
-                <select id="floorSelect" class="form-select">
-                    <option value="">جاري التحميل...</option>
+                <select id="floorSelect" class="form-select" onchange="renderTable(this.value)">
+                    <option value="ALL">جميع الطوابق</option>
                 </select>
             </div>
             <div class="col-md-4 text-center mb-2 mb-md-0">
@@ -81,64 +77,78 @@
 </div>
 
 <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyDUARnAS5V2JDikOY0fuxcIHjAMc83GcCc",
-        authDomain: "khatib-central.firebaseapp.com",
-        databaseURL: "https://khatib-central-default-rtdb.firebaseio.com",
-        projectId: "khatib-central",
-        storageBucket: "khatib-central.firebasestorage.app",
-        messagingSenderId: "1066879142020",
-        appId: "1:1066879142020:web:1134d927ce453d6e179ad1"
-    };
+    // جلب السجلات من localStorage بنفس طريقة الصفحة الرئيسية
+    function loadExistingRecords() {
+        const keysToSearch = [
+            'ka_central_records', 
+            'central_directory_records', 
+            'employees', 
+            'records', 
+            'ka_records', 
+            'central_records'
+        ];
+        
+        let allRecords = [];
+        let uniqueIds = new Set();
 
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const db = firebase.database().ref("employees");
+        keysToSearch.forEach(key => {
+            const item = localStorage.getItem(key);
+            if (item) {
+                try {
+                    const parsed = JSON.parse(item);
+                    if (Array.isArray(parsed)) {
+                        parsed.forEach(r => {
+                            const empName = r.empName || r.name || r.employeeName || '';
+                            const dept = r.dept || r.department || '';
+                            const ext = r.ext || r.extension || '-';
+                            const cell = r.cell || r.cellular || r.phone || '-';
+                            const floor = r.floor || '-';
+                            const id = r.id || (empName + ext);
 
-    let allEmployees = [];
-    const floorSelect = document.getElementById("floorSelect");
-    const employeesTableBody = document.getElementById("employeesTableBody");
-    const reportTitle = document.getElementById("reportTitle");
-
-    // جلب البيانات بطريقة سحب كل الأبناء من فايربيس لضمان ظهور الـ 323 موظفاً كاملين
-    db.on("value", (snapshot) => {
-        allEmployees = [];
-        snapshot.forEach((childSnapshot) => {
-            const emp = childSnapshot.val();
-            if (emp) {
-                allEmployees.push(emp);
+                            if (empName && !uniqueIds.has(id)) {
+                                uniqueIds.add(id);
+                                allRecords.push({
+                                    id: r.id || Date.now() + Math.random(),
+                                    dept: dept || 'غير محدد',
+                                    floor: floor || '-',
+                                    empName: empName,
+                                    ext: ext,
+                                    cell: cell
+                                });
+                            }
+                        });
+                    }
+                } catch(e) {}
             }
         });
+
+        return allRecords;
+    }
+
+    let records = loadExistingRecords();
+    const floorSelect = document.getElementById('floorSelect');
+    const employeesTableBody = document.getElementById('employeesTableBody');
+    const reportTitle = document.getElementById('reportTitle');
+
+    window.onload = function() {
         setupFloors();
-    });
+    };
 
     function setupFloors() {
-        const floors = [...new Set(allEmployees.map(emp => emp.floor).filter(Boolean))].sort();
+        const floors = [...new Set(records.map(r => r.floor).filter(f => f && f !== '-'))].sort();
         
-        let currentVal = floorSelect.value;
         floorSelect.innerHTML = '<option value="ALL">جميع الطوابق</option>';
         floors.forEach(floor => {
             floorSelect.innerHTML += `<option value="${floor}">${floor}</option>`;
         });
-        
-        if (currentVal && (currentVal === "ALL" || floors.includes(currentVal))) {
-            floorSelect.value = currentVal;
-        } else {
-            floorSelect.value = "ALL";
-        }
 
-        renderTable(floorSelect.value);
-
-        floorSelect.onchange = (e) => {
-            renderTable(e.target.value);
-        };
+        renderTable("ALL");
     }
 
     function renderTable(selectedFloor) {
-        let filtered = allEmployees;
+        let filtered = records;
         if (selectedFloor !== "ALL") {
-            filtered = allEmployees.filter(emp => emp.floor === selectedFloor);
+            filtered = records.filter(r => r.floor === selectedFloor);
             reportTitle.innerText = `الطابق / المبنى: ${selectedFloor} (عدد الموظفين: ${filtered.length})`;
         } else {
             reportTitle.innerText = `جميع الطوابق (عدد الموظفين: ${filtered.length})`;
@@ -151,16 +161,12 @@
             return;
         }
 
-        filtered.forEach((emp) => {
-            const name = emp.name || '-';
-            const ext = emp.extension || '-';
-            const mobile = emp.mobile || '-';
-
+        filtered.forEach((r) => {
             employeesTableBody.innerHTML += `
                 <tr>
-                    <td class="large-text text-dark">${name}</td>
-                    <td class="large-text text-success">${ext}</td>
-                    <td class="large-text text-danger">${mobile}</td>
+                    <td class="large-text text-dark">${r.empName}</td>
+                    <td class="large-text text-success">${r.ext}</td>
+                    <td class="large-text text-danger">${r.cell}</td>
                 </tr>
             `;
         });
