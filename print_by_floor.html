@@ -101,7 +101,7 @@
     const employeesTableBody = document.getElementById("employeesTableBody");
     const reportTitle = document.getElementById("reportTitle");
 
-    // جلب البيانات من فايربيس
+    // جلب البيانات كقائمة كاملة من فايربيس تماماً مثل الصفحة الرئيسية
     db.on("value", (snapshot) => {
         allEmployees = [];
         const data = snapshot.val();
@@ -162,7 +162,6 @@
             const ext = emp.extension || '-';
             const mobile = emp.mobile || '-';
 
-            // عرض اسم الموظف، الرقم الداخلي، ورقم الجوال فقط بدون ترقيم أو قسم
             employeesTableBody.innerHTML += `
                 <tr>
                     <td class="large-text text-dark">${name}</td>
