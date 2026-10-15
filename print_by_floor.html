@@ -101,21 +101,15 @@
     const employeesTableBody = document.getElementById("employeesTableBody");
     const reportTitle = document.getElementById("reportTitle");
 
-    // جلب البيانات كقائمة كاملة من فايربيس تماماً مثل الصفحة الرئيسية
+    // جلب البيانات بطريقة سحب كل الأبناء من فايربيس لضمان ظهور الـ 323 موظفاً كاملين
     db.on("value", (snapshot) => {
         allEmployees = [];
-        const data = snapshot.val();
-        if (data) {
-            if (Array.isArray(data)) {
-                allEmployees = data.filter(item => item !== null);
-            } else {
-                Object.keys(data).forEach(key => {
-                    if (data[key]) {
-                        allEmployees.push(data[key]);
-                    }
-                });
+        snapshot.forEach((childSnapshot) => {
+            const emp = childSnapshot.val();
+            if (emp) {
+                allEmployees.push(emp);
             }
-        }
+        });
         setupFloors();
     });
 
