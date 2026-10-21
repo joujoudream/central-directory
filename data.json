@@ -1686,5 +1686,13 @@
     "extension": "465",
     "mobile": "-",
     "floor": "Fourth Floor"
+  },
+  {
+    "id": 212,
+    "name": "Zaher Abdallah",
+    "department": "Administration",
+    "extension": "112",
+    "mobile": "-",
+    "floor": "First Floor"
   }
 ]
