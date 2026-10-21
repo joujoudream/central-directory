@@ -182,7 +182,7 @@
         <!-- مربع البحث -->
         <div class="search-card">
             <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
-            <div class="results-count" id="resultsCount">جاري جلب البيانات السحابية...</div>
+            <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
         </div>
 
         <!-- قائمة النتائج -->
@@ -192,7 +192,7 @@
     <script>
         let allEmployees = [];
 
-        // قاموس الترجمة المباشرة للكلمات والأسماء العربية
+        // قاموس الترجمة المباشرة للأسماء والكلمات
         const arabicToEnglishDictionary = {
             "زاهر": "zaher", "عبدالله": "abdallah", "عبد الله": "abdallah",
             "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
@@ -239,11 +239,37 @@
 
         async function fetchEmployeesData() {
             const resultsCount = document.getElementById('resultsCount');
+            
+            // 1. أولاً نقرأ من ذاكرة التخزين المحلية (localStorage) لجعل التعديلات فورية
+            let localRecords = [];
+            const keysToSearch = ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records', 'central_records'];
+            keysToSearch.forEach(key => {
+                const item = localStorage.getItem(key);
+                if (item && localRecords.length === 0) {
+                    try {
+                        const parsed = JSON.parse(item);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            localRecords = parsed.map(r => ({
+                                name: r.empName || r.name || 'غير محدد',
+                                department: r.dept || r.department || '-',
+                                extension: r.ext || r.extension || '-',
+                                mobile: r.cell || r.mobile || '-',
+                                floor: r.floor || '-'
+                            }));
+                        }
+                    } catch(e) {}
+                }
+            });
+
+            if (localRecords.length > 0) {
+                allEmployees = localRecords;
+                renderResults(allEmployees);
+                return;
+            }
+
+            // 2. إن لم يوجد محلياً، نقرأ من ملف data.json السحابي
             try {
-                // إضافة طابع زمني لمنع المتصفح من تخزين النسخة القديمة في الـ Cache
-                const response = await fetch('data.json?nocache=' + new Date().getTime(), {
-                    cache: 'no-store'
-                });
+                const response = await fetch('data.json?nocache=' + new Date().getTime());
                 if (!response.ok) throw new Error('فشل جلب الملف');
                 
                 const data = await response.json();
@@ -258,8 +284,7 @@
                 renderResults(allEmployees);
             } catch (error) {
                 console.error("خطأ في جلب البيانات:", error);
-                resultsCount.textContent = "تعذر تحميل ملف data.json المحدث من السيرفر.";
-                document.getElementById('resultsList').innerHTML = `<div class="no-results">يرجى التأكد من رفع ملف data.json المحدث على GitHub.</div>`;
+                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين.</div>`;
             }
         }
 
