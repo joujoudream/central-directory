@@ -266,26 +266,30 @@
             const floorSelect = document.getElementById('floorSelect');
             floorSelect.innerHTML = '<option value="all">جميع الطوابق</option>';
 
-            const floorsSet = new Set();
+            // قائمة الطوابق الأساسية والثابتة لتظهر دائماً بالترتيب الصحيح
+            const fixedFloors = [
+                'First Basement',
+                'Ground Floor',
+                'First Floor',
+                'Second Floor',
+                'Third Floor',
+                'Fourth Floor',
+                'Fifth Floor'
+            ];
 
+            // استخراج أي طوابق إضافية موجودة في ملف البيانات غير موجودة في القائمة الثابتة
+            const extraFloors = new Set();
             data.forEach(emp => {
-                let floorName = emp.floor ? emp.floor.trim() : '';
-                if (floorName) {
-                    floorsSet.add(floorName);
+                let f = emp.floor ? emp.floor.trim() : '';
+                if (f && !fixedFloors.some(item => item.toLowerCase() === f.toLowerCase())) {
+                    extraFloors.add(f);
                 }
             });
 
-            // التأكد من شمول طوابق السفلية والعادية
-            const standardFloors = ['First Basement', 'Ground Floor', 'First Floor', 'Second Floor', 'Third Floor', 'Fourth Floor'];
-            standardFloors.forEach(f => {
-                if ([...floorsSet].some(existing => existing.toLowerCase() === f.toLowerCase())) {
-                    // موجود بالفعل في البيانات
-                } else {
-                    // إذا أردت إضافته للقائمة حتى لو لم يكن به موظفون حالياً
-                }
-            });
+            // دمج القائمتين وعرضهما في القائمة المنسدلة
+            const allAvailableFloors = [...fixedFloors, ...Array.from(extraFloors)];
 
-            Array.from(floorsSet).sort().forEach(floor => {
+            allAvailableFloors.forEach(floor => {
                 const option = document.createElement('option');
                 option.value = floor;
                 option.textContent = floor;
@@ -312,7 +316,7 @@
             container.innerHTML = '';
 
             if (Object.keys(groupedByFloor).length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding: 20px; font-weight:bold; color:#64748b;">لا يوجد موظفون في هذا الطابق حالياً.</div>';
+                container.innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#64748b; background:#fff; border-radius:10px; border:1px solid var(--border);">لا يوجد موظفون مسجلون في هذا الطابق حالياً.</div>';
                 return;
             }
 
