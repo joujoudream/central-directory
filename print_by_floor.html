@@ -170,14 +170,14 @@
             font-size: 18px;
             font-weight: 800;
             color: var(--primary);
-            text-align: center; /* توسيط الرقم الداخلي */
+            text-align: center;
         }
 
         .mobile-text {
             font-size: 17px;
             font-weight: 700;
             color: #334155;
-            text-align: center; /* توسيط الرقم الخليوي */
+            text-align: center;
         }
 
         .col-center {
@@ -210,13 +210,8 @@
             .floor-section:last-child {
                 page-break-after: auto;
             }
-            th {
-                font-size: 15px;
-                padding: 8px 12px;
-            }
-            td {
-                padding: 8px 12px;
-            }
+            th { font-size: 15px; padding: 8px 12px; }
+            td { padding: 8px 12px; }
             .emp-name { font-size: 16px; }
             .ext-badge { font-size: 16px; }
             .mobile-text { font-size: 15px; }
@@ -258,10 +253,7 @@
                 if (!response.ok) throw new Error('فشل جلب الملف');
                 globalData = await response.json();
 
-                // استخراج قائمة الطوابق المتوفرة وتعبئة قائمة الاختيار
                 populateFloorDropdown(globalData);
-
-                // عرض التقرير
                 filterAndRenderReport();
 
             } catch (error) {
@@ -272,13 +264,28 @@
 
         function populateFloorDropdown(data) {
             const floorSelect = document.getElementById('floorSelect');
-            const floors = new Set();
+            floorSelect.innerHTML = '<option value="all">جميع الطوابق</option>';
+
+            const floorsSet = new Set();
 
             data.forEach(emp => {
-                if (emp.floor) floors.add(emp.floor);
+                let floorName = emp.floor ? emp.floor.trim() : '';
+                if (floorName) {
+                    floorsSet.add(floorName);
+                }
             });
 
-            floors.forEach(floor => {
+            // التأكد من شمول طوابق السفلية والعادية
+            const standardFloors = ['First Basement', 'Ground Floor', 'First Floor', 'Second Floor', 'Third Floor', 'Fourth Floor'];
+            standardFloors.forEach(f => {
+                if ([...floorsSet].some(existing => existing.toLowerCase() === f.toLowerCase())) {
+                    // موجود بالفعل في البيانات
+                } else {
+                    // إذا أردت إضافته للقائمة حتى لو لم يكن به موظفون حالياً
+                }
+            });
+
+            Array.from(floorsSet).sort().forEach(floor => {
                 const option = document.createElement('option');
                 option.value = floor;
                 option.textContent = floor;
@@ -287,26 +294,28 @@
         }
 
         function filterAndRenderReport() {
-            const selectedFloor = document.getElementById('floorSelect').value;
+            const selectedFloor = document.getElementById('floorSelect').value.toLowerCase().trim();
             const container = document.getElementById('reportContainer');
 
-            // تصفية البيانات حسب الطابق المختار
             let filteredData = globalData;
             if (selectedFloor !== 'all') {
-                filteredData = globalData.filter(emp => emp.floor === selectedFloor);
+                filteredData = globalData.filter(emp => (emp.floor || '').toLowerCase().trim() === selectedFloor);
             }
 
-            // تجميع الموظفين حسب الطابق
             const groupedByFloor = {};
             filteredData.forEach(emp => {
-                const floor = emp.floor || 'طابق غير محدد';
+                const floor = emp.floor ? emp.floor.trim() : 'طابق غير محدد';
                 if (!groupedByFloor[floor]) groupedByFloor[floor] = [];
                 groupedByFloor[floor].push(emp);
             });
 
             container.innerHTML = '';
 
-            // عرض الأطقم المحددة
+            if (Object.keys(groupedByFloor).length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding: 20px; font-weight:bold; color:#64748b;">لا يوجد موظفون في هذا الطابق حالياً.</div>';
+                return;
+            }
+
             for (const floor in groupedByFloor) {
                 const employees = groupedByFloor[floor];
 
