@@ -83,6 +83,14 @@
             color: var(--primary);
         }
 
+        /* تنسيق الاسم بخط صغير ولون مميز */
+        .author-tag {
+            font-size: 12px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-top: 6px;
+        }
+
         .search-card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -177,6 +185,8 @@
             <a href="index.html" class="back-btn">➜ الصفحة الرئيسية</a>
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
+            <!-- إضافة اسمك بخط أنيق وصغير -->
+            <div class="author-tag">S,Walid Murad</div>
         </div>
 
         <!-- مربع البحث -->
@@ -192,7 +202,6 @@
     <script>
         let allEmployees = [];
 
-        // قاموس الترجمة المباشرة للأسماء والكلمات
         const arabicToEnglishDictionary = {
             "زاهر": "zaher", "عبدالله": "abdallah", "عبد الله": "abdallah",
             "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
@@ -226,7 +235,7 @@
                 }
                 const charMap = {
                     'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
-                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'r': 'r', 'ز': 'z',
                     'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
                     'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
                     'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
@@ -238,36 +247,6 @@
         }
 
         async function fetchEmployeesData() {
-            const resultsCount = document.getElementById('resultsCount');
-            
-            // 1. أولاً نقرأ من ذاكرة التخزين المحلية (localStorage) لجعل التعديلات فورية
-            let localRecords = [];
-            const keysToSearch = ['ka_central_records', 'central_directory_records', 'employees', 'records', 'ka_records', 'central_records'];
-            keysToSearch.forEach(key => {
-                const item = localStorage.getItem(key);
-                if (item && localRecords.length === 0) {
-                    try {
-                        const parsed = JSON.parse(item);
-                        if (Array.isArray(parsed) && parsed.length > 0) {
-                            localRecords = parsed.map(r => ({
-                                name: r.empName || r.name || 'غير محدد',
-                                department: r.dept || r.department || '-',
-                                extension: r.ext || r.extension || '-',
-                                mobile: r.cell || r.mobile || '-',
-                                floor: r.floor || '-'
-                            }));
-                        }
-                    } catch(e) {}
-                }
-            });
-
-            if (localRecords.length > 0) {
-                allEmployees = localRecords;
-                renderResults(allEmployees);
-                return;
-            }
-
-            // 2. إن لم يوجد محلياً، نقرأ من ملف data.json السحابي
             try {
                 const response = await fetch('data.json?nocache=' + new Date().getTime());
                 if (!response.ok) throw new Error('فشل جلب الملف');
