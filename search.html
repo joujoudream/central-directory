@@ -46,6 +46,28 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
             border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            right: 20px;
+            top: 24px;
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef2ff;
+            padding: 8px 14px;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #e0e7ff;
         }
 
         .company-title {
@@ -152,6 +174,7 @@
     <div class="container">
         <!-- الهيدر -->
         <div class="header-card">
+            <a href="index.html" class="back-btn">➜ الصفحة الرئيسية</a>
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
         </div>
@@ -159,7 +182,7 @@
         <!-- مربع البحث -->
         <div class="search-card">
             <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
-            <div class="results-count" id="resultsCount">جاري جلب البيانات...</div>
+            <div class="results-count" id="resultsCount">جاري جلب البيانات السحابية...</div>
         </div>
 
         <!-- قائمة النتائج -->
@@ -169,8 +192,9 @@
     <script>
         let allEmployees = [];
 
-        // قاموس للترجمة المباشرة للكلمات والأسماء العربية
+        // قاموس الترجمة المباشرة للكلمات والأسماء العربية
         const arabicToEnglishDictionary = {
+            "زاهر": "zaher", "عبدالله": "abdallah", "عبد الله": "abdallah",
             "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
             "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
             "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
@@ -184,16 +208,14 @@
             "ثاني": "second", "الثاني": "second", "ثالث": "third", "الثالث": "third"
         };
 
-        // دالة تبسيط النص الإنجليزي لتجاهل اختلاف حروف العلة والحروف المكررة
         function normalizeEnglishText(str) {
             if (!str) return '';
             return str.toLowerCase()
-                      .replace(/[aeiouy]/g, '') // إزالة حروف العلة لتسهيل المطابقة المرنة
-                      .replace(/(.)\1+/g, '$1')  // دمج الحروف المكررة (مثلاً mm تصبح m)
+                      .replace(/[aeiouy]/g, '')
+                      .replace(/(.)\1+/g, '$1')
                       .trim();
         }
 
-        // ترجمة النص العربي إن وجد
         function translateArabicInput(text) {
             if (!text) return '';
             let words = text.trim().toLowerCase().split(/\s+/);
@@ -218,22 +240,26 @@
         async function fetchEmployeesData() {
             const resultsCount = document.getElementById('resultsCount');
             try {
-                const response = await fetch('data.json?v=' + new Date().getTime());
+                // إضافة طابع زمني لمنع المتصفح من تخزين النسخة القديمة في الـ Cache
+                const response = await fetch('data.json?nocache=' + new Date().getTime(), {
+                    cache: 'no-store'
+                });
                 if (!response.ok) throw new Error('فشل جلب الملف');
                 
-                allEmployees = await response.json();
+                const data = await response.json();
+                allEmployees = data.map(emp => ({
+                    name: emp.name || emp.empName || 'غير محدد',
+                    department: emp.department || emp.dept || '-',
+                    extension: emp.extension || emp.ext || '-',
+                    mobile: emp.mobile || emp.cell || '-',
+                    floor: emp.floor || '-'
+                }));
+                
                 renderResults(allEmployees);
             } catch (error) {
                 console.error("خطأ في جلب البيانات:", error);
-                resultsCount.textContent = "تعذر تحميل البيانات من السيرفر. جاري عرض البيانات المحفوظة محلياً...";
-                
-                const localData = localStorage.getItem('central_employees');
-                if (localData) {
-                    allEmployees = JSON.parse(localData);
-                    renderResults(allEmployees);
-                } else {
-                    document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين.</div>`;
-                }
+                resultsCount.textContent = "تعذر تحميل ملف data.json المحدث من السيرفر.";
+                document.getElementById('resultsList').innerHTML = `<div class="no-results">يرجى التأكد من رفع ملف data.json المحدث على GitHub.</div>`;
             }
         }
 
@@ -250,11 +276,11 @@
 
             resultsList.innerHTML = employees.map(emp => `
                 <div class="employee-card">
-                    <div class="emp-name">${emp.name || 'غير محدد'}</div>
-                    <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department || '-'}</strong></div>
-                    <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension || '-'}</strong></div>
-                    <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile || '-'}</strong></div>
-                    <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor || '-'}</strong></div>
+                    <div class="emp-name">${emp.name}</div>
+                    <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department}</strong></div>
+                    <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension}</strong></div>
+                    <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile}</strong></div>
+                    <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor}</strong></div>
                 </div>
             `).join('');
         }
@@ -262,8 +288,6 @@
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const rawQuery = e.target.value.toLowerCase().trim();
             const translatedQuery = translateArabicInput(rawQuery);
-            
-            // النص المبسط للبحث المرن (Fuzzy matching)
             const normalizedQuery = normalizeEnglishText(translatedQuery || rawQuery);
 
             if (!rawQuery) {
@@ -278,11 +302,9 @@
                 const mobile = (emp.mobile || '').toString().toLowerCase();
                 const floor = (emp.floor || '').toLowerCase();
 
-                // تبسيط الاسم والقسم الموجودين في البيانات
                 const normalizedName = normalizeEnglishText(name);
                 const normalizedDept = normalizeEnglishText(dept);
 
-                // البحث بالنص المباشر أو البحث التجريدي المرن (الذي يتجاهل اختلاف الحروف مثل a, o, u)
                 const isNameMatch = name.includes(rawQuery) || 
                                     name.includes(translatedQuery) || 
                                     (normalizedQuery.length >= 2 && normalizedName.includes(normalizedQuery));
