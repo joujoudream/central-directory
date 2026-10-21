@@ -1,176 +1,199 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقرير الطباعة حسب الطابق - Khatib & Alami</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .table-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); margin-top: 20px; }
-        
-        /* تكبير الخطوط للطباعة وللعرض الواضح */
-        .large-text {
-            font-size: 20px !important;
-            font-weight: bold;
-        }
-
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white; }
-            .table-container { box-shadow: none; padding: 0; margin: 0; }
-            .large-text { font-size: 18pt !important; }
-        }
-    </style>
-</head>
-<body>
-
-<div class="container my-4">
-    <!-- أزرار التحكم والفلترة (تختفي عند الطباعة) -->
-    <div class="no-print card p-3 mb-4 shadow-sm">
-        <div class="row align-items-center">
-            <div class="col-md-4 mb-2 mb-md-0">
-                <label for="floorSelect" class="form-label fw-bold">اختر الطابق للطباعة:</label>
-                <select id="floorSelect" class="form-select" onchange="renderTable(this.value)">
-                    <option value="ALL">جميع الطوابق</option>
-                </select>
-            </div>
-            <div class="col-md-4 text-center mb-2 mb-md-0">
-                <a href="index.html" class="btn btn-outline-secondary px-4">
-                    <i class="fa-solid fa-arrow-right me-2"></i> الرجوع للصفحة الرئيسية
-                </a>
-            </div>
-            <div class="col-md-4 text-md-end">
-                <button onclick="window.print()" class="btn btn-primary px-4">
-                    <i class="fa-solid fa-print me-2"></i> طباعة الآن
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- حاوية جدول الطباعة -->
-    <div class="table-container">
-        <div class="text-center mb-4 border-bottom pb-3">
-            <h3 class="fw-bold">Khatib & Alami Company</h3>
-            <h5 class="text-muted">CENTRAL DIRECTORY - FLOOR REPORT</h5>
-            <small class="text-danger fw-bold">S,Walid Mrad - Printing & Archiving</small>
-            <h4 id="reportTitle" class="text-primary mt-2"></h4>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-bordered align-middle text-center">
-                <thead class="table-dark">
-                    <tr>
-                        <th style="width: 45%;">اسم الموظف</th>
-                        <th style="width: 25%;">الرقم الداخلي (Ext)</th>
-                        <th style="width: 30%;">رقم الجوال</th>
-                    </tr>
-                </thead>
-                <tbody id="employeesTableBody">
-                    <!-- سيتم تعبئة البيانات هنا تلقائياً -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script>
-    // جلب السجلات من الذاكرة المحلية للجهاز بنفس مفاتيح صفحة الإدارة
-    function loadExistingRecords() {
-        const keysToSearch = [
-            'ka_central_records', 
-            'central_directory_records', 
-            'employees', 
-            'records', 
-            'ka_records', 
-            'central_records'
-        ];
-        
-        let allRecords = [];
-        let uniqueIds = new Set();
-
-        keysToSearch.forEach(key => {
-            const item = localStorage.getItem(key);
-            if (item) {
-                try {
-                    const parsed = JSON.parse(item);
-                    if (Array.isArray(parsed)) {
-                        parsed.forEach(r => {
-                            const empName = r.empName || r.name || r.employeeName || '';
-                            const dept = r.dept || r.department || '';
-                            const ext = r.ext || r.extension || '-';
-                            const cell = r.cell || r.cellular || r.phone || '-';
-                            const floor = r.floor || '-';
-                            const id = r.id || (empName + ext);
-
-                            if (empName && !uniqueIds.has(id)) {
-                                uniqueIds.add(id);
-                                allRecords.push({
-                                    id: r.id || Date.now() + Math.random(),
-                                    dept: dept || 'غير محدد',
-                                    floor: floor || '-',
-                                    empName: empName,
-                                    ext: ext,
-                                    cell: cell
-                                });
-                            }
-                        });
-                    }
-                } catch(e) {}
-            }
-        });
-
-        return allRecords;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقرير الطباعة حسب الطابق - Khatib & Alami</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
     }
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      body {
+        background: white !important;
+        padding: 0 !important;
+      }
+      .print-card {
+        box-shadow: none !important;
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen p-4 md:p-8">
 
-    let records = loadExistingRecords();
-    const floorSelect = document.getElementById('floorSelect');
-    const employeesTableBody = document.getElementById('employeesTableBody');
-    const reportTitle = document.getElementById('reportTitle');
+  <div class="max-w-5xl mx-auto space-y-6">
 
+    <!-- Top Action Bar (hidden when printing) -->
+    <div class="no-print bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
+      <a href="index.html" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition text-sm">
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        الرجوع للصفحة الرئيسية
+      </a>
+
+      <div class="flex items-center gap-3">
+        <label class="text-sm font-bold text-slate-700">اختر الطابق للطباعة:</label>
+        <select id="floor-select" onchange="filterAndRender()" class="px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white font-medium text-sm">
+          <option value="ALL">جميع الطوابق</option>
+        </select>
+      </div>
+
+      <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-xl shadow-sm transition flex items-center gap-2 text-sm">
+        <i data-lucide="printer" class="w-4 h-4"></i>
+        طباعة الآن
+      </button>
+    </div>
+
+    <!-- Printable Content Container -->
+    <div class="print-card bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-6">
+      
+      <!-- Header -->
+      <div class="text-center space-y-1 border-b border-slate-200 pb-6">
+        <h1 class="text-2xl font-extrabold text-slate-900">Khatib & Alami Company</h1>
+        <div class="text-sm font-bold text-indigo-600 tracking-widest uppercase">CENTRAL DIRECTORY - FLOOR REPORT</div>
+        <div class="text-xs font-semibold text-red-600 pt-1">S,Walid Mrad - Printing & Archiving</div>
+      </div>
+
+      <!-- Active Floor Title & Count -->
+      <div class="flex items-center justify-between">
+        <h2 id="report-title" class="text-lg font-bold text-indigo-900">جميع الطوابق</h2>
+        <span id="record-count" class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg border border-indigo-100">
+          عدد الموظفين: 0
+        </span>
+      </div>
+
+      <!-- Records Table / Container -->
+      <div id="print-table-container">
+        <!-- Tables loaded dynamically -->
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    let allRecords = [];
+
+    // قراءة البيانات تلقائياً من data.json بدلاً من ذاكرة الجهاز المحلية
     window.onload = function() {
-        setupFloors();
+      fetch('data.json')
+        .then(response => response.json())
+        .then(data => {
+          allRecords = data.map(item => ({
+            id: item.id,
+            empName: item.name || item.empName || '',
+            dept: item.department || item.dept || 'غير محدد',
+            ext: item.extension || item.ext || '-',
+            cell: item.mobile || item.cell || '-',
+            floor: item.floor || '-'
+          }));
+          populateFloorDropdown();
+          filterAndRender();
+        })
+        .catch(err => {
+          console.error("خطأ في قراءة data.json: ", err);
+          document.getElementById('print-table-container').innerHTML = `
+            <div class="text-center p-8 text-red-500 font-bold">
+              تعذر تحميل ملف البيانات (data.json). يرجى التأكد من رفعه على GitHub.
+            </div>`;
+        });
     };
 
-    function setupFloors() {
-        const floors = [...new Set(records.map(r => r.floor).filter(f => f && f !== '-'))].sort();
-        
-        floorSelect.innerHTML = '<option value="ALL">جميع الطوابق</option>';
-        floors.forEach(floor => {
-            floorSelect.innerHTML += `<option value="${floor}">${floor}</option>`;
-        });
-
-        renderTable("ALL");
+    function populateFloorDropdown() {
+      const floorSelect = document.getElementById('floor-select');
+      const floors = [...new Set(allRecords.map(r => r.floor).filter(f => f && f !== '-'))];
+      
+      floorSelect.innerHTML = '<option value="ALL">جميع الطوابق</option>';
+      floors.forEach(f => {
+        const opt = document.createElement('option');
+        opt.value = f;
+        opt.textContent = f;
+        floorSelect.appendChild(opt);
+      });
     }
 
-    function renderTable(selectedFloor) {
-        let filtered = records;
-        if (selectedFloor !== "ALL") {
-            filtered = records.filter(r => r.floor === selectedFloor);
-            reportTitle.innerText = `الطابق / المبنى: ${selectedFloor} (عدد الموظفين: ${filtered.length})`;
-        } else {
-            reportTitle.innerText = `جميع الطوابق (عدد الموظفين: ${filtered.length})`;
-        }
+    function filterAndRender() {
+      const selectedFloor = document.getElementById('floor-select').value;
+      const reportTitle = document.getElementById('report-title');
+      const recordCount = document.getElementById('record-count');
+      const container = document.getElementById('print-table-container');
 
-        employeesTableBody.innerHTML = "";
+      let filtered = allRecords;
+      if (selectedFloor !== 'ALL') {
+        filtered = allRecords.filter(r => r.floor === selectedFloor);
+        reportTitle.textContent = `تقرير الطابق: ${selectedFloor}`;
+      } else {
+        reportTitle.textContent = 'جميع الطوابق';
+      }
 
-        if (filtered.length === 0) {
-            employeesTableBody.innerHTML = `<tr><td colspan="3" class="text-muted py-4">لا توجد بيانات متاحة على هذا الجهاز</td></tr>`;
-            return;
-        }
+      recordCount.textContent = `عدد الموظفين: ${filtered.length}`;
+      container.innerHTML = '';
 
-        filtered.forEach((r) => {
-            employeesTableBody.innerHTML += `
-                <tr>
-                    <td class="large-text text-dark">${r.empName}</td>
-                    <td class="large-text text-success">${r.ext}</td>
-                    <td class="large-text text-danger">${r.cell}</td>
-                </tr>
-            `;
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 text-slate-400 font-medium">
+            لا توجد بيانات متاحة لهذا الطابق
+          </div>`;
+        return;
+      }
+
+      // Group records by Department
+      const grouped = {};
+      filtered.forEach(r => {
+        if (!grouped[r.dept]) grouped[r.dept] = [];
+        grouped[r.dept].push(r);
+      });
+
+      Object.keys(grouped).forEach(deptName => {
+        const deptRecords = grouped[deptName];
+
+        const section = document.createElement('div');
+        section.className = 'mb-6 overflow-hidden rounded-xl border border-slate-200 shadow-sm';
+
+        let rowsHtml = '';
+        deptRecords.forEach((r, idx) => {
+          rowsHtml += `
+            <tr class="border-b border-slate-100 text-sm">
+              <td class="p-2.5 font-bold text-slate-400 text-center">${idx + 1}</td>
+              <td class="p-2.5 font-semibold text-slate-800">${r.empName}</td>
+              <td class="p-2.5 text-slate-600 font-mono">${r.ext}</td>
+              <td class="p-2.5 text-slate-600 font-mono">${r.cell}</td>
+              <td class="p-2.5 text-slate-600 font-medium">${r.floor}</td>
+            </tr>`;
         });
+
+        section.innerHTML = `
+          <div class="bg-indigo-50 border-b border-slate-200 px-4 py-2 flex items-center justify-between">
+            <span class="font-bold text-indigo-900 text-sm">${deptName}</span>
+            <span class="text-xs text-indigo-600 font-semibold">عدد الموظفين: ${deptRecords.length}</span>
+          </div>
+          <table class="w-full text-right">
+            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-xs">
+              <tr>
+                <th class="p-2.5 text-center w-10">#</th>
+                <th class="p-2.5">اسم الموظف</th>
+                <th class="p-2.5">الرقم الداخلي (Ext)</th>
+                <th class="p-2.5">رقم الجوال</th>
+                <th class="p-2.5">الطابق</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">${rowsHtml}</tbody>
+          </table>`;
+
+        container.appendChild(section);
+      });
+
+      lucide.createIcons();
     }
-</script>
+  </script>
 </body>
 </html>
