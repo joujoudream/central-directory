@@ -90,54 +90,25 @@
             background-color: #4338ca;
         }
 
-        /* عنوان الطابق */
+        /* كتلة الطابق */
         .floor-section {
-            margin-bottom: 30px;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 25px;
+            overflow: hidden;
             page-break-inside: avoid;
         }
 
         .floor-header {
             background: #1e293b;
             color: #ffffff;
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 18px;
+            padding: 14px 20px;
+            font-size: 17px;
             font-weight: 800;
-            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-
-        /* الأقسام داخل الطابق */
-        .dept-section {
-            background: #fff;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            margin-bottom: 15px;
-            overflow: hidden;
-            page-break-inside: avoid;
-        }
-
-        .dept-header {
-            background: #eef2ff;
-            padding: 10px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .dept-title {
-            font-size: 15px;
-            font-weight: 800;
-            color: #1e293b;
-        }
-
-        .dept-count {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--primary);
         }
 
         table {
@@ -191,15 +162,12 @@
                 margin-bottom: 10px;
             }
             .floor-section {
-                page-break-after: always; /* ينقل كل طابق لصفحة جديدة عند الطباعة */
+                page-break-after: always; /* كل طابق يبدأ في صفحة جديدة عند الطباعة */
+                border: 1px solid #cbd5e1;
                 margin-bottom: 0;
             }
             .floor-section:last-child {
                 page-break-after: auto;
-            }
-            .dept-section {
-                border: 1px solid #cbd5e1;
-                margin-bottom: 12px;
             }
             th, td {
                 padding: 6px 10px;
@@ -237,69 +205,49 @@
 
                 document.getElementById('totalEmployeesCount').textContent = `إجمالي الموظفين: ${data.length}`;
 
-                // تجميع الموظفين حسب الطابق ثم حسب القسم
+                // تجميع كل موظفي كل طابق معاً (بغض النظر عن الأقسام)
                 const groupedByFloor = {};
                 data.forEach(emp => {
                     const floor = emp.floor || 'طابق غير محدد';
-                    const dept = emp.department || emp.dept || 'قسم غير محدد';
-
-                    if (!groupedByFloor[floor]) groupedByFloor[floor] = {};
-                    if (!groupedByFloor[floor][dept]) groupedByFloor[floor][dept] = [];
-
-                    groupedByFloor[floor][dept].push(emp);
+                    if (!groupedByFloor[floor]) groupedByFloor[floor] = [];
+                    groupedByFloor[floor].push(emp);
                 });
 
                 const container = document.getElementById('reportContainer');
                 container.innerHTML = '';
 
-                // ترتيب عرض الطوابق
+                // إنشاء جدول واحد لكل طابق
                 for (const floor in groupedByFloor) {
-                    let floorEmpCount = 0;
-                    let deptHtmlGroup = '';
+                    const employees = groupedByFloor[floor];
 
-                    for (const dept in groupedByFloor[floor]) {
-                        const employees = groupedByFloor[floor][dept];
-                        floorEmpCount += employees.length;
-
-                        let tableRows = employees.map((emp, index) => `
-                            <tr>
-                                <td style="width: 40px; text-align: center; color: #64748b;">${index + 1}</td>
-                                <td class="emp-name">${emp.name || emp.empName || '-'}</td>
-                                <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
-                                <td>${emp.mobile || emp.cell || '-'}</td>
-                            </tr>
-                        `).join('');
-
-                        deptHtmlGroup += `
-                            <div class="dept-section">
-                                <div class="dept-header">
-                                    <span class="dept-title">${dept}</span>
-                                    <span class="dept-count">عدد الموظفين: ${employees.length}</span>
-                                </div>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th style="width: 40px; text-align: center;">#</th>
-                                            <th>اسم الموظف</th>
-                                            <th>الرقم الداخلي (Ext)</th>
-                                            <th>رقم الخليوي (Mobile)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ${tableRows}
-                                    </tbody>
-                                </table>
-                            </div>
-                        `;
-                    }
+                    let tableRows = employees.map((emp, index) => `
+                        <tr>
+                            <td style="width: 40px; text-align: center; color: #64748b;">${index + 1}</td>
+                            <td class="emp-name">${emp.name || emp.empName || '-'}</td>
+                            <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
+                            <td>${emp.mobile || emp.cell || '-'}</td>
+                        </tr>
+                    `).join('');
 
                     const floorHtml = `
                         <div class="floor-section">
                             <div class="floor-header">
                                 <span>🏢 ${floor}</span>
-                                <span style="font-size: 14px; font-weight: 600; opacity: 0.9;">مجموع موظفي الطابق: ${floorEmpCount}</span>
+                                <span style="font-size: 14px; font-weight: 600;">عدد الموظفين: ${employees.length}</span>
                             </div>
-                            ${deptHtmlGroup}
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">#</th>
+                                        <th>اسم الموظف</th>
+                                        <th>الرقم الداخلي (Ext)</th>
+                                        <th>رقم الخليوي (Mobile)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                </tbody>
+                            </table>
                         </div>
                     `;
 
