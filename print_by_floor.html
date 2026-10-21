@@ -247,20 +247,10 @@
     <script>
         let globalData = [];
 
-        // قائمة الطوابق الثابتة والرسمية بالكامل
-        const fixedFloors = [
-            'First Basement',
-            'Ground Floor',
-            'First Floor',
-            'Second Floor',
-            'Third Floor',
-            'Fourth Floor',
-            'Fifth Floor'
-        ];
-
         async function loadReportData() {
             try {
-                const response = await fetch('data.json?nocache=' + new Date().getTime());
+                // منع التخزين المؤقت عبر إضافة رابط زمني عشوائي فريد
+                const response = await fetch('data.json?v=' + Date.now());
                 if (!response.ok) throw new Error('فشل جلب الملف');
                 globalData = await response.json();
 
@@ -273,22 +263,29 @@
             }
         }
 
+        // توحيد النصوص ومقارنتها مرونة
+        function normalizeFloor(floor) {
+            if (!floor) return '';
+            let f = floor.toString().toLowerCase().trim().replace(/\s+/g, ' ');
+            if (f.includes('basement')) return 'first basement';
+            return f;
+        }
+
         function populateFloorDropdown(data) {
             const floorSelect = document.getElementById('floorSelect');
             floorSelect.innerHTML = '<option value="all">جميع الطوابق</option>';
 
-            // استخراج أي طوابق إضافية غير موجودة في القائمة الثابتة
-            const extraFloors = new Set();
+            const floorsSet = new Set();
+
             data.forEach(emp => {
-                let f = emp.floor ? emp.floor.trim() : '';
-                if (f && !fixedFloors.some(item => item.toLowerCase() === f.toLowerCase())) {
-                    extraFloors.add(f);
+                if (emp.floor && emp.floor.trim()) {
+                    floorsSet.add(emp.floor.trim());
                 }
             });
 
-            const allAvailableFloors = [...fixedFloors, ...Array.from(extraFloors)];
+            const sortedFloors = Array.from(floorsSet).sort();
 
-            allAvailableFloors.forEach(floor => {
+            sortedFloors.forEach(floor => {
                 const option = document.createElement('option');
                 option.value = floor;
                 option.textContent = floor;
@@ -297,45 +294,43 @@
         }
 
         function filterAndRenderReport() {
-            const selectedFloor = document.getElementById('floorSelect').value.toLowerCase().trim();
+            const selectedFloor = document.getElementById('floorSelect').value;
             const container = document.getElementById('reportContainer');
             container.innerHTML = '';
 
-            // تحديد الطوابق التي سيتم عرضها بناءً على الاختيار
-            let floorsToDisplay = [];
-            if (selectedFloor === 'all') {
-                // جمع كل الطوابق (الثابتة وما يظهر في البيانات)
-                const activeFloorsSet = new Set(fixedFloors);
-                globalData.forEach(emp => {
-                    if (emp.floor) activeFloorsSet.add(emp.floor.trim());
-                });
-                floorsToDisplay = Array.from(activeFloorsSet);
-            } else {
-                floorsToDisplay = [document.getElementById('floorSelect').value];
+            const groupedByFloor = {};
+
+            globalData.forEach(emp => {
+                let rawFloor = emp.floor ? emp.floor.trim() : 'طابق غير محدد';
+                
+                // التصفية بحسب اختيار القائمة المنسدلة
+                if (selectedFloor !== 'all') {
+                    if (normalizeFloor(rawFloor) !== normalizeFloor(selectedFloor)) {
+                        return;
+                    }
+                }
+
+                if (!groupedByFloor[rawFloor]) {
+                    groupedByFloor[rawFloor] = [];
+                }
+                groupedByFloor[rawFloor].push(emp);
+            });
+
+            if (Object.keys(groupedByFloor).length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#64748b; background:#fff; border-radius:10px; border:1px solid var(--border);">لا يوجد موظفون في الطابق المحدد.</div>';
+                return;
             }
 
-            floorsToDisplay.forEach(floorName => {
-                // تصفية موظفي هذا الطابق مع تجاهل حالة الفراغات وحروف الكبار والصغار
-                const employees = globalData.filter(emp => (emp.floor || '').toLowerCase().trim() === floorName.toLowerCase().trim());
+            for (const floorName in groupedByFloor) {
+                const employees = groupedByFloor[floorName];
 
-                let tableRows = '';
-                if (employees.length > 0) {
-                    tableRows = employees.map(emp => `
-                        <tr>
-                            <td class="emp-name">${emp.name || emp.empName || '-'}</td>
-                            <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
-                            <td class="mobile-text">${emp.mobile || emp.cell || '-'}</td>
-                        </tr>
-                    `).join('');
-                } else {
-                    tableRows = `
-                        <tr>
-                            <td colspan="3" style="text-align: center; color: #64748b; padding: 20px; font-weight: 600;">
-                                لا يوجد موظفون مسجلون في هذا الطابق حالياً
-                            </td>
-                        </tr>
-                    `;
-                }
+                let tableRows = employees.map(emp => `
+                    <tr>
+                        <td class="emp-name">${emp.name || emp.empName || '-'}</td>
+                        <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
+                        <td class="mobile-text">${emp.mobile || emp.cell || '-'}</td>
+                    </tr>
+                `).join('');
 
                 const floorHtml = `
                     <div class="floor-section">
@@ -359,7 +354,7 @@
                 `;
 
                 container.innerHTML += floorHtml;
-            });
+            }
         }
 
         loadReportData();
