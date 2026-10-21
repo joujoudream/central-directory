@@ -1,199 +1,273 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تقرير الطباعة حسب الطابق - Khatib & Alami</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-    }
-    @media print {
-      .no-print {
-        display: none !important;
-      }
-      body {
-        background: white !important;
-        padding: 0 !important;
-      }
-      .print-card {
-        box-shadow: none !important;
-        border: none !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقرير الطباعة - Khatib & Alami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر وعناصر التحكم */
+        .header-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .company-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .page-subtitle {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 4px;
+        }
+
+        .author-tag {
+            font-size: 12px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-top: 4px;
+        }
+
+        .actions-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .btn-print {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-print:hover {
+            background-color: #4338ca;
+        }
+
+        /* الجداول */
+        .dept-section {
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            overflow: hidden;
+            page-break-inside: avoid;
+        }
+
+        .dept-header {
+            background: #eef2ff;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .dept-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .dept-count {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 10px 14px;
+            font-size: 14px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .emp-name {
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .ext-badge {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* إعدادات الطباعة للورق */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .actions-bar, .no-print {
+                display: none !important;
+            }
+            .container {
+                max-width: 100%;
+            }
+            .header-card {
+                border: none;
+                box-shadow: none;
+                padding: 10px 0;
+                margin-bottom: 10px;
+            }
+            .dept-section {
+                border: 1px solid #cbd5e1;
+                margin-bottom: 15px;
+            }
+            th, td {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
 </head>
-<body class="bg-slate-100 text-slate-800 min-h-screen p-4 md:p-8">
+<body>
 
-  <div class="max-w-5xl mx-auto space-y-6">
+    <div class="container">
+        <!-- شريط التحكم للطباعة -->
+        <div class="actions-bar no-print">
+            <button class="btn-print" onclick="window.print()">🖨️ طباعة التقرير</button>
+            <div id="totalEmployeesCount" style="font-weight: 700; color: #475569;">جاري التحميل...</div>
+        </div>
 
-    <!-- Top Action Bar (hidden when printing) -->
-    <div class="no-print bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
-      <a href="index.html" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 px-4 rounded-xl transition text-sm">
-        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-        الرجوع للصفحة الرئيسية
-      </a>
+        <!-- هيدر الصفحة -->
+        <div class="header-card">
+            <h1 class="company-title">Khatib & Alami Company</h1>
+            <div class="page-subtitle">دليل أرقام السنترال والموظفين</div>
+            <div class="author-tag">S,Walid Murad - Printing & Archiving</div>
+        </div>
 
-      <div class="flex items-center gap-3">
-        <label class="text-sm font-bold text-slate-700">اختر الطابق للطباعة:</label>
-        <select id="floor-select" onchange="filterAndRender()" class="px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white font-medium text-sm">
-          <option value="ALL">جميع الطوابق</option>
-        </select>
-      </div>
-
-      <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-xl shadow-sm transition flex items-center gap-2 text-sm">
-        <i data-lucide="printer" class="w-4 h-4"></i>
-        طباعة الآن
-      </button>
+        <!-- حاوية الأقسام المطبوعة -->
+        <div id="reportContainer">جاري إعداد التقرير...</div>
     </div>
 
-    <!-- Printable Content Container -->
-    <div class="print-card bg-white rounded-2xl shadow-sm border border-slate-200 p-8 space-y-6">
-      
-      <!-- Header -->
-      <div class="text-center space-y-1 border-b border-slate-200 pb-6">
-        <h1 class="text-2xl font-extrabold text-slate-900">Khatib & Alami Company</h1>
-        <div class="text-sm font-bold text-indigo-600 tracking-widest uppercase">CENTRAL DIRECTORY - FLOOR REPORT</div>
-        <div class="text-xs font-semibold text-red-600 pt-1">S,Walid Mrad - Printing & Archiving</div>
-      </div>
+    <script>
+        async function loadReportData() {
+            try {
+                const response = await fetch('data.json?nocache=' + new Date().getTime());
+                if (!response.ok) throw new Error('فشل جلب الملف');
+                const data = await response.json();
 
-      <!-- Active Floor Title & Count -->
-      <div class="flex items-center justify-between">
-        <h2 id="report-title" class="text-lg font-bold text-indigo-900">جميع الطوابق</h2>
-        <span id="record-count" class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-lg border border-indigo-100">
-          عدد الموظفين: 0
-        </span>
-      </div>
+                document.getElementById('totalEmployeesCount').textContent = `إجمالي الموظفين: ${data.length}`;
 
-      <!-- Records Table / Container -->
-      <div id="print-table-container">
-        <!-- Tables loaded dynamically -->
-      </div>
+                // تجميع الموظفين حسب القسم
+                const groupedByDept = {};
+                data.forEach(emp => {
+                    const dept = emp.department || emp.dept || 'قسم غير محدد';
+                    if (!groupedByDept[dept]) groupedByDept[dept] = [];
+                    groupedByDept[dept].push(emp);
+                });
 
-    </div>
+                const container = document.getElementById('reportContainer');
+                container.innerHTML = '';
 
-  </div>
+                let globalIndex = 1;
 
-  <script>
-    let allRecords = [];
+                // إنشاء جدول لكل قسم مع الحقول الـ 3 المطلوبة فقط
+                for (const dept in groupedByDept) {
+                    const employees = groupedByDept[dept];
 
-    // قراءة البيانات تلقائياً من data.json بدلاً من ذاكرة الجهاز المحلية
-    window.onload = function() {
-      fetch('data.json')
-        .then(response => response.json())
-        .then(data => {
-          allRecords = data.map(item => ({
-            id: item.id,
-            empName: item.name || item.empName || '',
-            dept: item.department || item.dept || 'غير محدد',
-            ext: item.extension || item.ext || '-',
-            cell: item.mobile || item.cell || '-',
-            floor: item.floor || '-'
-          }));
-          populateFloorDropdown();
-          filterAndRender();
-        })
-        .catch(err => {
-          console.error("خطأ في قراءة data.json: ", err);
-          document.getElementById('print-table-container').innerHTML = `
-            <div class="text-center p-8 text-red-500 font-bold">
-              تعذر تحميل ملف البيانات (data.json). يرجى التأكد من رفعه على GitHub.
-            </div>`;
-        });
-    };
+                    let tableRows = employees.map((emp, index) => `
+                        <tr>
+                            <td style="width: 40px; text-align: center; color: #64748b;">${index + 1}</td>
+                            <td class="emp-name">${emp.name || emp.empName || '-'}</td>
+                            <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
+                            <td>${emp.mobile || emp.cell || '-'}</td>
+                        </tr>
+                    `).join('');
 
-    function populateFloorDropdown() {
-      const floorSelect = document.getElementById('floor-select');
-      const floors = [...new Set(allRecords.map(r => r.floor).filter(f => f && f !== '-'))];
-      
-      floorSelect.innerHTML = '<option value="ALL">جميع الطوابق</option>';
-      floors.forEach(f => {
-        const opt = document.createElement('option');
-        opt.value = f;
-        opt.textContent = f;
-        floorSelect.appendChild(opt);
-      });
-    }
+                    const deptHtml = `
+                        <div class="dept-section">
+                            <div class="dept-header">
+                                <span class="dept-title">${dept}</span>
+                                <span class="dept-count">عدد الموظفين: ${employees.length}</span>
+                            </div>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px; text-align: center;">#</th>
+                                        <th>اسم الموظف</th>
+                                        <th>الرقم الداخلي (Ext)</th>
+                                        <th>رقم الخليوي (Mobile)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${tableRows}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                    container.innerHTML += deptHtml;
+                }
 
-    function filterAndRender() {
-      const selectedFloor = document.getElementById('floor-select').value;
-      const reportTitle = document.getElementById('report-title');
-      const recordCount = document.getElementById('record-count');
-      const container = document.getElementById('print-table-container');
+            } catch (error) {
+                console.error("خطأ:", error);
+                document.getElementById('reportContainer').innerHTML = '<div style="text-align:center; color:red; font-weight:bold;">حدث خطأ أثناء تحميل البيانات للطباعة.</div>';
+            }
+        }
 
-      let filtered = allRecords;
-      if (selectedFloor !== 'ALL') {
-        filtered = allRecords.filter(r => r.floor === selectedFloor);
-        reportTitle.textContent = `تقرير الطابق: ${selectedFloor}`;
-      } else {
-        reportTitle.textContent = 'جميع الطوابق';
-      }
-
-      recordCount.textContent = `عدد الموظفين: ${filtered.length}`;
-      container.innerHTML = '';
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 text-slate-400 font-medium">
-            لا توجد بيانات متاحة لهذا الطابق
-          </div>`;
-        return;
-      }
-
-      // Group records by Department
-      const grouped = {};
-      filtered.forEach(r => {
-        if (!grouped[r.dept]) grouped[r.dept] = [];
-        grouped[r.dept].push(r);
-      });
-
-      Object.keys(grouped).forEach(deptName => {
-        const deptRecords = grouped[deptName];
-
-        const section = document.createElement('div');
-        section.className = 'mb-6 overflow-hidden rounded-xl border border-slate-200 shadow-sm';
-
-        let rowsHtml = '';
-        deptRecords.forEach((r, idx) => {
-          rowsHtml += `
-            <tr class="border-b border-slate-100 text-sm">
-              <td class="p-2.5 font-bold text-slate-400 text-center">${idx + 1}</td>
-              <td class="p-2.5 font-semibold text-slate-800">${r.empName}</td>
-              <td class="p-2.5 text-slate-600 font-mono">${r.ext}</td>
-              <td class="p-2.5 text-slate-600 font-mono">${r.cell}</td>
-              <td class="p-2.5 text-slate-600 font-medium">${r.floor}</td>
-            </tr>`;
-        });
-
-        section.innerHTML = `
-          <div class="bg-indigo-50 border-b border-slate-200 px-4 py-2 flex items-center justify-between">
-            <span class="font-bold text-indigo-900 text-sm">${deptName}</span>
-            <span class="text-xs text-indigo-600 font-semibold">عدد الموظفين: ${deptRecords.length}</span>
-          </div>
-          <table class="w-full text-right">
-            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200 text-xs">
-              <tr>
-                <th class="p-2.5 text-center w-10">#</th>
-                <th class="p-2.5">اسم الموظف</th>
-                <th class="p-2.5">الرقم الداخلي (Ext)</th>
-                <th class="p-2.5">رقم الجوال</th>
-                <th class="p-2.5">الطابق</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">${rowsHtml}</tbody>
-          </table>`;
-
-        container.appendChild(section);
-      });
-
-      lucide.createIcons();
-    }
-  </script>
+        loadReportData();
+    </script>
 </body>
 </html>
