@@ -247,6 +247,17 @@
     <script>
         let globalData = [];
 
+        // قائمة الطوابق الثابتة والرسمية بالكامل
+        const fixedFloors = [
+            'First Basement',
+            'Ground Floor',
+            'First Floor',
+            'Second Floor',
+            'Third Floor',
+            'Fourth Floor',
+            'Fifth Floor'
+        ];
+
         async function loadReportData() {
             try {
                 const response = await fetch('data.json?nocache=' + new Date().getTime());
@@ -266,18 +277,7 @@
             const floorSelect = document.getElementById('floorSelect');
             floorSelect.innerHTML = '<option value="all">جميع الطوابق</option>';
 
-            // قائمة الطوابق الأساسية والثابتة لتظهر دائماً بالترتيب الصحيح
-            const fixedFloors = [
-                'First Basement',
-                'Ground Floor',
-                'First Floor',
-                'Second Floor',
-                'Third Floor',
-                'Fourth Floor',
-                'Fifth Floor'
-            ];
-
-            // استخراج أي طوابق إضافية موجودة في ملف البيانات غير موجودة في القائمة الثابتة
+            // استخراج أي طوابق إضافية غير موجودة في القائمة الثابتة
             const extraFloors = new Set();
             data.forEach(emp => {
                 let f = emp.floor ? emp.floor.trim() : '';
@@ -286,7 +286,6 @@
                 }
             });
 
-            // دمج القائمتين وعرضهما في القائمة المنسدلة
             const allAvailableFloors = [...fixedFloors, ...Array.from(extraFloors)];
 
             allAvailableFloors.forEach(floor => {
@@ -300,41 +299,48 @@
         function filterAndRenderReport() {
             const selectedFloor = document.getElementById('floorSelect').value.toLowerCase().trim();
             const container = document.getElementById('reportContainer');
-
-            let filteredData = globalData;
-            if (selectedFloor !== 'all') {
-                filteredData = globalData.filter(emp => (emp.floor || '').toLowerCase().trim() === selectedFloor);
-            }
-
-            const groupedByFloor = {};
-            filteredData.forEach(emp => {
-                const floor = emp.floor ? emp.floor.trim() : 'طابق غير محدد';
-                if (!groupedByFloor[floor]) groupedByFloor[floor] = [];
-                groupedByFloor[floor].push(emp);
-            });
-
             container.innerHTML = '';
 
-            if (Object.keys(groupedByFloor).length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#64748b; background:#fff; border-radius:10px; border:1px solid var(--border);">لا يوجد موظفون مسجلون في هذا الطابق حالياً.</div>';
-                return;
+            // تحديد الطوابق التي سيتم عرضها بناءً على الاختيار
+            let floorsToDisplay = [];
+            if (selectedFloor === 'all') {
+                // جمع كل الطوابق (الثابتة وما يظهر في البيانات)
+                const activeFloorsSet = new Set(fixedFloors);
+                globalData.forEach(emp => {
+                    if (emp.floor) activeFloorsSet.add(emp.floor.trim());
+                });
+                floorsToDisplay = Array.from(activeFloorsSet);
+            } else {
+                floorsToDisplay = [document.getElementById('floorSelect').value];
             }
 
-            for (const floor in groupedByFloor) {
-                const employees = groupedByFloor[floor];
+            floorsToDisplay.forEach(floorName => {
+                // تصفية موظفي هذا الطابق مع تجاهل حالة الفراغات وحروف الكبار والصغار
+                const employees = globalData.filter(emp => (emp.floor || '').toLowerCase().trim() === floorName.toLowerCase().trim());
 
-                let tableRows = employees.map(emp => `
-                    <tr>
-                        <td class="emp-name">${emp.name || emp.empName || '-'}</td>
-                        <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
-                        <td class="mobile-text">${emp.mobile || emp.cell || '-'}</td>
-                    </tr>
-                `).join('');
+                let tableRows = '';
+                if (employees.length > 0) {
+                    tableRows = employees.map(emp => `
+                        <tr>
+                            <td class="emp-name">${emp.name || emp.empName || '-'}</td>
+                            <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
+                            <td class="mobile-text">${emp.mobile || emp.cell || '-'}</td>
+                        </tr>
+                    `).join('');
+                } else {
+                    tableRows = `
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #64748b; padding: 20px; font-weight: 600;">
+                                لا يوجد موظفون مسجلون في هذا الطابق حالياً
+                            </td>
+                        </tr>
+                    `;
+                }
 
                 const floorHtml = `
                     <div class="floor-section">
                         <div class="floor-header">
-                            <span>🏢 ${floor}</span>
+                            <span>🏢 ${floorName}</span>
                             <span style="font-size: 15px; font-weight: 600;">عدد الموظفين: ${employees.length}</span>
                         </div>
                         <table>
@@ -353,7 +359,7 @@
                 `;
 
                 container.innerHTML += floorHtml;
-            }
+            });
         }
 
         loadReportData();
