@@ -46,28 +46,6 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             margin-bottom: 20px;
             border: 1px solid var(--border);
-            position: relative;
-        }
-
-        .back-btn {
-            position: absolute;
-            right: 20px;
-            top: 24px;
-            text-decoration: none;
-            color: var(--primary);
-            font-weight: 700;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #eef2ff;
-            padding: 8px 14px;
-            border-radius: 10px;
-            transition: all 0.2s;
-        }
-
-        .back-btn:hover {
-            background: #e0e7ff;
         }
 
         .company-title {
@@ -83,7 +61,6 @@
             color: var(--primary);
         }
 
-        /* تنسيق الاسم بخط صغير ولون مميز */
         .author-tag {
             font-size: 12px;
             font-weight: 700;
@@ -180,12 +157,10 @@
 <body>
 
     <div class="container">
-        <!-- الهيدر -->
+        <!-- الهيدر تم إزالة زر الانتقال منه لأمان الصفحة -->
         <div class="header-card">
-            <a href="index.html" class="back-btn">➜ الصفحة الرئيسية</a>
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
-            <!-- إضافة اسمك بخط أنيق وصغير -->
             <div class="author-tag">S,Walid Murad</div>
         </div>
 
@@ -235,7 +210,7 @@
                 }
                 const charMap = {
                     'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
-                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'r': 'r', 'ز': 'z',
+                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
                     'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
                     'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
                     'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
