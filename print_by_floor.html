@@ -95,6 +95,8 @@
             text-align: center;
             margin-bottom: 15px;
             border: 1px solid var(--border);
+            break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .company-title {
@@ -125,6 +127,7 @@
             margin-bottom: 20px;
             overflow: hidden;
             break-inside: avoid;
+            page-break-inside: avoid;
         }
 
         .floor-title-bar {
@@ -177,7 +180,7 @@
             width: 27.5%;
         }
 
-        /* إعدادات الطباعة السلسة والمباشرة */
+        /* تنسيق الطباعة المباشر بدون انقسام الترويسة */
         @media print {
             body { 
                 background: white !important; 
@@ -198,7 +201,9 @@
                 padding: 0 0 10px 0 !important; 
                 margin-bottom: 10px !important;
                 box-shadow: none !important;
-                page-break-after: avoid !important; /* منع الفراغ بالصفحة الأولى */
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+                page-break-after: avoid !important;
                 break-after: avoid !important;
             }
             .floor-block { 
@@ -206,6 +211,7 @@
                 margin-bottom: 15px !important;
                 box-shadow: none !important;
                 break-inside: avoid !important;
+                page-break-inside: avoid !important;
             }
             @page {
                 size: A4;
