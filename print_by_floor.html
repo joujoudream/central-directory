@@ -59,7 +59,7 @@
         }
 
         .btn-print {
-            background-color: var(--primary);
+            background-color: #2563eb;
             color: white;
             border: none;
         }
@@ -87,6 +87,7 @@
             background-color: #fff;
         }
 
+        /* الهيدر الرئيسي */
         .header-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -103,10 +104,11 @@
         }
 
         .page-subtitle {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             color: #475569;
             margin-top: 4px;
+            letter-spacing: 0.5px;
         }
 
         .author-tag {
@@ -116,14 +118,7 @@
             margin-top: 6px;
         }
 
-        .total-summary {
-            font-size: 20px;
-            font-weight: 800;
-            color: #2563eb;
-            margin-top: 12px;
-        }
-
-        /* جداول الطوابق */
+        /* كتلة الجدول */
         .floor-block {
             background: #fff;
             border-radius: 8px;
@@ -133,15 +128,14 @@
             page-break-inside: avoid;
         }
 
+        /* عنوان الطابق الفردي فقط بدون أي أعداد */
         .floor-title-bar {
-            background: #1e293b;
-            color: #fff;
+            background: #0f172a;
+            color: #ffffff;
             padding: 12px 20px;
             font-size: 17px;
             font-weight: 800;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: right;
         }
 
         table {
@@ -155,13 +149,12 @@
         }
 
         th {
-            background-color: #1e293b;
+            background-color: #0f172a;
             color: #ffffff;
             font-weight: 800;
             font-size: 15px;
         }
 
-        /* ضبط محاذاة الأعمدة والتوسيط الصحيح */
         .emp-name {
             font-size: 17px;
             font-weight: 800;
@@ -184,14 +177,6 @@
             color: #334155;
             text-align: center;
             width: 27.5%;
-        }
-
-        .col-center {
-            text-align: center;
-        }
-
-        .col-right {
-            text-align: right;
         }
 
         @media print {
@@ -226,85 +211,76 @@
             </div>
         </div>
 
-        <!-- هيدر الصفحة -->
+        <!-- الهيدر الرئيسي -->
         <div class="header-card">
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">CENTRAL DIRECTORY - FLOOR REPORT</div>
             <div class="author-tag">S,Walid Mrad - Printing & Archiving</div>
-            <div id="summaryText" class="total-summary">جاري التحميل...</div>
         </div>
 
-        <!-- حاوية التقرير -->
-        <div id="reportContainer"></div>
+        <!-- حاوية الطوابق المطبوعة -->
+        <div id="reportContainer">جاري إعداد التقرير...</div>
     </div>
 
     <script>
         let allData = [];
 
-        function loadData() {
-            // محاولة جلب البيانات من أكثر من مصدر محلي لضمان قراءة الـ 322 موظف كاملة
-            const local1 = localStorage.getItem('central_directory_data');
-            const local2 = localStorage.getItem('directory_data');
-            const local3 = localStorage.getItem('employees');
-
-            if (local1) {
-                allData = JSON.parse(local1);
-            } else if (local2) {
-                allData = JSON.parse(local2);
-            } else if (local3) {
-                allData = JSON.parse(local3);
+        async function loadData() {
+            try {
+                const response = await fetch('data.json?v=' + Date.now());
+                if (response.ok) {
+                    allData = await response.json();
+                } else {
+                    const local = localStorage.getItem('central_directory_data') || localStorage.getItem('directory_data');
+                    if (local) allData = JSON.parse(local);
+                }
+            } catch (e) {
+                const local = localStorage.getItem('central_directory_data') || localStorage.getItem('directory_data');
+                if (local) allData = JSON.parse(local);
             }
+            renderReport();
+        }
 
-            // إذا لم توجد في المتصفح يقرأ من الملف
-            if (!allData || allData.length === 0) {
-                fetch('data.json?nocache=' + new Date().getTime())
-                    .then(res => res.json())
-                    .then(data => {
-                        allData = data;
-                        renderReport();
-                    })
-                    .catch(() => renderReport());
-            } else {
-                renderReport();
-            }
+        function isFloorMatch(empFloorRaw, selectedFloor) {
+            if (!empFloorRaw) return false;
+            let empF = empFloorRaw.toString().toLowerCase().replace(/\s+/g, ' ').trim();
+            let selF = selectedFloor.toLowerCase().replace(/\s+/g, ' ').trim();
+
+            if (empF === selF) return true;
+            if (selF.includes('basement')) return empF.includes('basement') || empF.includes('b1');
+            if (selF.includes('fifth') || selF.includes('5th')) return empF.includes('fifth') || empF.includes('5th') || empF.includes('5');
+
+            return false;
         }
 
         function renderReport() {
             const selected = document.getElementById('floorSelect').value;
             const container = document.getElementById('reportContainer');
-            const summaryText = document.getElementById('summaryText');
             container.innerHTML = '';
 
-            let filtered = allData;
-            if (selected !== 'all') {
-                filtered = allData.filter(emp => {
-                    let f = (emp.floor || emp.Floor || '').toString().trim().toLowerCase();
-                    let s = selected.toLowerCase().trim();
-                    if (s.includes('basement')) return f.includes('basement') || f.includes('b1');
-                    return f === s;
-                });
-            }
+            const grouped = {};
 
-            // تحديث الإجمالي في الأعلى
-            if (selected === 'all') {
-                summaryText.textContent = `جميع الطوابق (عدد الموظفين: ${filtered.length})`;
-            } else {
-                summaryText.textContent = `${selected} (عدد الموظفين: ${filtered.length})`;
-            }
+            allData.forEach(emp => {
+                let rawFloor = emp.floor || emp.Floor || 'طابق غير محدد';
+                let fName = rawFloor.trim();
 
-            // تجميع البيانات
-            const groups = {};
-            filtered.forEach(emp => {
-                let fName = emp.floor || emp.Floor || 'طابق غير محدد';
-                if (!groups[fName]) groups[fName] = [];
-                groups[fName].push(emp);
+                if (selected !== 'all' && !isFloorMatch(fName, selected)) {
+                    return;
+                }
+
+                if (!grouped[fName]) grouped[fName] = [];
+                grouped[fName].push(emp);
             });
 
-            for (let floorName in groups) {
-                let emps = groups[floorName];
-                
-                // ترتيب صحيح للأعمدة: اسم الموظف على اليمين - الداخلي في المنتصف - الخليوي على اليسار
-                let rows = emps.map(emp => `
+            if (Object.keys(grouped).length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#64748b; background:#fff; border-radius:8px; border:1px solid #e2e8f0;">لا يوجد موظفون مسجلون في هذا الطابق حالياً.</div>';
+                return;
+            }
+
+            for (let floorName in grouped) {
+                let employees = grouped[floorName];
+
+                let rows = employees.map(emp => `
                     <tr>
                         <td class="emp-name">${emp.name || emp.empName || emp.Name || '-'}</td>
                         <td class="ext-badge">${emp.extension || emp.ext || emp.Ext || '-'}</td>
@@ -315,15 +291,14 @@
                 container.innerHTML += `
                     <div class="floor-block">
                         <div class="floor-title-bar">
-                            <span>🏢 ${floorName}</span>
-                            <span>عدد الموظفين: ${emps.length}</span>
+                            🏢 ${floorName}
                         </div>
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="col-right">اسم الموظف</th>
-                                    <th class="col-center">الرقم الداخلي (Ext)</th>
-                                    <th class="col-center">رقم الجوال</th>
+                                    <th style="text-align: right;">اسم الموظف</th>
+                                    <th style="text-align: center;">الرقم الداخلي (Ext)</th>
+                                    <th style="text-align: center;">رقم الجوال</th>
                                 </tr>
                             </thead>
                             <tbody>
