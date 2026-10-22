@@ -128,7 +128,7 @@
             page-break-inside: avoid;
         }
 
-        /* عنوان الطابق الفردي فقط بدون أي أعداد */
+        /* عنوان الطابق الأصلي فقط دون أعداد */
         .floor-title-bar {
             background: #0f172a;
             color: #ffffff;
@@ -225,20 +225,34 @@
     <script>
         let allData = [];
 
-        async function loadData() {
-            try {
-                const response = await fetch('data.json?v=' + Date.now());
-                if (response.ok) {
-                    allData = await response.json();
-                } else {
-                    const local = localStorage.getItem('central_directory_data') || localStorage.getItem('directory_data');
-                    if (local) allData = JSON.parse(local);
+        function loadData() {
+            // القراءة المباشرة من الذاكرة المحلية للمتصفح (localStorage) لضمان جلب جميع الموظفين
+            const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
+            for (let key of keys) {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    try {
+                        let parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            allData = parsed;
+                            break;
+                        }
+                    } catch(e) {}
                 }
-            } catch (e) {
-                const local = localStorage.getItem('central_directory_data') || localStorage.getItem('directory_data');
-                if (local) allData = JSON.parse(local);
             }
-            renderReport();
+
+            // إذا لم يتم العثور على بيانات محلياً، يقرأ ملف data.json
+            if (!allData || allData.length === 0) {
+                fetch('data.json?v=' + Date.now())
+                    .then(res => res.json())
+                    .then(data => {
+                        allData = data;
+                        renderReport();
+                    })
+                    .catch(() => renderReport());
+            } else {
+                renderReport();
+            }
         }
 
         function isFloorMatch(empFloorRaw, selectedFloor) {
