@@ -93,7 +93,7 @@
             border-radius: 12px;
             padding: 20px;
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             border: 1px solid var(--border);
         }
 
@@ -177,7 +177,7 @@
             width: 27.5%;
         }
 
-        /* تنسيق الطباعة المحترف بدون أي فراغات مزعجة */
+        /* إعدادات الطباعة الاحترافية */
         @media print {
             body { 
                 background: white; 
@@ -195,14 +195,16 @@
             }
             .header-card { 
                 border: none !important; 
-                padding: 5px 0 !important; 
-                margin-bottom: 10px !important;
+                padding: 10px 0 !important; 
+                margin-bottom: 15px !important;
                 box-shadow: none !important;
+                page-break-after: always !important; /* إجبار جدول الطابق الأول على البدء فوراً مع العنوان في الصفحة الثانية */
             }
             .floor-block { 
                 border: 1px solid #cbd5e1 !important; 
                 margin-bottom: 15px !important;
                 box-shadow: none !important;
+                page-break-inside: avoid;
             }
             @page {
                 size: A4;
