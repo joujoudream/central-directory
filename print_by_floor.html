@@ -158,7 +158,6 @@
             border-bottom: none;
         }
 
-        /* محاذاة الأعمدة والتوسيط */
         .emp-name {
             font-size: 18px;
             font-weight: 800;
@@ -184,7 +183,6 @@
             text-align: center;
         }
 
-        /* إعدادات الطباعة للورق */
         @media print {
             body {
                 background: white;
@@ -227,6 +225,13 @@
                 <label for="floorSelect" class="filter-label">اختر الطابق للطباعة:</label>
                 <select id="floorSelect" class="select-floor" onchange="filterAndRenderReport()">
                     <option value="all">جميع الطوابق</option>
+                    <option value="First Basement">First Basement</option>
+                    <option value="Ground Floor">Ground Floor</option>
+                    <option value="First Floor">First Floor</option>
+                    <option value="Second Floor">Second Floor</option>
+                    <option value="Third Floor">Third Floor</option>
+                    <option value="Fourth Floor">Fourth Floor</option>
+                    <option value="Fifth Floor">Fifth Floor</option>
                 </select>
             </div>
             
@@ -247,7 +252,6 @@
     <script>
         let globalData = [];
 
-        // قائمة الطوابق الأساسية والثابتة لتظهر دائماً بالترتيب الصحيح
         const fixedFloors = [
             'First Basement',
             'Ground Floor',
@@ -260,11 +264,11 @@
 
         async function loadReportData() {
             try {
-                const response = await fetch('data.json?v=' + Date.now());
+                // استخدام وقت عشوائي لمنع المتصفح من قراءة النسخة القديمة المحفوظة بالكاش
+                const response = await fetch('data.json?nocache=' + new Date().getTime());
                 if (!response.ok) throw new Error('فشل جلب الملف');
                 globalData = await response.json();
 
-                populateFloorDropdown(globalData);
                 filterAndRenderReport();
 
             } catch (error) {
@@ -273,25 +277,31 @@
             }
         }
 
-        function populateFloorDropdown(data) {
-            const floorSelect = document.getElementById('floorSelect');
-            floorSelect.innerHTML = '<option value="all">جميع الطوابق</option>';
+        // دالة الذكاء لاكتشاف الطابق بغض النظر عن طريقة كود JSON
+        function getEmployeeFloor(emp) {
+            let f = emp.floor || emp.Floor || emp.LEVEL || emp.level || '';
+            return f.toString().trim();
+        }
 
-            const floorsSet = new Set(fixedFloors);
+        // دالة المطابقة المرنة الذكية بين الخيار المختار في القائمة وقيمة الطابق المسجلة
+        function isFloorMatch(empFloorRaw, selectedFloor) {
+            if (!empFloorRaw) return false;
+            let empF = empFloorRaw.toLowerCase().replace(/\s+/g, ' ').trim();
+            let selF = selectedFloor.toLowerCase().replace(/\s+/g, ' ').trim();
 
-            // إضافة أي طوابق إضافية قد تكون موجودة في الملف الفعلي
-            data.forEach(emp => {
-                if (emp.floor && emp.floor.trim()) {
-                    floorsSet.add(emp.floor.trim());
-                }
-            });
+            if (empF === selF) return true;
 
-            Array.from(floorsSet).forEach(floor => {
-                const option = document.createElement('option');
-                option.value = floor;
-                option.textContent = floor;
-                floorSelect.appendChild(option);
-            });
+            // مطابقة First Basement بالخصائص المختلفة
+            if (selF.includes('basement')) {
+                return empF.includes('basement') || empF.includes('b1') || empF.includes('1st basement');
+            }
+
+            // مطابقة Fifth Floor بالخصائص المختلفة
+            if (selF.includes('fifth') || selF.includes('5th') || selF.includes('5')) {
+                return empF.includes('fifth') || empF.includes('5th') || empF.includes('5');
+            }
+
+            return false;
         }
 
         function filterAndRenderReport() {
@@ -299,31 +309,27 @@
             const container = document.getElementById('reportContainer');
             container.innerHTML = '';
 
-            // تحديد الطوابق التي سيتم عرضها
             let floorsToDisplay = [];
             if (selectedFloor === 'all') {
-                const activeFloorsSet = new Set(fixedFloors);
-                globalData.forEach(emp => {
-                    if (emp.floor && emp.floor.trim()) activeFloorsSet.add(emp.floor.trim());
-                });
-                floorsToDisplay = Array.from(activeFloorsSet);
+                floorsToDisplay = fixedFloors;
             } else {
                 floorsToDisplay = [selectedFloor];
             }
 
             floorsToDisplay.forEach(floorName => {
+                // تصفية الموظفين بمرونة عالية
                 const employees = globalData.filter(emp => {
-                    let f = emp.floor ? emp.floor.trim() : '';
-                    return f.toLowerCase() === floorName.toLowerCase();
+                    let empFloor = getEmployeeFloor(emp);
+                    return isFloorMatch(empFloor, floorName);
                 });
 
                 let tableRows = '';
                 if (employees.length > 0) {
                     tableRows = employees.map(emp => `
                         <tr>
-                            <td class="emp-name">${emp.name || emp.empName || '-'}</td>
-                            <td class="ext-badge">${emp.extension || emp.ext || '-'}</td>
-                            <td class="mobile-text">${emp.mobile || emp.cell || '-'}</td>
+                            <td class="emp-name">${emp.name || emp.empName || emp.Name || '-'}</td>
+                            <td class="ext-badge">${emp.extension || emp.ext || emp.Ext || '-'}</td>
+                            <td class="mobile-text">${emp.mobile || emp.cell || emp.Mobile || '-'}</td>
                         </tr>
                     `).join('');
                 } else {
