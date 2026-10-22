@@ -125,10 +125,9 @@
             border: 1px solid var(--border);
             margin-bottom: 25px;
             overflow: hidden;
-            page-break-inside: avoid;
+            page-break-inside: avoid; /* يمنع انقسام الجدول الواحد في منتصفه */
         }
 
-        /* عنوان الطابق الأصلي فقط دون أعداد */
         .floor-title-bar {
             background: #0f172a;
             color: #ffffff;
@@ -179,13 +178,32 @@
             width: 27.5%;
         }
 
+        /* ضبط إعدادات الطباعة للحد من الفراغات */
         @media print {
-            body { background: white; padding: 0; }
-            .no-print { display: none !important; }
-            .container { max-width: 100%; }
-            .header-card { border: none; padding: 10px 0; }
-            .floor-block { page-break-after: always; border: 1px solid #cbd5e1; }
-            .floor-block:last-child { page-break-after: auto; }
+            body { 
+                background: white; 
+                padding: 0; 
+                margin: 0;
+            }
+            .no-print { 
+                display: none !important; 
+            }
+            .container { 
+                max-width: 100%; 
+                margin: 0;
+                padding: 0;
+            }
+            .header-card { 
+                border: none; 
+                padding: 10px 0; 
+                margin-bottom: 15px;
+                page-break-after: avoid; /* يمنع القفز لصفحة جديدة بعد الهيدر */
+            }
+            .floor-block { 
+                border: 1px solid #cbd5e1; 
+                margin-bottom: 20px;
+                page-break-after: auto; /* يجعل الطباعة متصلة وطبيعية دون فراغات */
+            }
         }
     </style>
 </head>
@@ -226,7 +244,6 @@
         let allData = [];
 
         function loadData() {
-            // القراءة المباشرة من الذاكرة المحلية للمتصفح (localStorage) لضمان جلب جميع الموظفين
             const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
             for (let key of keys) {
                 const stored = localStorage.getItem(key);
@@ -241,7 +258,6 @@
                 }
             }
 
-            // إذا لم يتم العثور على بيانات محلياً، يقرأ ملف data.json
             if (!allData || allData.length === 0) {
                 fetch('data.json?v=' + Date.now())
                     .then(res => res.json())
