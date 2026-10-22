@@ -32,7 +32,7 @@
             margin: 0 auto;
         }
 
-        /* الهيدر وشريط التحكم العلوي */
+        /* شريط التحكم العلوي */
         .controls-card {
             background: #fff;
             border-radius: 12px;
@@ -107,7 +107,6 @@
             font-weight: 700;
             color: #475569;
             margin-top: 4px;
-            letter-spacing: 0.5px;
         }
 
         .author-tag {
@@ -131,6 +130,7 @@
             border: 1px solid var(--border);
             margin-bottom: 25px;
             overflow: hidden;
+            page-break-inside: avoid;
         }
 
         .floor-title-bar {
@@ -155,31 +155,43 @@
         }
 
         th {
-            background-color: #0f172a;
+            background-color: #1e293b;
             color: #ffffff;
             font-weight: 800;
             font-size: 15px;
         }
 
+        /* ضبط محاذاة الأعمدة والتوسيط الصحيح */
         .emp-name {
             font-size: 17px;
             font-weight: 800;
             color: #0f172a;
             text-align: right;
+            width: 45%;
         }
 
         .ext-badge {
             font-size: 17px;
             font-weight: 800;
-            color: #16a34a;
+            color: #2563eb;
             text-align: center;
+            width: 27.5%;
         }
 
         .mobile-text {
             font-size: 16px;
             font-weight: 700;
-            color: #dc2626;
+            color: #334155;
             text-align: center;
+            width: 27.5%;
+        }
+
+        .col-center {
+            text-align: center;
+        }
+
+        .col-right {
+            text-align: right;
         }
 
         @media print {
@@ -195,7 +207,7 @@
 <body>
 
     <div class="container">
-        <!-- شريط التحكم العلوي المماثل للبرنامج الأصلي -->
+        <!-- شريط التحكم العلوي -->
         <div class="controls-card no-print">
             <button class="btn-action btn-print" onclick="window.print()">🖨️ طباعة الآن</button>
             <a href="index.html" class="btn-action btn-back">➔ الرجوع للصفحة الرئيسية</a>
@@ -203,18 +215,18 @@
                 <label style="font-weight:700;">اختر الطابق للطباعة:</label>
                 <select id="floorSelect" class="select-floor" onchange="renderReport()">
                     <option value="all">جميع الطوابق</option>
-                    <option value="Fifth Floor">Fifth Floor</option>
                     <option value="First Basement">First Basement</option>
-                    <option value="First Floor">First Floor</option>
-                    <option value="Fourth Floor">Fourth Floor</option>
                     <option value="Ground Floor">Ground Floor</option>
+                    <option value="First Floor">First Floor</option>
                     <option value="Second Floor">Second Floor</option>
                     <option value="Third Floor">Third Floor</option>
+                    <option value="Fourth Floor">Fourth Floor</option>
+                    <option value="Fifth Floor">Fifth Floor</option>
                 </select>
             </div>
         </div>
 
-        <!-- هيدر الصفحة الأصلي -->
+        <!-- هيدر الصفحة -->
         <div class="header-card">
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">CENTRAL DIRECTORY - FLOOR REPORT</div>
@@ -222,7 +234,7 @@
             <div id="summaryText" class="total-summary">جاري التحميل...</div>
         </div>
 
-        <!-- حاوية تقرير الطوابق -->
+        <!-- حاوية التقرير -->
         <div id="reportContainer"></div>
     </div>
 
@@ -230,19 +242,22 @@
         let allData = [];
 
         function loadData() {
-            // القراءة المباشرة من الذاكرة المحلية للمتصفح (localStorage) كما في برنامجك الأصلي تماماً
-            const local = localStorage.getItem('central_directory_data');
-            if (local) {
-                try {
-                    allData = JSON.parse(local);
-                } catch(e) {
-                    allData = [];
-                }
+            // محاولة جلب البيانات من أكثر من مصدر محلي لضمان قراءة الـ 322 موظف كاملة
+            const local1 = localStorage.getItem('central_directory_data');
+            const local2 = localStorage.getItem('directory_data');
+            const local3 = localStorage.getItem('employees');
+
+            if (local1) {
+                allData = JSON.parse(local1);
+            } else if (local2) {
+                allData = JSON.parse(local2);
+            } else if (local3) {
+                allData = JSON.parse(local3);
             }
 
-            // إذا لم توجد في localStorage، يجلبها احتياطياً من data.json
+            // إذا لم توجد في المتصفح يقرأ من الملف
             if (!allData || allData.length === 0) {
-                fetch('data.json?v=' + Date.now())
+                fetch('data.json?nocache=' + new Date().getTime())
                     .then(res => res.json())
                     .then(data => {
                         allData = data;
@@ -270,14 +285,14 @@
                 });
             }
 
-            // تحديث إجمالي عدد الموظفين في الأعلى
+            // تحديث الإجمالي في الأعلى
             if (selected === 'all') {
                 summaryText.textContent = `جميع الطوابق (عدد الموظفين: ${filtered.length})`;
             } else {
                 summaryText.textContent = `${selected} (عدد الموظفين: ${filtered.length})`;
             }
 
-            // تجميع الموظفين حسب الطابق
+            // تجميع البيانات
             const groups = {};
             filtered.forEach(emp => {
                 let fName = emp.floor || emp.Floor || 'طابق غير محدد';
@@ -287,11 +302,13 @@
 
             for (let floorName in groups) {
                 let emps = groups[floorName];
+                
+                // ترتيب صحيح للأعمدة: اسم الموظف على اليمين - الداخلي في المنتصف - الخليوي على اليسار
                 let rows = emps.map(emp => `
                     <tr>
-                        <td class="mobile-text">${emp.mobile || emp.cell || emp.Mobile || '-'}</td>
-                        <td class="ext-badge">${emp.extension || emp.ext || emp.Ext || '-'}</td>
                         <td class="emp-name">${emp.name || emp.empName || emp.Name || '-'}</td>
+                        <td class="ext-badge">${emp.extension || emp.ext || emp.Ext || '-'}</td>
+                        <td class="mobile-text">${emp.mobile || emp.cell || emp.Mobile || '-'}</td>
                     </tr>
                 `).join('');
 
@@ -304,9 +321,9 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th style="width: 30%; text-align: center;">رقم الجوال</th>
-                                    <th style="width: 30%; text-align: center;">الرقم الداخلي (Ext)</th>
-                                    <th style="width: 40%; text-align: right;">اسم الموظف</th>
+                                    <th class="col-right">اسم الموظف</th>
+                                    <th class="col-center">الرقم الداخلي (Ext)</th>
+                                    <th class="col-center">رقم الجوال</th>
                                 </tr>
                             </thead>
                             <tbody>
