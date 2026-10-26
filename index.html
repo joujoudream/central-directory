@@ -1,476 +1,322 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khatib & Alami - CENTRAL Directory</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البحث السريع - السنترال المركزي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* الهيدر العلوي وأزرار التنقل */
+        .header-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .company-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+            margin-top: 4px;
+        }
+
+        .author-tag {
+            font-size: 13px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-top: 4px;
+        }
+
+        /* شريط البحث والأزرار */
+        .search-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 240px;
+            padding: 12px 18px;
+            font-size: 16px;
+            font-weight: 700;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            background: #fff;
+            color: #0f172a;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            border: none;
+            background-color: var(--primary);
+            color: white;
+            white-space: nowrap;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        .btn-print-page {
+            background-color: #0f172a;
+        }
+
+        /* جدول النتائج */
+        .table-container {
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        th, td {
+            padding: 14px 18px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 15px;
+        }
+
+        .emp-name {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0f172a;
+            width: 40%;
+        }
+
+        .ext-badge {
+            font-size: 16px;
+            font-weight: 800;
+            color: #2563eb;
+            text-align: center;
+            width: 25%;
+        }
+
+        .mobile-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: #334155;
+            text-align: center;
+            width: 25%;
+        }
+
+        .floor-badge {
+            font-size: 14px;
+            font-weight: 700;
+            color: #64748b;
+            text-align: center;
+            width: 10%;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        /* التوافق مع الهواتف الذكية */
+        @media (max-width: 768px) {
+            body { padding: 8px; }
+            .search-controls { flex-direction: column; }
+            .search-input, .btn-action { width: 100%; justify-content: center; }
+            th, td { padding: 10px 12px; font-size: 14px; }
+        }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+<body>
 
-  <div class="max-w-6xl mx-auto space-y-6">
-
-    <!-- Header Block -->
-    <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-center space-y-2 relative overflow-hidden">
-      <div class="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-500"></div>
-      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
-      <div class="text-lg font-bold text-indigo-600 uppercase tracking-widest">CENTRAL</div>
-      <div class="text-sm font-medium text-slate-500 flex items-center justify-center gap-2 pt-1">
-        <span>Printing & Archiving</span>
-        <span>•</span>
-        <span class="text-red-600 font-bold">S,Walid Mrad</span>
-      </div>
-    </header>
-
-    <!-- Data Input Form Section -->
-    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-      <h2 id="form-title" class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
-        <i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i>
-        إدخال بيانات موظف جديد
-      </h2>
-
-      <form id="entry-form" onsubmit="handleFormSubmit(event)" class="space-y-4">
-        <input type="hidden" id="edit-id" value="">
-
-        <!-- Row 1: Floor (Right) -> Department (Middle) -> Employee Name (Left) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          
-          <!-- 1. Floor / Level (Right) -->
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1">
-              الطابق / المبنى (Floor)
-            </label>
-            <input type="text" id="floor-input" placeholder="مثال: الطابق 1 / Floor 1" 
-                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-          </div>
-
-          <!-- 2. Department (Middle) -->
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1">
-              اسم القسم / الإدارة <span class="text-red-500">*</span>
-            </label>
-            <input type="text" id="dept-input" required list="dept-list" placeholder="GIS Department" 
-                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-            <datalist id="dept-list">
-              <option value="Printing & Archiving">
-              <option value="Electrical Department">
-              <option value="GIS Department">
-              <option value="IT Department">
-              <option value="Human Resources">
-              <option value="Survey & Mapping">
-              <option value="Administration">
-            </datalist>
-          </div>
-
-          <!-- 3. Employee Name (Left) -->
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1">
-              اسم الموظف <span class="text-red-500">*</span>
-            </label>
-            <input type="text" id="emp-name-input" required placeholder="أدخل الاسم الثلاثي للموظف..." 
-                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-          </div>
-
+    <div class="container">
+        <!-- الهيدر الرئيسي -->
+        <div class="header-card">
+            <h1 class="company-title">Khatib & Alami Company</h1>
+            <div class="page-subtitle">CENTRAL DIRECTORY - QUICK SEARCH</div>
+            <div class="author-tag">S,Walid Mrad - Printing & Archiving</div>
         </div>
 
-        <!-- Row 2: Extension Number & Cellular Number -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Extension Number -->
-          <div>
-            <label class="block text-sm font-semibold text-slate-700 mb-1">
-              الرقم الداخلي (Extension Number)
-            </label>
-            <input type="text" id="ext-input" placeholder="مثال: 1234" 
-                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-          </div>
-
-          <!-- Cellular Number -->
-          <div class="md:col-span-2">
-            <label class="block text-sm font-semibold text-slate-700 mb-1">
-              رقم الجوال (Cellular Number)
-            </label>
-            <input type="text" id="cell-input" placeholder="مثال: 03123456" 
-                   class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
-          </div>
+        <!-- شريط البحث والتحكم -->
+        <div class="search-controls">
+            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث هنا بالاسم، الرقم الداخلي، أو الجوال..." oninput="filterData()">
+            <a href="print_by_floor.html" class="btn-action btn-print-page">🖨️ صفحة الطباعة والتقارير</a>
         </div>
 
-        <!-- Action Row -->
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 pt-2">
-          
-          <!-- Total Employees Badge -->
-          <div class="w-full bg-blue-900 border border-blue-800 rounded-xl p-3 flex items-center justify-between px-4 shadow-sm">
-            <div class="flex items-center gap-2 text-amber-300 font-bold text-xs md:text-sm">
-              <i data-lucide="users" class="w-4 h-4 text-amber-300"></i>
-              <span>عدد الموظفين:</span>
-            </div>
-            <span id="total-count" class="text-xl font-extrabold text-amber-300 font-mono">0</span>
-          </div>
-
-          <!-- Fast Search Button (Purple) -->
-          <a href="search.html" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm">
-            <i data-lucide="search" class="w-4 h-4"></i>
-            البحث السريع للسنترال
-          </a>
-
-          <!-- Print By Floor Button (Blue) -->
-          <a href="print_by_floor.html" target="_blank" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm">
-            <i data-lucide="printer" class="w-4 h-4"></i>
-            طباعة حسب الطابق
-          </a>
-
-          <!-- Export Excel Button (Green) -->
-          <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm">
-            <i data-lucide="download" class="w-4 h-4"></i>
-            تنزيل شيت Excel
-          </button>
-
-          <!-- Save Button (Red) -->
-          <button id="submit-btn" type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm">
-            <i data-lucide="save" class="w-4 h-4"></i>
-            <span id="submit-btn-text">حفظ البيانات</span>
-          </button>
-
-          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
-            <i data-lucide="x" class="w-4 h-4"></i>
-            إلغاء التعديل
-          </button>
-
+        <!-- جدول عرض الموظفين -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="text-align: right;">اسم الموظف</th>
+                        <th style="text-align: center;">الرقم الداخلي (Ext)</th>
+                        <th style="text-align: center;">رقم الجوال</th>
+                        <th style="text-align: center;">الطابق</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="4" class="no-results">جاري تحميل البيانات...</td></tr>
+                </tbody>
+            </table>
         </div>
-      </form>
-    </section>
+    </div>
 
-    <!-- Filter & Directory Display Section -->
-    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
-        <h2 class="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i>
-          دليل الأقسام والموظفين
-        </h2>
+    <script>
+        let allData = [];
 
-        <!-- Department Filter -->
-        <div class="flex items-center gap-2">
-          <label class="text-sm font-bold text-slate-700 whitespace-nowrap">اختر القسم للفرز:</label>
-          <select id="dept-filter" onchange="filterData()" class="px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-indigo-500 outline-none bg-white font-medium">
-            <option value="ALL">جميع الأقسام</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Live Search Box -->
-      <div class="relative">
-        <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute right-3 top-3"></i>
-        <input type="text" id="search-box" oninput="filterData()" placeholder="بحث سريع باسم الموظف، الرقم الداخلي، الجوال، أو الطابق..." 
-               class="w-full pr-10 pl-4 py-2 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm">
-      </div>
-
-      <!-- Display Container for Data -->
-      <div id="data-container" class="space-y-6">
-        <!-- Tables injected dynamically -->
-      </div>
-    </section>
-
-  </div>
-
-  <script>
-    function loadExistingRecords() {
-      const keysToSearch = [
-        'ka_central_records', 
-        'central_directory_records', 
-        'employees', 
-        'records', 
-        'ka_records', 
-        'central_records'
-      ];
-      
-      let allRecords = [];
-      let uniqueIds = new Set();
-
-      keysToSearch.forEach(key => {
-        const item = localStorage.getItem(key);
-        if (item) {
-          try {
-            const parsed = JSON.parse(item);
-            if (Array.isArray(parsed)) {
-              parsed.forEach(r => {
-                const empName = r.empName || r.name || r.employeeName || '';
-                const dept = r.dept || r.department || '';
-                const ext = r.ext || r.extension || '-';
-                const cell = r.cell || r.cellular || r.phone || '-';
-                const floor = r.floor || '-';
-                const id = r.id || (empName + ext);
-
-                if (empName && !uniqueIds.has(id)) {
-                  uniqueIds.add(id);
-                  allRecords.push({
-                    id: r.id || Date.now() + Math.random(),
-                    dept: dept || 'غير محدد',
-                    floor: floor || '-',
-                    empName: empName,
-                    ext: ext,
-                    cell: cell
-                  });
+        // دالة لجلب البيانات بذكاء (من المتصفح محلياً أو من ملف data.json تلقائياً)
+        async function loadDirectoryData() {
+            let loaded = false;
+            
+            // 1. محاولة القراءة من الذاكرة المحلية للمتصفح أولاً
+            const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
+            for (let key of keys) {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    try {
+                        let parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            allData = parsed;
+                            loaded = true;
+                            break;
+                        }
+                    } catch(e) {}
                 }
-              });
             }
-          } catch(e) {}
+
+            // 2. إذا لم توجد محلياً، يتم جلبها فوراً من ملف data.json لضمان عمل الهاتف والأجهزة الأخرى
+            if (!loaded) {
+                try {
+                    const response = await fetch('data.json?v=' + Date.now());
+                    if (response.ok) {
+                        allData = await response.json();
+                        // حفظها محلياً لتسريع العمل مستقبلاً
+                        localStorage.setItem('central_directory_data', JSON.stringify(allData));
+                    }
+                } catch (e) {
+                    console.error("تعذر جلب ملف البيانات", e);
+                }
+            }
+
+            displayData(allData);
         }
-      });
 
-      return allRecords;
-    }
+        // عرض البيانات في الجدول
+        function displayData(dataToDisplay) {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
 
-    let records = loadExistingRecords();
+            if (!dataToDisplay || dataToDisplay.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="no-results">لا توجد بيانات متاحة حالياً.</td></tr>`;
+                return;
+            }
 
-    const editIdInput = document.getElementById('edit-id');
-    const deptInput = document.getElementById('dept-input');
-    const floorInput = document.getElementById('floor-input');
-    const empNameInput = document.getElementById('emp-name-input');
-    const extInput = document.getElementById('ext-input');
-    const cellInput = document.getElementById('cell-input');
-    const formTitle = document.getElementById('form-title');
-    const submitBtn = document.getElementById('submit-btn');
-    const submitBtnText = document.getElementById('submit-btn-text');
-    const cancelEditBtn = document.getElementById('cancel-edit-btn');
-    const deptFilter = document.getElementById('dept-filter');
-    const searchBox = document.getElementById('search-box');
-    const dataContainer = document.getElementById('data-container');
-    const totalCountEl = document.getElementById('total-count');
+            let html = '';
+            dataToDisplay.forEach(emp => {
+                let name = emp.name || emp.empName || emp.Name || '-';
+                let ext = emp.extension || emp.ext || emp.Ext || '-';
+                let mobile = emp.mobile || emp.cell || emp.Mobile || '-';
+                let floor = emp.floor || emp.Floor || '-';
 
-    window.onload = function() {
-      saveAndRefresh();
-    };
-
-    function handleFormSubmit(e) {
-      e.preventDefault();
-
-      const editId = editIdInput.value;
-      const dept = deptInput.value.trim();
-      const floor = floorInput.value.trim() || '-';
-      const empName = empNameInput.value.trim();
-      const ext = extInput.value.trim() || '-';
-      const cell = cellInput.value.trim() || '-';
-
-      if (!dept || !empName) {
-        alert('يرجى إدخال اسم القسم واسم الموظف!');
-        return;
-      }
-
-      if (editId) {
-        const index = records.findIndex(r => r.id == editId);
-        if (index !== -1) {
-          records[index] = { id: Number(editId), dept, floor, empName, ext, cell };
+                html += `
+                    <tr>
+                        <td class="emp-name">${name}</td>
+                        <td class="ext-badge">${ext}</td>
+                        <td class="mobile-text">${mobile}</td>
+                        <td class="floor-badge">${floor}</td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
         }
-      } else {
-        records.push({ id: Date.now(), dept, floor, empName, ext, cell });
-      }
 
-      saveAndRefresh();
-      resetForm();
-    }
+        // محرك البحث السريع والذكي
+        function filterData() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            
+            if (!query) {
+                displayData(allData);
+                return;
+            }
 
-    function editRecord(id) {
-      const rec = records.find(r => r.id == id);
-      if (!rec) return;
+            const filtered = allData.filter(emp => {
+                let name = (emp.name || emp.empName || emp.Name || '').toLowerCase();
+                let ext = (emp.extension || emp.ext || emp.Ext || '').toString().toLowerCase();
+                let mobile = (emp.mobile || emp.cell || emp.Mobile || '').toString().toLowerCase();
+                let floor = (emp.floor || emp.Floor || '').toLowerCase();
 
-      editIdInput.value = rec.id;
-      deptInput.value = rec.dept !== '-' ? rec.dept : '';
-      floorInput.value = rec.floor !== '-' ? rec.floor : '';
-      empNameInput.value = rec.empName !== '-' ? rec.empName : '';
-      extInput.value = rec.ext !== '-' ? rec.ext : '';
-      cellInput.value = rec.cell !== '-' ? rec.cell : '';
+                return name.includes(query) || ext.includes(query) || mobile.includes(query) || floor.includes(query);
+            });
 
-      formTitle.innerHTML = `<i data-lucide="edit" class="w-5 h-5 text-blue-600"></i> تعديل بيانات الموظف (${rec.empName})`;
-      submitBtn.className = "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm";
-      submitBtnText.textContent = "تحديث بيانات الموظف";
-      cancelEditBtn.classList.remove('hidden');
+            displayData(filtered);
+        }
 
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      lucide.createIcons();
-    }
-
-    function cancelEdit() {
-      resetForm();
-    }
-
-    function resetForm() {
-      editIdInput.value = '';
-      empNameInput.value = '';
-      extInput.value = '';
-      cellInput.value = '';
-      floorInput.value = '';
-
-      formTitle.innerHTML = `<i data-lucide="user-plus" class="w-5 h-5 text-indigo-600"></i> إدخال بيانات موظف جديد`;
-      submitBtn.className = "w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm";
-      submitBtnText.textContent = "حفظ البيانات";
-      cancelEditBtn.classList.add('hidden');
-
-      lucide.createIcons();
-    }
-
-    function saveAndRefresh() {
-      const dataStr = JSON.stringify(records);
-      
-      [
-        'ka_central_records', 
-        'central_directory_records', 
-        'employees', 
-        'records', 
-        'ka_records', 
-        'central_records'
-      ].forEach(k => {
-        localStorage.setItem(k, dataStr);
-      });
-
-      if (totalCountEl) {
-        totalCountEl.textContent = records.length;
-      }
-      updateDeptDropdowns();
-      filterData();
-    }
-
-    function updateDeptDropdowns() {
-      const depts = [...new Set(records.map(r => r.dept))];
-      const currentFilter = deptFilter.value;
-      deptFilter.innerHTML = '<option value="ALL">جميع الأقسام</option>';
-      depts.forEach(d => {
-        const opt = document.createElement('option');
-        opt.value = d;
-        opt.textContent = d;
-        deptFilter.appendChild(opt);
-      });
-      deptFilter.value = currentFilter || 'ALL';
-    }
-
-    function filterData() {
-      const selectedDept = deptFilter.value;
-      const searchQuery = searchBox.value.toLowerCase().trim();
-
-      let filtered = records.filter(r => {
-        const matchesDept = selectedDept === 'ALL' || r.dept === selectedDept;
-        const matchesSearch = (r.empName && r.empName.toLowerCase().includes(searchQuery)) ||
-                              (r.ext && r.ext.toLowerCase().includes(searchQuery)) ||
-                              (r.cell && r.cell.toLowerCase().includes(searchQuery)) ||
-                              (r.floor && r.floor.toLowerCase().includes(searchQuery)) ||
-                              (r.dept && r.dept.toLowerCase().includes(searchQuery));
-        return matchesDept && matchesSearch;
-      });
-
-      dataContainer.innerHTML = '';
-
-      if (filtered.length === 0) {
-        dataContainer.innerHTML = `
-          <div class="text-center p-8 bg-slate-50 rounded-xl border border-slate-200 text-slate-400 font-medium">
-            لا توجد سجلات مطابقة حالياً
-          </div>`;
-        return;
-      }
-
-      const grouped = {};
-      filtered.forEach(r => {
-        if (!grouped[r.dept]) grouped[r.dept] = [];
-        grouped[r.dept].push(r);
-      });
-
-      Object.keys(grouped).forEach(deptName => {
-        const deptRecords = grouped[deptName];
-        const floors = [...new Set(deptRecords.map(r => r.floor).filter(f => f && f !== '-'))].join(' / ') || 'غير محدد';
-
-        const section = document.createElement('div');
-        section.className = 'overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white';
-
-        let rowsHtml = '';
-        deptRecords.forEach((r, idx) => {
-          rowsHtml += `
-            <tr class="hover:bg-slate-50 transition border-b border-slate-100 text-sm">
-              <td class="p-3 font-bold text-slate-400 text-center">${idx + 1}</td>
-              <td class="p-3 font-semibold text-slate-800">${r.empName}</td>
-              <td class="p-3 text-slate-600 font-mono">${r.ext}</td>
-              <td class="p-3 text-slate-600 font-mono">${r.cell}</td>
-              <td class="p-3 text-slate-600 font-medium">${r.floor}</td>
-              <td class="p-3 text-center flex items-center justify-center gap-2">
-                <button onclick="editRecord(${r.id})" class="text-blue-600 hover:text-blue-800 p-1 rounded transition" title="تعديل البيانات">
-                  <i data-lucide="edit-3" class="w-4 h-4"></i>
-                </button>
-                <button onclick="deleteRecord(${r.id})" class="text-red-500 hover:text-red-700 p-1 rounded transition" title="حذف">
-                  <i data-lucide="trash-2" class="w-4 h-4"></i>
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-
-        section.innerHTML = `
-          <div class="bg-indigo-50/80 border-b border-slate-200 p-4 flex items-center justify-between gap-2">
-            <div class="flex items-center gap-3">
-              <span class="bg-indigo-600 text-white px-3 py-1 rounded-lg text-sm font-bold">${deptName}</span>
-              <span class="text-sm font-semibold text-slate-600 flex items-center gap-1">
-                <i data-lucide="layers" class="w-4 h-4 text-indigo-500"></i>
-                الطابق: <strong class="text-slate-800">${floors}</strong>
-              </span>
-            </div>
-          </div>
-
-          <table class="w-full text-right">
-            <thead class="bg-slate-100/70 text-slate-700 font-bold border-b border-slate-200 text-xs">
-              <tr>
-                <th class="p-3 text-center w-12">#</th>
-                <th class="p-3">اسم الموظف (Employee Name)</th>
-                <th class="p-3">الداخلي (Extension)</th>
-                <th class="p-3">الجوال (Cellular)</th>
-                <th class="p-3">الطابق (Floor)</th>
-                <th class="p-3 text-center w-24">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-              ${rowsHtml}
-            </tbody>
-          </table>
-        `;
-
-        dataContainer.appendChild(section);
-      });
-
-      lucide.createIcons();
-    }
-
-    function deleteRecord(id) {
-      if (confirm('هل أنت تأكد من حذف هذا السجل؟')) {
-        records = records.filter(r => r.id != id);
-        saveAndRefresh();
-        resetForm();
-      }
-    }
-
-    function exportToCSV() {
-      if (records.length === 0) {
-        alert('لا توجد بيانات لتصديرها!');
-        return;
-      }
-
-      let csvContent = "\uFEFFالقسم,الطابق,اسم الموظف,الرقم الداخلي,رقم الجوال\n";
-      records.forEach(r => {
-        csvContent += `"${r.dept}","${r.floor}","${r.empName}","${r.ext}","${r.cell}"\n`;
-      });
-
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', `CENTRAL_Directory_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
+        // تشغيل التحميل عند فتح الصفحة
+        loadDirectoryData();
+    </script>
 </body>
 </html>
