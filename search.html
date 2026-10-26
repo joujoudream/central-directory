@@ -95,9 +95,9 @@
 
         .results-count {
             margin-top: 10px;
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 600;
+            font-size: 15px;
+            color: var(--primary);
+            font-weight: 800;
         }
 
         .results-container {
@@ -157,20 +157,17 @@
 <body>
 
     <div class="container">
-        <!-- الهيدر تم إزالة زر الانتقال منه لأمان الصفحة -->
         <div class="header-card">
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
-            <div class="author-tag">S,Walid Murad</div>
+            <div class="author-tag">S,Walid Mrad</div>
         </div>
 
-        <!-- مربع البحث -->
         <div class="search-card">
             <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
             <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
         </div>
 
-        <!-- قائمة النتائج -->
         <div class="results-container" id="resultsList"></div>
     </div>
 
@@ -182,7 +179,7 @@
             "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
             "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
             "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
-            "دغيلي": "doughesly", "معلم": "moualem", "حمية": "hamieh", "خالد": "khaled",
+            "دغيلي": "dougheily", "معلم": "moualem", "حمية": "hamieh", "خالد": "khaled",
             "عمر": "omar", "عمرو": "amr", "سارة": "sara", "إيلي": "elie", "ايلي": "elie",
             "ادارة": "administration", "إدارة": "administration", "الادارة": "administration",
             "ميكانيك": "mechanical", "الميكانيك": "mechanical",
@@ -221,25 +218,47 @@
             return translatedWords.join(' ');
         }
 
+        // دالة لجلب البيانات بذكاء من الذاكرة المحلية أولاً لضمان إظهار 322 موظفاً
         async function fetchEmployeesData() {
-            try {
-                const response = await fetch('data.json?nocache=' + new Date().getTime());
-                if (!response.ok) throw new Error('فشل جلب الملف');
-                
-                const data = await response.json();
-                allEmployees = data.map(emp => ({
-                    name: emp.name || emp.empName || 'غير محدد',
-                    department: emp.department || emp.dept || '-',
-                    extension: emp.extension || emp.ext || '-',
-                    mobile: emp.mobile || emp.cell || '-',
-                    floor: emp.floor || '-'
-                }));
-                
-                renderResults(allEmployees);
-            } catch (error) {
-                console.error("خطأ في جلب البيانات:", error);
-                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين.</div>`;
+            let loaded = false;
+            const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
+
+            for (let key of keys) {
+                const stored = localStorage.getItem(key);
+                if (stored) {
+                    try {
+                        let parsed = JSON.parse(stored);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            processRawData(parsed);
+                            loaded = true;
+                            break;
+                        }
+                    } catch(e) {}
+                }
             }
+
+            if (!loaded) {
+                try {
+                    const response = await fetch('data.json?nocache=' + new Date().getTime());
+                    if (!response.ok) throw new Error('فشل جلب الملف');
+                    const data = await response.json();
+                    processRawData(data);
+                } catch (error) {
+                    console.error("خطأ في جلب البيانات:", error);
+                    document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين.</div>`;
+                }
+            }
+        }
+
+        function processRawData(data) {
+            allEmployees = data.map(emp => ({
+                name: emp.name || emp.empName || emp.Name || 'غير محدد',
+                department: emp.department || emp.dept || emp.Department || '-',
+                extension: emp.extension || emp.ext || emp.Ext || '-',
+                mobile: emp.mobile || emp.cell || emp.Mobile || '-',
+                floor: emp.floor || emp.Floor || '-'
+            }));
+            renderResults(allEmployees);
         }
 
         function renderResults(employees) {
