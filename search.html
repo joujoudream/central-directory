@@ -231,17 +231,27 @@
     <script>
         let allData = [];
 
+        // خريطة تحويل الحروف العربية إلى إنجليزية لتسهيل البحث المعكوس
+        function arabicToEnglish(text) {
+            const map = {
+                'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+                'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+                'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
+                'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+                'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ة': 'h', 'پ': 'p', 'چ': 'ch', 'ژ': 'zh', 'گ': 'g'
+            };
+            return text.split('').map(char => map[char] || char).join('');
+        }
+
         function normalizeText(str) {
             if (!str) return '';
-            return str.toString().toLowerCase()
-                .replace(/[أإآا]/g, 'ا')
-                .replace(/ة/g, 'ه')
-                .replace(/ى/g, 'ي')
-                .trim();
+            let lower = str.toString().toLowerCase().trim();
+            // دمج النص الأصلي مع النسخة المحولة عربياً/إنجليزياً ليتم البحث فيهما معاً
+            let converted = arabicToEnglish(lower);
+            return lower + " " + converted;
         }
 
         function loadData() {
-            // الأولوية القصوى للذاكرة المحلية لضمان قراءة الـ 322 موظفاً فوراً
             const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
             let loaded = false;
 
@@ -259,7 +269,6 @@
                 }
             }
 
-            // إذا لم توجد محلياً يتم جلبها من الملف
             if (!loaded) {
                 fetch('data.json?v=' + Date.now())
                     .then(res => res.json())
@@ -322,14 +331,14 @@
 
         function filterData() {
             const rawQuery = document.getElementById('searchInput').value;
-            const query = normalizeText(rawQuery);
+            const queryNorm = normalizeText(rawQuery);
 
-            if (!query) {
+            if (!rawQuery.trim()) {
                 displayResults(allData);
                 return;
             }
 
-            const queryWords = query.split(/\s+/);
+            const queryWords = queryNorm.split(/\s+/).filter(w => w.length > 0);
 
             const filtered = allData.filter(emp => {
                 let name = normalizeText(emp.name || emp.empName || emp.Name || '');
