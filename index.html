@@ -32,7 +32,6 @@
             margin: 0 auto;
         }
 
-        /* الهيدر العلوي المطابق لصورك السابقة */
         .header-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -63,7 +62,6 @@
             margin-top: 6px;
         }
 
-        /* مربع البحث والأزرار */
         .search-box-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -128,7 +126,6 @@
             opacity: 0.9;
         }
 
-        /* شبكة عرض النتائج (Cards) كما في تصميمك */
         .results-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -233,7 +230,7 @@
     <script>
         let allData = [];
 
-        // دالة تنظيف النصوص لإلغاء فروق التشكيل والهمزات (مثل أ، إ، آ -> ا) لتسهيل البحث العربي
+        // دالة تنظيف وتوحيد النصوص لتسهيل البحث بغض النظر عن الحروف أو التشكيل
         function normalizeText(str) {
             if (!str) return '';
             return str.toString().toLowerCase()
@@ -243,7 +240,6 @@
                 .trim();
         }
 
-        // تحميل البيانات بذكاء من المتصفح أو الملف
         async function loadData() {
             let loaded = false;
             const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
@@ -274,7 +270,6 @@
             filterData();
         }
 
-        // عرض النتائج على شكل بطاقات أنيقة
         function displayResults(data) {
             const container = document.getElementById('resultsContainer');
             const countDiv = document.getElementById('resultsCount');
@@ -319,7 +314,7 @@
             container.innerHTML = html;
         }
 
-        // محرك البحث الذكي (يدعم الاسم بالعربي والانجليزي والأرقام)
+        // محرك بحث مرن جداً يبحث في كل الحقول وفي أي جزء من الكلمة
         function filterData() {
             const rawQuery = document.getElementById('searchInput').value;
             const query = normalizeText(rawQuery);
@@ -329,7 +324,6 @@
                 return;
             }
 
-            // تقسيم الكلمات للبحث المرن
             const queryWords = query.split(/\s+/);
 
             const filtered = allData.filter(emp => {
@@ -341,7 +335,7 @@
 
                 let combined = `${name} ${dept} ${ext} ${mobile} ${floor}`;
 
-                // التأكد من مطابقة جميع الكلمات المدخلة
+                // البحث عن تطابق الأجزاء بغض النظر عن الترتيب
                 return queryWords.every(word => combined.includes(word));
             });
 
