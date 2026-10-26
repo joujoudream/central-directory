@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البحث السريع - السنترال المركزي</title>
+    <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -24,19 +24,19 @@
         body {
             background-color: var(--bg);
             color: var(--text-main);
-            padding: 15px;
+            padding: 20px;
         }
 
         .container {
-            max-width: 950px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* الهيدر العلوي وأزرار التنقل */
+        /* الهيدر العلوي المطابق لصورك السابقة */
         .header-card {
             background: var(--card-bg);
             border-radius: 12px;
-            padding: 20px;
+            padding: 24px;
             text-align: center;
             margin-bottom: 20px;
             border: 1px solid var(--border);
@@ -44,150 +44,162 @@
         }
 
         .company-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             color: #0f172a;
         }
 
         .page-subtitle {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 700;
-            color: #475569;
-            margin-top: 4px;
+            color: #2563eb;
+            margin-top: 6px;
         }
 
         .author-tag {
             font-size: 13px;
             font-weight: 700;
             color: #dc2626;
-            margin-top: 4px;
+            margin-top: 6px;
         }
 
-        /* شريط البحث والأزرار */
-        .search-controls {
-            display: flex;
-            gap: 12px;
+        /* مربع البحث والأزرار */
+        .search-box-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
+            border: 1px solid var(--border);
+            text-align: center;
         }
 
         .search-input {
-            flex: 1;
-            min-width: 240px;
-            padding: 12px 18px;
-            font-size: 16px;
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 18px;
             font-weight: 700;
-            border: 1px solid #cbd5e1;
+            border: 2px solid #cbd5e1;
             border-radius: 10px;
             outline: none;
             background: #fff;
             color: #0f172a;
+            text-align: center;
+            transition: all 0.2s;
         }
 
         .search-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .results-count {
+            font-size: 14px;
+            font-weight: 700;
+            color: #64748b;
+            margin-top: 10px;
+            text-align: left;
+            padding-left: 5px;
+        }
+
+        .actions-bar {
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .btn-action {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 20px;
+            padding: 10px 20px;
             font-size: 15px;
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             text-decoration: none;
-            transition: all 0.2s;
-            border: none;
             background-color: var(--primary);
             color: white;
-            white-space: nowrap;
+            border: none;
+            transition: 0.2s;
         }
 
         .btn-action:hover {
             opacity: 0.9;
         }
 
-        .btn-print-page {
-            background-color: #0f172a;
+        /* شبكة عرض النتائج (Cards) كما في تصميمك */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
-        /* جدول النتائج */
-        .table-container {
+        .emp-card {
             background: #fff;
             border-radius: 12px;
             border: 1px solid var(--border);
-            overflow: hidden;
+            padding: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .emp-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .emp-card-header {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f1f5f9;
             text-align: right;
         }
 
-        th, td {
-            padding: 14px 18px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        th {
-            background-color: #0f172a;
-            color: #ffffff;
-            font-weight: 800;
+        .emp-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
             font-size: 15px;
         }
 
-        .emp-name {
-            font-size: 16px;
-            font-weight: 800;
-            color: #0f172a;
-            width: 40%;
-        }
-
-        .ext-badge {
-            font-size: 16px;
-            font-weight: 800;
-            color: #2563eb;
-            text-align: center;
-            width: 25%;
-        }
-
-        .mobile-text {
-            font-size: 15px;
-            font-weight: 700;
-            color: #334155;
-            text-align: center;
-            width: 25%;
-        }
-
-        .floor-badge {
-            font-size: 14px;
-            font-weight: 700;
+        .info-label {
             color: #64748b;
-            text-align: center;
-            width: 10%;
+            font-weight: 700;
+        }
+
+        .info-value {
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .ext-val {
+            color: #2563eb;
+            font-size: 17px;
+        }
+
+        .mobile-val {
+            color: #dc2626;
         }
 
         .no-results {
+            grid-column: 1 / -1;
             text-align: center;
             padding: 40px;
             font-size: 16px;
             font-weight: 700;
             color: #64748b;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid var(--border);
         }
 
-        /* التوافق مع الهواتف الذكية */
         @media (max-width: 768px) {
-            body { padding: 8px; }
-            .search-controls { flex-direction: column; }
-            .search-input, .btn-action { width: 100%; justify-content: center; }
-            th, td { padding: 10px 12px; font-size: 14px; }
+            .results-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -197,42 +209,43 @@
         <!-- الهيدر الرئيسي -->
         <div class="header-card">
             <h1 class="company-title">Khatib & Alami Company</h1>
-            <div class="page-subtitle">CENTRAL DIRECTORY - QUICK SEARCH</div>
-            <div class="author-tag">S,Walid Mrad - Printing & Archiving</div>
+            <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
+            <div class="author-tag">S,Walid Mrad</div>
         </div>
 
-        <!-- شريط البحث والتحكم -->
-        <div class="search-controls">
-            <input type="text" id="searchInput" class="search-input" placeholder="🔍 ابحث هنا بالاسم، الرقم الداخلي، أو الجوال..." oninput="filterData()">
-            <a href="print_by_floor.html" class="btn-action btn-print-page">🖨️ صفحة الطباعة والتقارير</a>
+        <!-- شريط التنقل والترويسة -->
+        <div class="actions-bar">
+            <a href="print_by_floor.html" class="btn-action">🖨️ صفحة تقارير الطباعة حسب الطابق</a>
         </div>
 
-        <!-- جدول عرض الموظفين -->
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th style="text-align: right;">اسم الموظف</th>
-                        <th style="text-align: center;">الرقم الداخلي (Ext)</th>
-                        <th style="text-align: center;">رقم الجوال</th>
-                        <th style="text-align: center;">الطابق</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <tr><td colspan="4" class="no-results">جاري تحميل البيانات...</td></tr>
-                </tbody>
-            </table>
+        <!-- مربع البحث -->
+        <div class="search-box-card">
+            <input type="text" id="searchInput" class="search-input" placeholder="ابحث هنا بالاسم (عربي أو إنجليزي)، الرقم الداخلي، أو الجوال..." oninput="filterData()">
+            <div id="resultsCount" class="results-count">عدد النتائج: 0</div>
+        </div>
+
+        <!-- نتائج البحث -->
+        <div id="resultsContainer" class="results-grid">
+            <div class="no-results">جاري تحميل البيانات...</div>
         </div>
     </div>
 
     <script>
         let allData = [];
 
-        // دالة لجلب البيانات بذكاء (من المتصفح محلياً أو من ملف data.json تلقائياً)
-        async function loadDirectoryData() {
+        // دالة تنظيف النصوص لإلغاء فروق التشكيل والهمزات (مثل أ، إ، آ -> ا) لتسهيل البحث العربي
+        function normalizeText(str) {
+            if (!str) return '';
+            return str.toString().toLowerCase()
+                .replace(/[أإآا]/g, 'ا')
+                .replace(/ة/g, 'ه')
+                .replace(/ى/g, 'ي')
+                .trim();
+        }
+
+        // تحميل البيانات بذكاء من المتصفح أو الملف
+        async function loadData() {
             let loaded = false;
-            
-            // 1. محاولة القراءة من الذاكرة المحلية للمتصفح أولاً
             const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
             for (let key of keys) {
                 const stored = localStorage.getItem(key);
@@ -248,75 +261,94 @@
                 }
             }
 
-            // 2. إذا لم توجد محلياً، يتم جلبها فوراً من ملف data.json لضمان عمل الهاتف والأجهزة الأخرى
             if (!loaded) {
                 try {
                     const response = await fetch('data.json?v=' + Date.now());
                     if (response.ok) {
                         allData = await response.json();
-                        // حفظها محلياً لتسريع العمل مستقبلاً
                         localStorage.setItem('central_directory_data', JSON.stringify(allData));
                     }
-                } catch (e) {
-                    console.error("تعذر جلب ملف البيانات", e);
-                }
+                } catch (e) {}
             }
 
-            displayData(allData);
+            filterData();
         }
 
-        // عرض البيانات في الجدول
-        function displayData(dataToDisplay) {
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
+        // عرض النتائج على شكل بطاقات أنيقة
+        function displayResults(data) {
+            const container = document.getElementById('resultsContainer');
+            const countDiv = document.getElementById('resultsCount');
+            countDiv.textContent = `عدد النتائج: ${data.length}`;
+            container.innerHTML = '';
 
-            if (!dataToDisplay || dataToDisplay.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="no-results">لا توجد بيانات متاحة حالياً.</td></tr>`;
+            if (!data || data.length === 0) {
+                container.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث.</div>`;
                 return;
             }
 
             let html = '';
-            dataToDisplay.forEach(emp => {
+            data.forEach(emp => {
                 let name = emp.name || emp.empName || emp.Name || '-';
+                let dept = emp.department || emp.dept || emp.Department || '-';
                 let ext = emp.extension || emp.ext || emp.Ext || '-';
                 let mobile = emp.mobile || emp.cell || emp.Mobile || '-';
                 let floor = emp.floor || emp.Floor || '-';
 
                 html += `
-                    <tr>
-                        <td class="emp-name">${name}</td>
-                        <td class="ext-badge">${ext}</td>
-                        <td class="mobile-text">${mobile}</td>
-                        <td class="floor-badge">${floor}</td>
-                    </tr>
+                    <div class="emp-card">
+                        <div class="emp-card-header">${name}</div>
+                        <div class="emp-info-row">
+                            <span class="info-label">القسم / الإدارة:</span>
+                            <span class="info-value">${dept}</span>
+                        </div>
+                        <div class="emp-info-row">
+                            <span class="info-label">الرقم الداخلي:</span>
+                            <span class="info-value ext-val">${ext}</span>
+                        </div>
+                        <div class="emp-info-row">
+                            <span class="info-label">رقم الجوال:</span>
+                            <span class="info-value mobile-val">${mobile}</span>
+                        </div>
+                        <div class="emp-info-row">
+                            <span class="info-label">الطابق / المبنى:</span>
+                            <span class="info-value">${floor}</span>
+                        </div>
+                    </div>
                 `;
             });
-            tbody.innerHTML = html;
+            container.innerHTML = html;
         }
 
-        // محرك البحث السريع والذكي
+        // محرك البحث الذكي (يدعم الاسم بالعربي والانجليزي والأرقام)
         function filterData() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            
+            const rawQuery = document.getElementById('searchInput').value;
+            const query = normalizeText(rawQuery);
+
             if (!query) {
-                displayData(allData);
+                displayResults(allData);
                 return;
             }
 
-            const filtered = allData.filter(emp => {
-                let name = (emp.name || emp.empName || emp.Name || '').toLowerCase();
-                let ext = (emp.extension || emp.ext || emp.Ext || '').toString().toLowerCase();
-                let mobile = (emp.mobile || emp.cell || emp.Mobile || '').toString().toLowerCase();
-                let floor = (emp.floor || emp.Floor || '').toLowerCase();
+            // تقسيم الكلمات للبحث المرن
+            const queryWords = query.split(/\s+/);
 
-                return name.includes(query) || ext.includes(query) || mobile.includes(query) || floor.includes(query);
+            const filtered = allData.filter(emp => {
+                let name = normalizeText(emp.name || emp.empName || emp.Name || '');
+                let dept = normalizeText(emp.department || emp.dept || emp.Department || '');
+                let ext = normalizeText(emp.extension || emp.ext || emp.Ext || '');
+                let mobile = normalizeText(emp.mobile || emp.cell || emp.Mobile || '');
+                let floor = normalizeText(emp.floor || emp.Floor || '');
+
+                let combined = `${name} ${dept} ${ext} ${mobile} ${floor}`;
+
+                // التأكد من مطابقة جميع الكلمات المدخلة
+                return queryWords.every(word => combined.includes(word));
             });
 
-            displayData(filtered);
+            displayResults(filtered);
         }
 
-        // تشغيل التحميل عند فتح الصفحة
-        loadDirectoryData();
+        loadData();
     </script>
 </body>
 </html>
