@@ -238,11 +238,11 @@
 
         function processRawData(data) {
             allEmployees = data.map(emp => ({
-                name: emp.name || emp.empName || emp.Name || 'غير محدد',
-                department: emp.department || emp.dept || emp.Department || '-',
-                extension: emp.extension || emp.ext || emp.Ext || '-',
-                mobile: emp.mobile || emp.cell || emp.Mobile || '-',
-                floor: emp.floor || emp.Floor || '-'
+                name: emp['اسم الموظف'] || emp.name || emp.empName || emp.Name || 'غير محدد',
+                department: emp['القسم'] || emp.department || emp.dept || emp.Department || '-',
+                extension: emp['الرقم الداخلي'] || emp.extension || emp.ext || emp.Ext || '-',
+                mobile: emp['رقم الجوال'] || emp.mobile || emp.cell || emp.Mobile || '-',
+                floor: emp['الطابق'] || emp.floor || emp.Floor || '-'
             }));
             renderResults(allEmployees);
         }
