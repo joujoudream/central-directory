@@ -1,4 +1,177 @@
-<script>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Tajawal', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+        }
+
+        .header-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .company-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .author-tag {
+            font-size: 12px;
+            font-weight: 700;
+            color: #dc2626;
+            margin-top: 6px;
+        }
+
+        .search-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            outline: none;
+            transition: all 0.2s;
+            color: var(--text-main);
+            background-color: #fff;
+        }
+
+        .search-input:focus {
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+        }
+
+        .results-count {
+            margin-top: 10px;
+            font-size: 15px;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .employee-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .employee-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            border-color: var(--primary);
+        }
+
+        .emp-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        .emp-info {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .emp-info strong {
+            color: var(--text-main);
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            background: var(--card-bg);
+            padding: 30px;
+            text-align: center;
+            border-radius: 12px;
+            color: var(--text-muted);
+            font-size: 16px;
+            border: 1px dashed var(--border);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header-card">
+            <h1 class="company-title">Khatib & Alami Company</h1>
+            <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
+            <div class="author-tag">S,Walid Mrad</div>
+        </div>
+
+        <div class="search-card">
+            <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
+            <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
+        </div>
+
+        <div class="results-container" id="resultsList"></div>
+    </div>
+
+    <script>
         let allEmployees = [];
 
         const arabicToEnglishDictionary = {
@@ -45,10 +218,8 @@
             return translatedWords.join(' ');
         }
 
-        // جلب البيانات مباشرة من ملف data.json مع منع التخزين المؤقت (Cache-busting) لضمان تطابق النتائج على كل الأجهزة
         async function fetchEmployeesData() {
             try {
-                // إضافة ختم زمنـي متغير لمنع المتصفحات والهواتف من حفظ النسخة القديمة
                 const response = await fetch('data.json?v=' + new Date().getTime());
                 if (!response.ok) throw new Error('فشل جلب الملف');
                 const data = await response.json();
@@ -60,7 +231,7 @@
                 }
             } catch (error) {
                 console.error("خطأ في جلب البيانات:", error);
-                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين. تأكد من اتصال الإنترنت أو وجود ملف data.json</div>`;
+                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين. تأكد من وجود ملف data.json</div>`;
                 document.getElementById('resultsCount').textContent = "خطأ في التحميل";
             }
         }
@@ -116,7 +287,7 @@
                 const floor = (emp.floor || '').toLowerCase();
 
                 const normalizedName = normalizeEnglishText(name);
-                const normalizedDept = normalizeEnglishTest ? normalizeEnglishText(dept) : '';
+                const normalizedDept = normalizeEnglishText(dept);
 
                 const isNameMatch = name.includes(rawQuery) || 
                                     name.includes(translatedQuery) || 
@@ -135,6 +306,7 @@
             renderResults(filtered);
         });
 
-        // تشغيل الدالة فور تحميل الصفحة
         fetchEmployeesData();
     </script>
+</body>
+</html>
