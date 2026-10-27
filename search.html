@@ -1,214 +1,140 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>البحث السريع - دليل السنترال</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background-color: #f4f7f6;
-            padding: 15px;
-            color: #333;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-
-        h2 {
-            text-align: center;
-            color: #1b365d;
-            margin-bottom: 20px;
-            font-size: 1.4rem;
-        }
-
-        .search-box {
-            width: 100%;
-            padding: 12px 15px;
-            font-size: 16px;
-            border: 2px solid #0056b3;
-            border-radius: 8px;
-            margin-bottom: 15px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .search-box:focus {
-            border-color: #003366;
-        }
-
-        .stats {
-            margin-bottom: 15px;
-            font-size: 0.9rem;
-            color: #666;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        /* حاوية القائمة مع خاصية التمرير لدعم الهواتف والأجهزة المختلفة */
-        .results-list {
-            list-style: none;
-            max-height: 70vh; /* تحديد ارتفاع أقصى ليظهر شريط التمرير */
-            overflow-y: auto; /* تفعيل الـ Scroll عند زيادة النتائج */
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-        }
-
-        .result-item {
-            padding: 12px 15px;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-item:hover {
-            background-color: #f8f9fa;
-        }
-
-        .emp-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .emp-name {
-            font-weight: bold;
-            color: #1b365d;
-            font-size: 1rem;
-        }
-
-        .emp-detail {
-            font-size: 0.85rem;
-            color: #666;
-        }
-
-        .emp-ext {
-            font-weight: bold;
-            color: #d9534f;
-            background: #fdf2f2;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            direction: ltr;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 20px;
-            color: #888;
-        }
-    </style>
-</head>
-<body>
-
-<div class="container">
-    <h2>شاشة البحث السريع - السنترال</h2>
-    
-    <input type="text" id="searchInput" class="search-box" placeholder="ابحث باسم الموظف، القسم، أو الرقم الداخلي..." oninput="filterData()">
-
-    <div class="stats">
-        <span>النتائج المعروضة: <strong id="countDisplay">0</strong></span>
-        <span>إجمالي الموظفين: <strong id="totalDisplay">0</strong></span>
-    </div>
-
-    <ul id="resultsList" class="results-list">
-        <!-- يتم تحميل البيانات هنا تلقائياً -->
-    </ul>
-</div>
-
 <script>
-    let allData = [];
+        let allEmployees = [];
 
-    // جلب البيانات مع إبطال الكاش (Cache-Busting) لضمان تحميل الـ 322 موظف دائماً
-    async function loadData() {
-        try {
-            // إضافة متغير الوقت للرابط يمنع المتصفح من قراءة النسخة القديمة المحفوظة في الهاتف
-            const response = await fetch('data.json?v=' + new Date().getTime());
-            allData = await response.json();
-            
-            document.getElementById('totalDisplay').innerText = allData.length;
-            displayResults(allData);
-        } catch (error) {
-            console.error('خطأ في جلب البيانات:', error);
-            document.getElementById('resultsList').innerHTML = '<li class="no-results">حدث خطأ أثناء تحميل البيانات.</li>';
-        }
-    }
+        const arabicToEnglishDictionary = {
+            "زاهر": "zaher", "عبدالله": "abdallah", "عبد الله": "abdallah",
+            "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
+            "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
+            "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
+            "دغيلي": "dougheily", "معلم": "moualem", "حمية": "hamieh", "خالد": "khaled",
+            "عمر": "omar", "عمرو": "amr", "سارة": "sara", "إيلي": "elie", "ايلي": "elie",
+            "ادارة": "administration", "إدارة": "administration", "الادارة": "administration",
+            "ميكانيك": "mechanical", "الميكانيك": "mechanical",
+            "بيئة": "environmental", "البيئة": "environmental",
+            "ارضي": "basement", "أرضي": "basement", "سفلي": "basement",
+            "اول": "first", "الأول": "first", "الاول": "first",
+            "ثاني": "second", "الثاني": "second", "ثالث": "third", "الثالث": "third"
+        };
 
-    // عرض القائمة داخل الصفحة
-    function displayResults(data) {
-        const listContainer = document.getElementById('resultsList');
-        const countDisplay = document.getElementById('countDisplay');
-        
-        listContainer.innerHTML = '';
-        countDisplay.innerText = data.length;
-
-        if (data.length === 0) {
-            listContainer.innerHTML = '<li class="no-results">لا توجد نتائج مطابقة</li>';
-            return;
+        function normalizeEnglishText(str) {
+            if (!str) return '';
+            return str.toLowerCase()
+                      .replace(/[aeiouy]/g, '')
+                      .replace(/(.)\1+/g, '$1')
+                      .trim();
         }
 
-        data.forEach(item => {
-            const li = document.createElement('li');
-            li.className = 'result-item';
+        function translateArabicInput(text) {
+            if (!text) return '';
+            let words = text.trim().toLowerCase().split(/\s+/);
             
-            // قراءة الخصائص بغض النظر عن اختلاف تسمية الحقول في ملف JSON
-            const name = item.name || item.Name || item.الاسم || '';
-            const ext = item.ext || item.extension || item.Ext || item.الداخلي || '';
-            const dept = item.department || item.Dept || item.القسم || '';
-            const floor = item.floor || item.Floor || item.الطابق || '';
+            let translatedWords = words.map(word => {
+                if (arabicToEnglishDictionary[word]) {
+                    return arabicToEnglishDictionary[word];
+                }
+                const charMap = {
+                    'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+                    'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
+                    'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+                    'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
+                };
+                return word.split('').map(char => charMap[char] || char).join('');
+            });
 
-            li.innerHTML = `
-                <div class="emp-info">
-                    <span class="emp-name">${name}</span>
-                    <span class="emp-detail">${dept} ${floor ? ' - طابق: ' + floor : ''}</span>
+            return translatedWords.join(' ');
+        }
+
+        // جلب البيانات مباشرة من ملف data.json مع منع التخزين المؤقت (Cache-busting) لضمان تطابق النتائج على كل الأجهزة
+        async function fetchEmployeesData() {
+            try {
+                // إضافة ختم زمنـي متغير لمنع المتصفحات والهواتف من حفظ النسخة القديمة
+                const response = await fetch('data.json?v=' + new Date().getTime());
+                if (!response.ok) throw new Error('فشل جلب الملف');
+                const data = await response.json();
+                
+                if (Array.isArray(data) && data.length > 0) {
+                    processRawData(data);
+                } else {
+                    throw new Error('الملف فارغ أو غير صالح');
+                }
+            } catch (error) {
+                console.error("خطأ في جلب البيانات:", error);
+                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين. تأكد من اتصال الإنترنت أو وجود ملف data.json</div>`;
+                document.getElementById('resultsCount').textContent = "خطأ في التحميل";
+            }
+        }
+
+        function processRawData(data) {
+            allEmployees = data.map(emp => ({
+                name: emp.name || emp.empName || emp.Name || 'غير محدد',
+                department: emp.department || emp.dept || emp.Department || '-',
+                extension: emp.extension || emp.ext || emp.Ext || '-',
+                mobile: emp.mobile || emp.cell || emp.Mobile || '-',
+                floor: emp.floor || emp.Floor || '-'
+            }));
+            renderResults(allEmployees);
+        }
+
+        function renderResults(employees) {
+            const resultsList = document.getElementById('resultsList');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.textContent = `عدد النتائج: ${employees.length}`;
+
+            if (!employees || employees.length === 0) {
+                resultsList.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
+                return;
+            }
+
+            resultsList.innerHTML = employees.map(emp => `
+                <div class="employee-card">
+                    <div class="emp-name">${emp.name}</div>
+                    <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department}</strong></div>
+                    <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension}</strong></div>
+                    <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile}</strong></div>
+                    <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor}</strong></div>
                 </div>
-                <div class="emp-ext">${ext}</div>
-            `;
-            listContainer.appendChild(li);
-        });
-    }
-
-    // تصفية البيانات أثناء الكتابة
-    function filterData() {
-        const query = document.getElementById('searchInput').value.toLowerCase().trim();
-        
-        if (!query) {
-            displayResults(allData);
-            return;
+            `).join('');
         }
 
-        const filtered = allData.filter(item => {
-            const name = (item.name || item.Name || item.الاسم || '').toLowerCase();
-            const ext = String(item.ext || item.extension || item.Ext || item.الداخلي || '').toLowerCase();
-            const dept = (item.department || item.Dept || item.القسم || '').toLowerCase();
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const rawQuery = e.target.value.toLowerCase().trim();
+            const translatedQuery = translateArabicInput(rawQuery);
+            const normalizedQuery = normalizeEnglishText(translatedQuery || rawQuery);
 
-            return name.includes(query) || ext.includes(query) || dept.includes(query);
+            if (!rawQuery) {
+                renderResults(allEmployees);
+                return;
+            }
+
+            const filtered = allEmployees.filter(emp => {
+                const name = (emp.name || '').toLowerCase();
+                const dept = (emp.department || '').toLowerCase();
+                const ext = (emp.extension || '').toString().toLowerCase();
+                const mobile = (emp.mobile || '').toString().toLowerCase();
+                const floor = (emp.floor || '').toLowerCase();
+
+                const normalizedName = normalizeEnglishText(name);
+                const normalizedDept = normalizeEnglishTest ? normalizeEnglishText(dept) : '';
+
+                const isNameMatch = name.includes(rawQuery) || 
+                                    name.includes(translatedQuery) || 
+                                    (normalizedQuery.length >= 2 && normalizedName.includes(normalizedQuery));
+
+                const isDeptMatch = dept.includes(rawQuery) || 
+                                    dept.includes(translatedQuery) || 
+                                    (normalizedQuery.length >= 2 && normalizedDept.includes(normalizedQuery));
+
+                return isNameMatch || isDeptMatch ||
+                       ext.includes(rawQuery) ||
+                       mobile.includes(rawQuery) ||
+                       floor.includes(rawQuery) || floor.includes(translatedQuery);
+            });
+
+            renderResults(filtered);
         });
 
-        displayResults(filtered);
-    }
-
-    // بدء تحميل البيانات عند فتح الصفحة
-    loadData();
-</script>
-
-</body>
-</html>
+        // تشغيل الدالة فور تحميل الصفحة
+        fetchEmployeesData();
+    </script>
