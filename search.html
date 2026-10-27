@@ -3,324 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>البحث السريع - دليل السنترال</title>
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-hover: #4338ca;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border: #e2e8f0;
-        }
-
         * {
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Tajawal', sans-serif;
         }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
+            background-color: #f4f7f6;
+            padding: 15px;
+            color: #333;
         }
 
         .container {
-            width: 100%;
-            max-width: 850px;
-        }
-
-        .header-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .company-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 6px;
-        }
-
-        .page-subtitle {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .author-tag {
-            font-size: 12px;
-            font-weight: 700;
-            color: #dc2626;
-            margin-top: 6px;
-        }
-
-        .search-card {
-            background: var(--card-bg);
-            border-radius: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
             padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            text-align: center;
+            color: #1b365d;
             margin-bottom: 20px;
-            border: 1px solid var(--border);
+            font-size: 1.4rem;
         }
 
-        .search-input {
+        .search-box {
             width: 100%;
-            padding: 16px 20px;
+            padding: 12px 15px;
             font-size: 16px;
-            border: 2px solid var(--primary);
-            border-radius: 12px;
+            border: 2px solid #0056b3;
+            border-radius: 8px;
+            margin-bottom: 15px;
             outline: none;
-            transition: all 0.2s;
-            color: var(--text-main);
-            background-color: #fff;
+            transition: border-color 0.3s;
         }
 
-        .search-input:focus {
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+        .search-box:focus {
+            border-color: #003366;
         }
 
-        .results-count {
-            margin-top: 10px;
-            font-size: 15px;
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        .results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .employee-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 18px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .employee-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary);
-        }
-
-        .emp-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 8px;
-        }
-
-        .emp-info {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
+        .stats {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
             display: flex;
             justify-content: space-between;
         }
 
-        .emp-info strong {
-            color: var(--text-main);
+        /* حاوية القائمة مع خاصية التمرير لدعم الهواتف والأجهزة المختلفة */
+        .results-list {
+            list-style: none;
+            max-height: 70vh; /* تحديد ارتفاع أقصى ليظهر شريط التمرير */
+            overflow-y: auto; /* تفعيل الـ Scroll عند زيادة النتائج */
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .emp-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .emp-name {
+            font-weight: bold;
+            color: #1b365d;
+            font-size: 1rem;
+        }
+
+        .emp-detail {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .emp-ext {
+            font-weight: bold;
+            color: #d9534f;
+            background: #fdf2f2;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            direction: ltr;
         }
 
         .no-results {
-            grid-column: 1 / -1;
-            background: var(--card-bg);
-            padding: 30px;
             text-align: center;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 16px;
-            border: 1px dashed var(--border);
+            padding: 20px;
+            color: #888;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <div class="header-card">
-            <h1 class="company-title">Khatib & Alami Company</h1>
-            <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
-            <div class="author-tag">S,Walid Mrad</div>
-        </div>
+<div class="container">
+    <h2>شاشة البحث السريع - السنترال</h2>
+    
+    <input type="text" id="searchInput" class="search-box" placeholder="ابحث باسم الموظف، القسم، أو الرقم الداخلي..." oninput="filterData()">
 
-        <div class="search-card">
-            <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
-            <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
-        </div>
-
-        <div class="results-container" id="resultsList"></div>
+    <div class="stats">
+        <span>النتائج المعروضة: <strong id="countDisplay">0</strong></span>
+        <span>إجمالي الموظفين: <strong id="totalDisplay">0</strong></span>
     </div>
 
-    <script>
-        let allEmployees = [];
+    <ul id="resultsList" class="results-list">
+        <!-- يتم تحميل البيانات هنا تلقائياً -->
+    </ul>
+</div>
 
-        const arabicToEnglishDictionary = {
-            "زاهر": "zaher", "عبدالله": "abdallah", "عبد الله": "abdallah",
-            "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
-            "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
-            "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
-            "دغيلي": "dougheily", "معلم": "moualem", "حمية": "hamieh", "خالد": "khaled",
-            "عمر": "omar", "عمرو": "amr", "سارة": "sara", "إيلي": "elie", "ايلي": "elie",
-            "ادارة": "administration", "إدارة": "administration", "الادارة": "administration",
-            "ميكانيك": "mechanical", "الميكانيك": "mechanical",
-            "بيئة": "environmental", "البيئة": "environmental",
-            "ارضي": "basement", "أرضي": "basement", "سفلي": "basement",
-            "اول": "first", "الأول": "first", "الاول": "first",
-            "ثاني": "second", "الثاني": "second", "ثالث": "third", "الثالث": "third"
-        };
+<script>
+    let allData = [];
 
-        function normalizeEnglishText(str) {
-            if (!str) return '';
-            return str.toLowerCase()
-                      .replace(/[aeiouy]/g, '')
-                      .replace(/(.)\1+/g, '$1')
-                      .trim();
-        }
-
-        function translateArabicInput(text) {
-            if (!text) return '';
-            let words = text.trim().toLowerCase().split(/\s+/);
+    // جلب البيانات مع إبطال الكاش (Cache-Busting) لضمان تحميل الـ 322 موظف دائماً
+    async function loadData() {
+        try {
+            // إضافة متغير الوقت للرابط يمنع المتصفح من قراءة النسخة القديمة المحفوظة في الهاتف
+            const response = await fetch('data.json?v=' + new Date().getTime());
+            allData = await response.json();
             
-            let translatedWords = words.map(word => {
-                if (arabicToEnglishDictionary[word]) {
-                    return arabicToEnglishDictionary[word];
-                }
-                const charMap = {
-                    'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
-                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
-                    'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
-                    'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
-                    'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
-                };
-                return word.split('').map(char => charMap[char] || char).join('');
-            });
+            document.getElementById('totalDisplay').innerText = allData.length;
+            displayResults(allData);
+        } catch (error) {
+            console.error('خطأ في جلب البيانات:', error);
+            document.getElementById('resultsList').innerHTML = '<li class="no-results">حدث خطأ أثناء تحميل البيانات.</li>';
+        }
+    }
 
-            return translatedWords.join(' ');
+    // عرض القائمة داخل الصفحة
+    function displayResults(data) {
+        const listContainer = document.getElementById('resultsList');
+        const countDisplay = document.getElementById('countDisplay');
+        
+        listContainer.innerHTML = '';
+        countDisplay.innerText = data.length;
+
+        if (data.length === 0) {
+            listContainer.innerHTML = '<li class="no-results">لا توجد نتائج مطابقة</li>';
+            return;
         }
 
-        // دالة لجلب البيانات بذكاء من الذاكرة المحلية أولاً لضمان إظهار 322 موظفاً
-        async function fetchEmployeesData() {
-            let loaded = false;
-            const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
+        data.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'result-item';
+            
+            // قراءة الخصائص بغض النظر عن اختلاف تسمية الحقول في ملف JSON
+            const name = item.name || item.Name || item.الاسم || '';
+            const ext = item.ext || item.extension || item.Ext || item.الداخلي || '';
+            const dept = item.department || item.Dept || item.القسم || '';
+            const floor = item.floor || item.Floor || item.الطابق || '';
 
-            for (let key of keys) {
-                const stored = localStorage.getItem(key);
-                if (stored) {
-                    try {
-                        let parsed = JSON.parse(stored);
-                        if (Array.isArray(parsed) && parsed.length > 0) {
-                            processRawData(parsed);
-                            loaded = true;
-                            break;
-                        }
-                    } catch(e) {}
-                }
-            }
-
-            if (!loaded) {
-                try {
-                    const response = await fetch('data.json?nocache=' + new Date().getTime());
-                    if (!response.ok) throw new Error('فشل جلب الملف');
-                    const data = await response.json();
-                    processRawData(data);
-                } catch (error) {
-                    console.error("خطأ في جلب البيانات:", error);
-                    document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين.</div>`;
-                }
-            }
-        }
-
-        function processRawData(data) {
-            allEmployees = data.map(emp => ({
-                name: emp.name || emp.empName || emp.Name || 'غير محدد',
-                department: emp.department || emp.dept || emp.Department || '-',
-                extension: emp.extension || emp.ext || emp.Ext || '-',
-                mobile: emp.mobile || emp.cell || emp.Mobile || '-',
-                floor: emp.floor || emp.Floor || '-'
-            }));
-            renderResults(allEmployees);
-        }
-
-        function renderResults(employees) {
-            const resultsList = document.getElementById('resultsList');
-            const resultsCount = document.getElementById('resultsCount');
-
-            resultsCount.textContent = `عدد النتائج: ${employees.length}`;
-
-            if (!employees || employees.length === 0) {
-                resultsList.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
-                return;
-            }
-
-            resultsList.innerHTML = employees.map(emp => `
-                <div class="employee-card">
-                    <div class="emp-name">${emp.name}</div>
-                    <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department}</strong></div>
-                    <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension}</strong></div>
-                    <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile}</strong></div>
-                    <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor}</strong></div>
+            li.innerHTML = `
+                <div class="emp-info">
+                    <span class="emp-name">${name}</span>
+                    <span class="emp-detail">${dept} ${floor ? ' - طابق: ' + floor : ''}</span>
                 </div>
-            `).join('');
+                <div class="emp-ext">${ext}</div>
+            `;
+            listContainer.appendChild(li);
+        });
+    }
+
+    // تصفية البيانات أثناء الكتابة
+    function filterData() {
+        const query = document.getElementById('searchInput').value.toLowerCase().trim();
+        
+        if (!query) {
+            displayResults(allData);
+            return;
         }
 
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            const rawQuery = e.target.value.toLowerCase().trim();
-            const translatedQuery = translateArabicInput(rawQuery);
-            const normalizedQuery = normalizeEnglishText(translatedQuery || rawQuery);
+        const filtered = allData.filter(item => {
+            const name = (item.name || item.Name || item.الاسم || '').toLowerCase();
+            const ext = String(item.ext || item.extension || item.Ext || item.الداخلي || '').toLowerCase();
+            const dept = (item.department || item.Dept || item.القسم || '').toLowerCase();
 
-            if (!rawQuery) {
-                renderResults(allEmployees);
-                return;
-            }
-
-            const filtered = allEmployees.filter(emp => {
-                const name = (emp.name || '').toLowerCase();
-                const dept = (emp.department || '').toLowerCase();
-                const ext = (emp.extension || '').toString().toLowerCase();
-                const mobile = (emp.mobile || '').toString().toLowerCase();
-                const floor = (emp.floor || '').toLowerCase();
-
-                const normalizedName = normalizeEnglishText(name);
-                const normalizedDept = normalizeEnglishText(dept);
-
-                const isNameMatch = name.includes(rawQuery) || 
-                                    name.includes(translatedQuery) || 
-                                    (normalizedQuery.length >= 2 && normalizedName.includes(normalizedQuery));
-
-                const isDeptMatch = dept.includes(rawQuery) || 
-                                    dept.includes(translatedQuery) || 
-                                    (normalizedQuery.length >= 2 && normalizedDept.includes(normalizedQuery));
-
-                return isNameMatch || isDeptMatch ||
-                       ext.includes(rawQuery) ||
-                       mobile.includes(rawQuery) ||
-                       floor.includes(rawQuery) || floor.includes(translatedQuery);
-            });
-
-            renderResults(filtered);
+            return name.includes(query) || ext.includes(query) || dept.includes(query);
         });
 
-        fetchEmployeesData();
-    </script>
+        displayResults(filtered);
+    }
+
+    // بدء تحميل البيانات عند فتح الصفحة
+    loadData();
+</script>
+
 </body>
 </html>
