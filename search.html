@@ -10,7 +10,6 @@
       --bg: #f8fafc;
       --card-bg: #ffffff;
       --text: #1e293b;
-      --border: #e2e8f0;
     }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -94,7 +93,7 @@
   </div>
 
   <div class="search-box">
-    <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" oninput="filterData()">
+    <input type="text" id="searchInput" class="search-input" placeholder="ابحث هنا بالاسم، القسم، أو الرقم..." oninput="filterData()">
     <button class="mic-btn" onclick="startVoiceRecognition()" title="البحث بالصوت">🎙️</button>
   </div>
 
@@ -104,29 +103,6 @@
 
 <script>
   let employees = [];
-
-  // قاموس شامل للأسماء الشائعة بالعربية وما يقابلها بالإنجليزية
-  const nameTranslation = {
-    "وليد": "walid", "مراد": "murad", "محمد": "mohamad", "احمد": "ahmad", "أحمد": "ahmad",
-    "علي": "ali", "حسن": "hasan", "حسين": "hussein", "فادي": "fadi", "رامي": "rami",
-    "خالد": "khalid", "زياد": "ziad", "سارة": "sara", "رانيا": "rania", "غسان": "ghassan",
-    "عدنان": "adnan", "هاني": "hani", "سامر": "samer", "طارق": "tarek", "نبيل": "nabil",
-    "شادية": "shadia", "شادي": "shadi", "بلال": "bilal", "جواد": "jawad", "يوسف": "youssef"
-  };
-
-  function prepareQuery(input) {
-    if (!input) return [];
-    let original = input.toLowerCase().trim();
-    let translated = original;
-
-    // استبدال الكلمات العربية بما يقابلها في القاموس
-    for (let ar in nameTranslation) {
-      if (translated.includes(ar)) {
-        translated = translated.replace(ar, nameTranslation[ar]);
-      }
-    }
-    return [original, translated];
-  }
 
   async function loadData() {
     const statusEl = document.getElementById("status");
@@ -146,13 +122,11 @@
   }
 
   function filterData() {
-    const rawInput = document.getElementById("searchInput").value;
+    const query = document.getElementById("searchInput").value.toLowerCase().trim();
     const resultsContainer = document.getElementById("results");
     resultsContainer.innerHTML = "";
 
-    if (!rawInput.trim()) return;
-
-    const searchTerms = prepareQuery(rawInput);
+    if (!query) return;
 
     const filtered = employees.filter(emp => {
       const name = emp.name ? emp.name.toLowerCase() : "";
@@ -161,14 +135,11 @@
       const ext = emp.extension ? emp.extension.toString().toLowerCase() : "";
       const mob = emp.mobile ? emp.mobile.toString().toLowerCase() : "";
 
-      // التحقق مما إذا كان أي مصطلح بحث (عربي أو مترجم) موجوداً في بيانات الموظف
-      return searchTerms.some(term => 
-        name.includes(term) || 
-        dept.includes(term) || 
-        floor.includes(term) || 
-        ext.includes(term) || 
-        mob.includes(term)
-      );
+      return name.includes(query) || 
+             dept.includes(query) || 
+             floor.includes(query) || 
+             ext.includes(query) || 
+             mob.includes(query);
     });
 
     if (filtered.length === 0) {
