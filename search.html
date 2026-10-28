@@ -227,11 +227,10 @@
     <script>
         let allEmployees = [];
 
-        // دالة تحويل متقدمة تتجاهل التاء المربوطة والتشكيل وتحول الحروف بدقة
+        // تحويل التاء المربوطة إلى 'a' لتتطابق تماماً مع النطق الإنجليزي (مثل Shadia)
         function arabicToEnglishTransliteration(text) {
             if (!text) return '';
-            // استبدال التاء المربوطة بألف أو حذف تأثيرها الصوتي لكي تتطابق مع shadia
-            let cleaned = text.replace(/ة/g, 'ه').replace(/ى/g, 'ا');
+            let cleaned = text.replace(/ة/g, 'a').replace(/ى/g, 'a');
             
             const charMap = {
                 'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
@@ -327,7 +326,6 @@
             filterEmployees(e.target.value);
         });
 
-        // البرمجة الخاصة بالبحث الصوتي (Web Speech API)
         const micBtn = document.getElementById('micBtn');
         const searchInput = document.getElementById('searchInput');
 
