@@ -1,1 +1,2256 @@
-[تحميل ملف data.json المحدث (322 موظفاً)](file-tag: code-generated-file-ba3757dd-d8db-468f-8ba6-3051cf2f5269)
+[
+  {
+    "اسم الموظف": "Wissam Bishouty - وسام بيشوتي",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "170",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Bassel El Khatib - باسل الخطيب",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "109",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Razan Dimechkieh - رزان دمشقية",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "186",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Shadi Abou Harfoush - شادي أبو حربوش",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "115",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Berjawi - محمد برجاوي",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "110",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Tamara El Achi - تمارة العشي",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "107",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Balkis - محمد بلقيس",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "116",
+    "رقم الجوال": "03695581",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rania Khoury - رانيا خوري",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "106",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ghassan Chatila - غسان شتيلا",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "116",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Adnan Yassin - عدنان ياسين",
+    "القسم": "IT Department",
+    "الرقم الداخلي": "114",
+    "رقم الجوال": "71101290",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Khalid Itanii - خالد عيتاني",
+    "القسم": "Contracts Department",
+    "الرقم الداخلي": "170",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Zeina Takoush - زينة تقوش",
+    "القسم": "Contracts Department",
+    "الرقم الداخلي": "188",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Meschline Nader - ميشلين نادر",
+    "القسم": "BIM&Digital Services Department",
+    "الرقم الداخلي": "118",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "fouad El Zeinne - فؤاد الزين",
+    "القسم": "Business Operations Department",
+    "الرقم الداخلي": "189",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Nada Yasser - ندى ياسر",
+    "القسم": "Proposals Department",
+    "الرقم الداخلي": "135",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad kanaan - أحمد كنعان",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": "155",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Lina khadra - لينا خضرا",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": "176",
+    "رقم الجوال": "70474575",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Boukily - محمد بوكيلي",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": "199",
+    "رقم الجوال": "70032308",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rodolphe Harb - رودولف حرب",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": "199",
+    "رقم الجوال": "03059068",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Flora El Jabbour - فلورا الجبور",
+    "القسم": "Quality Department",
+    "الرقم الداخلي": "151",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Haythem Fares - هيثم فارس",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "198",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Omar Othman - عمر عثمان",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "159",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad hajjar - محمد حجار",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "177",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Oula Natour - علا ناطور",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "177",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ali Abdelaal - علي عبد العال",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "180",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Alaa Moussa - علاء موسى",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "161",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ali Hindi - علي هندي",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "162",
+    "رقم الجوال": "03697887",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Cloud Abboud - كلود عبود",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "152",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Chams'ddine - محمد شمس الدين",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "174",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rabih Kamourieh - ربيع قمورية",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "157",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Omar Najmddine - عمر نجم الدين",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "153",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rasha Balkis - رشا بلقيس",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "185",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Firas Safiaddine - فراس صفي الدين",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "156",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Jamal Bernawi - جمال برناوي",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "172",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Bassima Hamoud - باسمة حمود",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": "154",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Bwatrics Abo Haidar - بياتريس أبو حيدر",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "216",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Darina Zogheib - دارينا زغيب",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "216",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Sylvain Faghali - سيلفان فرغلي",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "213",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Rami Mrad - رامي مراد",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "208",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mahmoud Itani - محمود عيتاني",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "208",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Samer Fawaz - سامر فواز",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "202",
+    "رقم الجوال": "76843235",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad El Khatib - محمد الخطيب",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "215",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Kamil Safieddine - كامل صفي الدين",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "215",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Helmi Hussam - حلمي حسام",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "214",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Hussam Chehadi - حسام شحادي",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "214",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad Dougheily - أحمد دغيلي",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "207",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Amer Serhal - عامر سرحال",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "207",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Wassim Tohmi - وسام طعمة",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "211",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Shadi Sunallah - شادي صنوع الله",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "211",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad Kotob - أحمد قطب",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "218",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Jana Baydoun - جنى بيضون",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "223",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Hani Ballour - هاني بلور",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "223",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Zahed Abdel Rahman - زاهد عبد الرحمن",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "221",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Samer Yassin - سامر ياسين",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "221",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Baraa Hajj Shahadi - براء حاج شحادة",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "220",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Serge Hayek - سيرج حايك",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "203",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Ibragheeh - محمد إبرغيه",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "226",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Dr. Ali Zeidan - د. علي زيدان",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "217",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Mansour - محمد منصور",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "205",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mahmoud El Hajj - محمود الحاج",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "227",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Marwan Amin - مروان أمين",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "206",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mustafa Adada - مصطفى عضاضة",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "224",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Abed El Rahman Itani - عبد الرحمن عيتاني",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "204",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Kossay Hajjar - قصي حجار",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "210",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Ahid Mubada - عاهد مبدا",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "200",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Nagham El Shaar - نغم الشعار",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "229",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Tania Saadi - تانيا سعدي",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "209",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Wajaa Abou Afash - وجاء أبو عفش",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "225",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Maher Habanjar - ماهر هبنر",
+    "القسم": "Environmental Department",
+    "الرقم الداخلي": "222",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad Fawaz - أحمد فواز",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "264",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Tala Mallem - تالا معلم",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "281",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Bassel Mawassi - باسل مواسي",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "282",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Saadeddine Ramaqdan - سعد الدين رمضان",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "284",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Jana Sinjakdar - جنى سنجقدار",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "274",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Batoul Berro - بتول برو",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "258",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Abir Halawi - عبير حلاوي",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "266",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Salima Seifeddine - سليمة سيف الدين",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "269",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Lucein Yammine - لوسيان يمين",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "269",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Ayad Mallak - إياد ملاك",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "279",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Sirine El Sayed - سيرين السيد",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "276",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Housam Hassouna - حسام حسونة",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "262",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Tabash - محمد طبش",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "261",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Salim Merhi - سليم مرعي",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "261",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Wafa Ayoubi - وفا أيوبي",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "277",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Zein Ibrahim - زين إبراهيم",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "277",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Kassem Al Hajjar - قاسم الحجار",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "275",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Wissam Jammoul - وسام جمول",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "275",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Anas Barakat - أنس بركات",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "272",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Ibrahim - محمد إبراهيم",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "271",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Najib Boustany - نجيب بستاني",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "263",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Meeting Room - غرفة اجتماعات النقل",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "259",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Ramadan Harb - رمضان حرب",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "251",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Nidaa Fayed - نداء فايد",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "265",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Leila El Khatib - ليلى الخطيب",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "250",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Rabih El Khatib - ربيع الخطيب",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "255",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Yusur Kutub - يسر قطب",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "252",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Philimone Azar - فيليمون عازار",
+    "القسم": "Transportation Department",
+    "الرقم الداخلي": "273",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Sulymane - محمد سليمان",
+    "القسم": "Business Proposals Department",
+    "الرقم الداخلي": "253",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Jean Hawa - جان حوا",
+    "القسم": "Business Operations Department",
+    "الرقم الداخلي": "257",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Marcelle Mattar - مارسل مطر",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "300",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hanan Kassab - حنان كساب",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "307",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Charbel Nakhli - شربل نخلي",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "307",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Roupen Sulhian - روبين صولحيان",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "333",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Ibrahim Balaa - إبراهيم بلعة",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "325",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Chafik Kallab - شفيق قلاب",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "323",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Rola Eid - رولا عيد",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "331",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Elio Kazzi - ايليو قزي",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "313",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Christian Tayem - كريستيان التيم",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "321",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Samer Sidani - سامر صيداني",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "314",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Adam Kaj - آدم كاج",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "313",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Alaa Farhat - علاء فرحات",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "322",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hiba darwiche - هبة درويش",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "309",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "shadi Abdallah - شادي عبد الله",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "309",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Mouallem - محمد معلم",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "320",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Moustafa Eido - مصطفى عيدو",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "322",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Rawad Kanso - رواد قانصوه",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "316",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Farhat - محمد فرحات",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "330",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Kamel Taljeh - كامل ثلجة",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "317",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Rola Khalifa - رولا خليفة",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "329",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Faten Maalouf - فاتن معلوف",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "307",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Abel Harfoush - هابيل حربوش",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "311",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Nahed Abdel Halim - ناهد عبد الحليم",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "303",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Nabil Kabalan - نبيل قبلان",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "318",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Khaled El Orr - خالد العر",
+    "القسم": "Electrical Department",
+    "الرقم الداخلي": "304",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Zaher Kashua - زاهر كشوع",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "351",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Meeting Room - غرفة اجتماعات الميكانيك",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "371",
+    "رقم الجوال": "356",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Hajj Hasan - محمد حاج حسن",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "369",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hasan Chhadi - حسن شحادي",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "366",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Tarek Bash - طارق باش",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "356",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hasan Barada - حسن بردى",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "369",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Walid Hamieh - وليد حمية",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "359",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Darine Mirza - دارين ميرزا",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "350",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hasan Chahine - حسن شاهين",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "382",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hussein Tfayli - حسين طفيلي",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "381",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Theadora Moawad - تيودورا معوض",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "360",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Hamza Basbous - حمزة بسبوص",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "373",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Tarek Khatib - طارق الخطيب",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "363",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Moalem - محمد معلم",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "363",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "BMS Mrchanical - التحكم الميكانيكي",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "372",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Sanaa Chehaytlie - سناء شحيطلي",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "364",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Samah Chehine - سماح شاهين",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "374",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Bilal Alia - بلال عالية",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "352",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Anis Murad - أنيس مراد",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "374",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad Darwish - أحمد درويش",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "368",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Jalal Kaddah - جلال قداح",
+    "القسم": "Mechanical",
+    "الرقم الداخلي": "365",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Dr. Khaldoun Nasreddine - د. خلدون نصر الدين",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "360",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Dona Zakhem - دونا زاخم",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "368",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Hajjar - محمد حجار",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "375",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Bernard JarJouhi - برنار جرجوحي",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "367",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Imad Fawaz - عماد فواز",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "378",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Nasre din Jradi - نصر الدين جرادي",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "377",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Amjad Rayes - أمجد الريس",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "379",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Bousayna Halabi - بثينة حلبي",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "367",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Jad Chahine - جاد شاهين",
+    "القسم": "Geo Tech",
+    "الرقم الداخلي": "357",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Fadia Ghosn - فاديا غصن",
+    "القسم": "Human Resources Depatment",
+    "الرقم الداخلي": "130",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Karim Khatib - كريم الخطيب",
+    "القسم": "Human Resources Depatment",
+    "الرقم الداخلي": "731",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Samar Zeinddine - سمر زين الدين",
+    "القسم": "Human Resources Depatment",
+    "الرقم الداخلي": "132",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Jalal El Khatib - جلال الخطيب",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "147",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Rola Awad - رولا عواد",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "-",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Engene Bteich - إنجين بطيش",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "179",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Olga Khoury - أولغا خوري",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "728",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Hassana Wazzi - حسانة وزي",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "146",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Anna Maria Hbayber - أنا ماريا حبيباط",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "195",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Mayssam El Khatib - ميسم الخطيب",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "729",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Maria Jabbour - ماريا جبور",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "192",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Samar Dahchi - سمر دهشي",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "730",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Christina Bou Rached - كريستينا أبو راشد",
+    "القسم": "Marketing Depatment",
+    "الرقم الداخلي": "136",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Raed Kayyouf - رائد كيوف",
+    "القسم": "Driver Room",
+    "الرقم الداخلي": "101",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Nadine Tannir - نادين تنير",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "139",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Rouba Hussein - ربى حسين",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "143",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Rola Aouad - رولا عواد",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "191",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Hiba Dahcheh - هبة دهشة",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "194",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Hilal Chacker - هلال شاكر",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "145",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Roy Nasr - روي نصر",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "178",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Maher Ibrahim - ماهر إبراهيم",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "136",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Bassem El Zein - باسم الزين",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "193",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Mechel Abou Rjeily - ميشال أبو رجيلي",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "103",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Edgar Murad - إدغار مراد",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "126",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Youssef Hajj - يوسف الحاج",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "169",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Ramadan - محمد رمضان",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "104",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Dani Halabi - داني حلبي",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "123",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Murad - محمد مراد",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "119",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Jihad Fawaz - جهاد فواز",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "102",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Muriel Skaff - مورييل سكاف",
+    "القسم": "Urban Planning Department",
+    "الرقم الداخلي": "141",
+    "رقم الجوال": "-",
+    "الطابق": "Ground Floor"
+  },
+  {
+    "اسم الموظف": "Raja Jaber - رجا جابر",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "401",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Peggy Sfeir - بيغي صفير",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "400",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Said Dagher - سعيد داغر",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "410",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Line Khatib - لين الخطيب",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "427",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Oussama Dimashkieh - أسامة دمشقية",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "444",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Christelle Salameh - كريستيل سلامة",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "426",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Haia Otba - هيا عتبة",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "429",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Alex Khoury - أليكس خوري",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "421",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Rony Haddad - روني حداد",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "422",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Carhrien Braydi - كاترين بريدي",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "415",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Fadi Tannir - فادي تنير",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "488",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Zakaria Haddad - زكريا حداد",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "419",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Reef Tuffaha - ريف تفاحة",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "414",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Yeghia Torossian - يغيا طوروسيان",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "426",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Bassam Kaddissii - بسام القديسي",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "404",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Toni Farah - طوني فرح",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "405",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Wael Baker - وائل باكر",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "460",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Lina Shehabi - لينا شهابي",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "455",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Mahmoud Kadoura - محمود قدورة",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "484",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Dima Yassin - ديما ياسين",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "469",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Hanadi Zeaiter - هنادي زعيتر",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "468",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Hamza Abdallah - حمزة عبد الله",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "478",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Aya El Khatib - آية الخطيب",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "451",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Nabil El Badawi - نبيل البدوي",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "462",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Hussien Hatoum - حسين حطوم",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "482",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Jana Hani - جنى هاني",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "466",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Moustafa Nashar - مصطفى نشار",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "465",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Rolph Matar - رولف مطر",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "483",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Thakla Ibrahim - ثكلا إبراهيم",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "473",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Assad Kanaan - أسعد كنعان",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "475",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Harout Markarian - هاروت ماركاريان",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "476",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Roy Matta - روي متى",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "456",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Samah Hatoum - سماح حطوم",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "474",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Marwan Salaiman - مروان سليمان",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "474",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Ali Hatoum - علي حطوم",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "464",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Rana Mezher - رنا مزهر",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "420",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Khaled Kheir - خالد خير",
+    "القسم": "Architectural Department",
+    "الرقم الداخلي": "466",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Jennifer Namoura - جينيفر نمورة",
+    "القسم": "ICT Department",
+    "الرقم الداخلي": "485",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Alaa Nejmeddine - علاء نجم الدين",
+    "القسم": "ICT Department",
+    "الرقم الداخلي": "481",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Masri - محمد المصري",
+    "القسم": "ICT Department",
+    "الرقم الداخلي": "457",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Sara Issa - سارة عيسى",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "511",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Lawyers Office - مكتب المحامين",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "525",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Conference Room - غرفة المؤتمرات",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "510",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Board Room - غرفة مجلس الإدارة",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "503",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Dr. Najib El Khatib - د. نجيب الخطيب",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "508",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Sandy Al Madany - سانادي المدني",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "526",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Mr. Mitri Saba - أ. متري صبا",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "513",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Mr. Mazen Houry - أ. مازن حوري",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "517",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Joumana Shehade - جومانا شحادة",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "518",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Mr. Faisal Alami - أ. فيصل العلمي",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "555",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Fatima Matari - فاطمة مطري",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "515",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Nancy Khoury - نانسي خوري",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "534",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Samar El Sheikh - سمر الشيخ",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "509",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Alaa El Khatib - علاء الخطيب",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "520",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Dr. Ahmad AbouTaha - د. أحمد أبو طه",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "524",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Khaled Mehio - خالد محيو",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "528",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Sara Khatib - سارة الخطيب",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "523",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Fawaz - محمد فواز",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "529",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Maya Machta - مايا معطة",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "522",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Kamal Sayed - كمال السيد",
+    "القسم": "Management & Admin Department",
+    "الرقم الداخلي": "521",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad Moualem - أحمد معلم",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "212",
+    "رقم الجوال": "-",
+    "الطابق": "Second Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Andallah - محمد عبد الله",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "312",
+    "رقم الجوال": "-",
+    "الطابق": "Third Floor"
+  },
+  {
+    "اسم الموظف": "Moustafa Kayouf - مصطفى كيوف",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "412",
+    "رقم الجوال": "-",
+    "الطابق": "Fourth Floor"
+  },
+  {
+    "اسم الموظف": "Fadi Jaber - فادي جابر",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "512",
+    "رقم الجوال": "71205644",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Tawik Hamieh - توفيق حمية",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "512",
+    "رقم الجوال": "-",
+    "الطابق": "Fifth Floor"
+  },
+  {
+    "اسم الموظف": "Walid Moualem - وليد معلم",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "712",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ahmad Kaddah - أحمد قداح",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "741",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ali Yaghi - علي یاغي",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "751",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Rami Fawaz - رامي فواز",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "703",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Khodor Najmeddine - خضر نجم الدين",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "741",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Khada - محمد قداح",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "753",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Anis Murad - أنيس مراد",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "727",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Shadia Najmeddine - شادية نجم الدين",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "9",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Maamar Hajj Chehadi - معمر حاج شحادة",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "709",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Walid Murad - وليد مراد",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "750",
+    "رقم الجوال": "76751630",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ahmad Dahrouj - أحمد دحروج",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "750",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Monzer - محمد منذر",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "766",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Yasmine Sibaie - ياسمين سباعي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "766",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Jad Abou Ibrahim - جاد أبو إبراهيم",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "721",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Nada Saadeh - ندى سعادة",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "721",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Rida Shames - رضا شمس",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "719",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Fadi Issa - فادي عيسى",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "719",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Samir El Khatib - سمير الخطيب",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "719",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Bilal Monif - بلال منيف",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "719",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Bassem Halawi - باسم حلاوي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "707",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Meeting Room - غرفة اجتماعات نظم المعلومات الجغرافية",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "705",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Laila Diab - ليلى دياب",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "749",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Salim Kais - سليم قيس",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "748",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Khodor Sabra - خضر صبرة",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "749",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Farah Al Rasheed - فرح الرشيد",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "748",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Faour - محمد فاعور",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "749",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Rifai - محمد الرفاعي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "785",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ahmad Kabeissy - أحمد قبيسي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "748",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Laila Habli - ليلى حلي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "748",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Aynan - محمد عينان",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "785",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Talal Salameh - طلال سلامة",
+    "القسم": "GIS Departmenrt",
+    "الرقم الداخلي": "785",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Simon Jachi - سيمون جاشي",
+    "القسم": "GIS Departmenrt",
+    "الرقم الداخلي": "785",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Alaa Abdallah - علاء عبد الله",
+    "القسم": "GIS Departmenrt",
+    "الرقم الداخلي": "737",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Batoul Fadel - بتول فاضل",
+    "القسم": "GIS Departmenrt",
+    "الرقم الداخلي": "758",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ahmad Zayour - أحمد زعيور",
+    "القسم": "GIS Departmenrt",
+    "الرقم الداخلي": "735",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Samer Seifeddine - سامر سيف الدين",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "745",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ahmad Jaber - أحمد جابر",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "745",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Omar Batrawi - عمر بتراوي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "739",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Jad Shamsseddine - جاد شمس الدين",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "738",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Makram Ghrize - مكرم غريزة",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "738",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Hussein Rida - حسين رضا",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "704",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Issa Najam - عيسى نجم",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "738",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Antoni Tabet - أنطوني ثابت",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "738",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Sara Al Baba - سارة بابا",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "704",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Yara Taraby - يارا ترابي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "704",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Hassan Serhan - حسن سرحان",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "738",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Asaad Kayouf - أسعد كيوف",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "738",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Nasim Kabout - نسيم قبوط",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "704",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Hadi Ghandour - هادي غندور",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "704",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ahmad Awada - أحمد عواضة",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "745",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mazen Murad - مازن مراد",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "759",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Fadel Ghandour - فاضل غندور",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "702",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Hanin Serhan - حنين سرحان",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "701",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Fineich - محمد فياض",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "701",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Meeting Room - غرفة اجتماعات",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "701",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Rana Halbi - رنا حلبي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "708",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Gretta Kelzi - غريتا قلزي",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "767",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mounia Badran - مونيا بدران",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "705",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Tarik Hajar - طارق حجار",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "702",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Nour Nasser - نور ناصر",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "783",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ibrahim Sheikh Issa - إبراهيم الشيخ عيسى",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "721",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Haidar Zeineddine - حيدر زين الدين",
+    "القسم": "GIS Arabia Department",
+    "الرقم الداخلي": "781",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Farah Ouidet - فرح عويدات",
+    "القسم": "GIS Arabia Department",
+    "الرقم الداخلي": "757",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Ghazala Hamid - غزالة حامد",
+    "القسم": "GIS Arabia Department",
+    "الرقم الداخلي": "757",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Hasen Zeitoun - حسن زيتون",
+    "القسم": "GIS Arabia Department",
+    "الرقم الداخلي": "757",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Farah Saabie - فرح صعبي",
+    "القسم": "GIS Arabia Department",
+    "الرقم الداخلي": "760",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mano Shilinirian - مانو شيلينيريان",
+    "القسم": "GIS Arabia Department",
+    "الرقم الداخلي": "760",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Samir Kais - سمير قيس",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "720",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Rabih Abdallah - ربيع عبد الله",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "720",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Abdallah Hajer - عبد الله حجار",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "720",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Talal Chmet - طلال شحيطلي",
+    "القسم": "Administration Department",
+    "الرقم الداخلي": "720",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Mohamad Shalhoub - محمد السنهوري",
+    "القسم": "GIS Department",
+    "الرقم الداخلي": "701",
+    "رقم الجوال": "-",
+    "الطابق": "First Basement"
+  },
+  {
+    "اسم الموظف": "Zaher Abdallah - زاهر عبد الله",
+    "القسم": "Administration",
+    "الرقم الداخلي": "112",
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  }
+]
