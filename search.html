@@ -77,7 +77,6 @@
             border: 1px solid var(--border);
         }
 
-        /* تنسيق خانة البحث مع زر الميكروفون */
         .search-input-wrapper {
             position: relative;
             display: flex;
@@ -101,7 +100,6 @@
             box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
         }
 
-        /* زر البحث الصوتي */
         .mic-btn {
             position: absolute;
             right: 12px;
@@ -128,7 +126,6 @@
             fill: currentColor;
         }
 
-        /* تأثير الحركة أثناء الاستماع للصوت */
         .mic-btn.listening {
             color: #ef4444;
             background-color: #fee2e2;
@@ -230,48 +227,17 @@
     <script>
         let allEmployees = [];
 
-        const arabicToEnglishDictionary = {
-            "زاهر": "zaher", "عبدالله": "abdallah", "عبد الله": "abdallah",
-            "محمد": "mohamad", "محمود": "mahmoud", "احمد": "ahmad", "أحمد": "ahmad",
-            "علي": "ali", "حسن": "hassan", "حسين": "hussein", "مصطفى": "mustafa",
-            "وليد": "walid", "مراد": "murad", "درويش": "darwish", "دحروج": "dahrouj",
-            "دغيلي": "dougheily", "معلم": "moualem", "حمية": "hamieh", "خالد": "khaled",
-            "عمر": "omar", "عمرو": "amr", "سارة": "sara", "إيلي": "elie", "ايلي": "elie",
-            "ادارة": "administration", "إدارة": "administration", "الادارة": "administration",
-            "ميكانيك": "mechanical", "الميكانيك": "mechanical",
-            "بيئة": "environmental", "البيئة": "environmental",
-            "ارضي": "basement", "أرضي": "basement", "سفلي": "basement",
-            "اول": "first", "الأول": "first", "الاول": "first",
-            "ثاني": "second", "الثاني": "second", "ثالث": "third", "الثالث": "third"
-        };
-
-        function normalizeEnglishText(str) {
-            if (!str) return '';
-            return str.toLowerCase()
-                      .replace(/[aeiouy]/g, '')
-                      .replace(/(.)\1+/g, '$1')
-                      .trim();
-        }
-
-        function translateArabicInput(text) {
+        // دالة تحويل الحروف العربية إلى إنجليزية تلقائياً لأي اسم يتم كتابته
+        function arabicToEnglishTransliteration(text) {
             if (!text) return '';
-            let words = text.trim().toLowerCase().split(/\s+/);
-            
-            let translatedWords = words.map(word => {
-                if (arabicToEnglishDictionary[word]) {
-                    return arabicToEnglishDictionary[word];
-                }
-                const charMap = {
-                    'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
-                    'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
-                    'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
-                    'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
-                    'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
-                };
-                return word.split('').map(char => charMap[char] || char).join('');
-            });
-
-            return translatedWords.join(' ');
+            const charMap = {
+                'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
+                'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
+                'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
+                'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
+                'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
+            };
+            return text.split('').map(char => charMap[char] || char).join('');
         }
 
         async function fetchEmployeesData() {
@@ -327,8 +293,7 @@
 
         function filterEmployees(queryText) {
             const rawQuery = queryText.toLowerCase().trim();
-            const translatedQuery = translateArabicInput(rawQuery);
-            const normalizedQuery = normalizeEnglishText(translatedQuery || rawQuery);
+            const convertedQuery = arabicToEnglishTransliteration(rawQuery);
 
             if (!rawQuery) {
                 renderResults(allEmployees);
@@ -342,21 +307,14 @@
                 const mobile = (emp.mobile || '').toString().toLowerCase();
                 const floor = (emp.floor || '').toLowerCase();
 
-                const normalizedName = normalizeEnglishText(name);
-                const normalizedDept = normalizeEnglishText(dept);
-
-                const isNameMatch = name.includes(rawQuery) || 
-                                    name.includes(translatedQuery) || 
-                                    (normalizedQuery.length >= 2 && normalizedName.includes(normalizedQuery));
-
-                const isDeptMatch = dept.includes(rawQuery) || 
-                                    dept.includes(translatedQuery) || 
-                                    (normalizedQuery.length >= 2 && normalizedDept.includes(normalizedQuery));
-
-                return isNameMatch || isDeptMatch ||
+                return name.includes(rawQuery) || 
+                       name.includes(convertedQuery) || 
+                       dept.includes(rawQuery) || 
+                       dept.includes(convertedQuery) ||
                        ext.includes(rawQuery) ||
                        mobile.includes(rawQuery) ||
-                       floor.includes(rawQuery) || floor.includes(translatedQuery);
+                       floor.includes(rawQuery) ||
+                       floor.includes(convertedQuery);
             });
 
             renderResults(filtered);
@@ -374,7 +332,7 @@
 
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
-            recognition.lang = 'ar-SA'; // ضبط التعرف على اللغة العربية
+            recognition.lang = 'ar-SA';
             recognition.continuous = false;
             recognition.interimResults = false;
 
@@ -408,7 +366,7 @@
                 searchInput.placeholder = "ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)";
             };
         } else {
-            micBtn.style.display = 'none'; // إخفاء الزر إذا كان المتصفح القديم لا يدعم الميزّة
+            micBtn.style.display = 'none';
         }
 
         fetchEmployeesData();
