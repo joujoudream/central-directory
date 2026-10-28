@@ -203,6 +203,11 @@
         `;
         container.appendChild(card);
       });
+
+      // تفعيل رندر الأيقونات من مكتبة Lucide
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
     }
 
     // دعم البحث الصوتي مع معالجة الهاء والتاء المربوطة
@@ -244,7 +249,12 @@
       recognition.start();
     }
 
-    window.onload = loadData;
+    window.onload = function() {
+      loadData();
+      if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+      }
+    };
   </script>
 </body>
 </html>
