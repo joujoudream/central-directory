@@ -8,211 +8,46 @@
     <style>
         :root {
             --primary: #4f46e5;
-            --primary-hover: #4338ca;
             --bg: #f8fafc;
             --card-bg: #ffffff;
             --text-main: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 850px;
-        }
-
-        .header-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .company-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1e293b;
-            margin-bottom: 6px;
-        }
-
-        .page-subtitle {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .author-tag {
-            font-size: 12px;
-            font-weight: 700;
-            color: #dc2626;
-            margin-top: 6px;
-        }
-
-        .search-card {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .search-input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-            width: 100%;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 16px 55px 16px 20px;
-            font-size: 16px;
-            border: 2px solid var(--primary);
-            border-radius: 12px;
-            outline: none;
-            transition: all 0.2s;
-            color: var(--text-main);
-            background-color: #fff;
-        }
-
-        .search-input:focus {
-            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
-        }
-
-        .mic-btn {
-            position: absolute;
-            right: 12px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            color: var(--primary);
-        }
-
-        .mic-btn:hover {
-            background-color: #f1f5f9;
-        }
-
-        .mic-btn svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-        }
-
-        .mic-btn.listening {
-            color: #ef4444;
-            background-color: #fee2e2;
-            animation: pulse 1.2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-        }
-
-        .results-count {
-            margin-top: 10px;
-            font-size: 15px;
-            color: var(--primary);
-            font-weight: 800;
-        }
-
-        .results-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 16px;
-        }
-
-        .employee-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 18px;
-            border: 1px solid var(--border);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .employee-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
-            border-color: var(--primary);
-        }
-
-        .emp-name {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1e293b;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 8px;
-        }
-
-        .emp-info {
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .emp-info strong {
-            color: var(--text-main);
-        }
-
-        .no-results {
-            grid-column: 1 / -1;
-            background: var(--card-bg);
-            padding: 30px;
-            text-align: center;
-            border-radius: 12px;
-            color: var(--text-muted);
-            font-size: 16px;
-            border: 1px dashed var(--border);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); padding: 20px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 850px; }
+        .header-card { background: var(--card-bg); border-radius: 16px; padding: 24px; text-align: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border); }
+        .company-title { font-size: 24px; font-weight: 800; color: #1e293b; margin-bottom: 6px; }
+        .page-subtitle { font-size: 16px; font-weight: 700; color: var(--primary); }
+        .author-tag { font-size: 12px; font-weight: 700; color: #dc2626; margin-top: 6px; }
+        .search-card { background: var(--card-bg); border-radius: 16px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border); }
+        .search-input-wrapper { position: relative; display: flex; align-items: center; width: 100%; }
+        .search-input { width: 100%; padding: 16px 55px 16px 20px; font-size: 16px; border: 2px solid var(--primary); border-radius: 12px; outline: none; background: #fff; color: var(--text-main); }
+        .mic-btn { position: absolute; right: 12px; background: none; border: none; cursor: pointer; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+        .mic-btn.listening { color: #ef4444; background-color: #fee2e2; animation: pulse 1.2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        .results-count { margin-top: 10px; font-size: 15px; color: var(--primary); font-weight: 800; }
+        .results-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .employee-card { background: var(--card-bg); border-radius: 12px; padding: 18px; border: 1px solid var(--border); box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .emp-name { font-size: 18px; font-weight: 700; color: #1e293b; margin-bottom: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px; }
+        .emp-info { font-size: 14px; color: var(--text-muted); margin-bottom: 6px; display: flex; justify-content: space-between; }
+        .emp-info strong { color: var(--text-main); }
+        .no-results { grid-column: 1 / -1; background: var(--card-bg); padding: 30px; text-align: center; border-radius: 12px; color: var(--text-muted); font-size: 16px; border: 1px dashed var(--border); }
     </style>
 </head>
 <body>
-
     <div class="container">
         <div class="header-card">
             <h1 class="company-title">Khatib & Alami Company</h1>
             <div class="page-subtitle">شاشة البحث السريع للسنترال</div>
             <div class="author-tag">S,Walid Mrad</div>
         </div>
-
         <div class="search-card">
             <div class="search-input-wrapper">
-                <input type="text" id="searchInput" class="search-input" dir="auto" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" autofocus>
                 <button type="button" id="micBtn" class="mic-btn" title="البحث الصوتي">
-                    <svg viewBox="0 0 24 24">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
                         <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
                         <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
                     </svg>
@@ -220,157 +55,85 @@
             </div>
             <div class="results-count" id="resultsCount">جاري تحميل البيانات...</div>
         </div>
-
         <div class="results-container" id="resultsList"></div>
     </div>
 
     <script>
         let allEmployees = [];
 
-        // تحويل التاء المربوطة إلى 'a' لتتطابق تماماً مع النطق الإنجليزي (مثل Shadia)
-        function arabicToEnglishTransliteration(text) {
-            if (!text) return '';
-            let cleaned = text.replace(/ة/g, 'a').replace(/ى/g, 'a');
-            
-            const charMap = {
-                'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
-                'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
-                'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
-                'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
-                'ه': 'h', 'و': 'w', 'ي': 'y', 'ئ': 'e', 'ء': 'a'
-            };
-            return cleaned.split('').map(char => charMap[char] || char).join('');
-        }
-
-        async function fetchEmployeesData() {
+        async function loadData() {
             try {
-                const response = await fetch('data.json?v=' + new Date().getTime());
-                if (!response.ok) throw new Error('فشل جلب الملف');
-                const data = await response.json();
-                
-                if (Array.isArray(data) && data.length > 0) {
-                    processRawData(data);
-                } else {
-                    throw new Error('الملف فارغ أو غير صالح');
-                }
-            } catch (error) {
-                console.error("خطأ في جلب البيانات:", error);
-                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين. تأكد من وجود ملف data.json</div>`;
+                const res = await fetch('data.json?v=' + new Date().getTime());
+                if(!res.ok) throw new Error();
+                const data = await res.json();
+                allEmployees = data.map(emp => ({
+                    name: emp['اسم الموظف'] || emp.name || '',
+                    department: emp['القسم'] || emp.department || '-',
+                    extension: emp['الرقم الداخلي'] || emp.extension || '-',
+                    mobile: emp['رقم الجوال'] || emp.mobile || '-',
+                    floor: emp['الطابق'] || emp.floor || '-'
+                }));
+                render(allEmployees);
+            } catch (e) {
                 document.getElementById('resultsCount').textContent = "خطأ في التحميل";
+                document.getElementById('resultsList').innerHTML = `<div class="no-results">تعذر تحميل بيانات الموظفين. تأكد من وجود ملف data.json</div>`;
             }
         }
 
-        function processRawData(data) {
-            allEmployees = data.map(emp => ({
-                name: emp['اسم الموظف'] || emp.name || emp.empName || emp.Name || 'غير محدد',
-                department: emp['القسم'] || emp.department || emp.dept || emp.Department || '-',
-                extension: emp['الرقم الداخلي'] || emp.extension || emp.ext || emp.Ext || '-',
-                mobile: emp['رقم الجوال'] || emp.mobile || emp.cell || emp.Mobile || '-',
-                floor: emp['الطابق'] || emp.floor || emp.Floor || '-'
-            }));
-            renderResults(allEmployees);
-        }
-
-        function renderResults(employees) {
-            const resultsList = document.getElementById('resultsList');
-            const resultsCount = document.getElementById('resultsCount');
-
-            resultsCount.textContent = `عدد النتائج: ${employees.length}`;
-
-            if (!employees || employees.length === 0) {
-                resultsList.innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
+        function render(list) {
+            document.getElementById('resultsCount').textContent = `عدد النتائج: ${list.length}`;
+            if (list.length === 0) {
+                document.getElementById('resultsList').innerHTML = `<div class="no-results">لا توجد نتائج مطابقة للبحث</div>`;
                 return;
             }
-
-            resultsList.innerHTML = employees.map(emp => `
+            document.getElementById('resultsList').innerHTML = list.map(emp => `
                 <div class="employee-card">
                     <div class="emp-name">${emp.name}</div>
-                    <div class="emp-info"><span>القسم / الإدارة:</span> <strong>${emp.department}</strong></div>
-                    <div class="emp-info"><span>الرقم الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension}</strong></div>
-                    <div class="emp-info"><span>رقم الجوال:</span> <strong>${emp.mobile}</strong></div>
-                    <div class="emp-info"><span>الطابق / المبنى:</span> <strong>${emp.floor}</strong></div>
+                    <div class="emp-info"><span>القسم:</span> <strong>${emp.department}</strong></div>
+                    <div class="emp-info"><span>الداخلي:</span> <strong style="color: var(--primary); font-size: 16px;">${emp.extension}</strong></div>
+                    <div class="emp-info"><span>الجوال:</span> <strong>${emp.mobile}</strong></div>
+                    <div class="emp-info"><span>الطابق:</span> <strong>${emp.floor}</strong></div>
                 </div>
             `).join('');
         }
 
-        function filterEmployees(queryText) {
-            const rawQuery = queryText.toLowerCase().trim();
-            const convertedQuery = arabicToEnglishTransliteration(rawQuery);
-
-            if (!rawQuery) {
-                renderResults(allEmployees);
-                return;
-            }
-
-            const filtered = allEmployees.filter(emp => {
-                const name = (emp.name || '').toLowerCase();
-                const dept = (emp.department || '').toLowerCase();
-                const ext = (emp.extension || '').toString().toLowerCase();
-                const mobile = (emp.mobile || '').toString().toLowerCase();
-                const floor = (emp.floor || '').toLowerCase();
-
-                return name.includes(rawQuery) || 
-                       name.includes(convertedQuery) || 
-                       dept.includes(rawQuery) || 
-                       dept.includes(convertedQuery) ||
-                       ext.includes(rawQuery) ||
-                       mobile.includes(rawQuery) ||
-                       floor.includes(rawQuery) ||
-                       floor.includes(convertedQuery);
-            });
-
-            renderResults(filtered);
-        }
-
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            filterEmployees(e.target.value);
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            const q = e.target.value.toLowerCase().trim();
+            if (!q) { render(allEmployees); return; }
+            const filtered = allEmployees.filter(emp => 
+                emp.name.toLowerCase().includes(q) ||
+                emp.department.toLowerCase().includes(q) ||
+                emp.extension.toString().toLowerCase().includes(q) ||
+                emp.mobile.toString().toLowerCase().includes(q) ||
+                emp.floor.toLowerCase().includes(q)
+            );
+            render(filtered);
         });
 
+        // البحث الصوتي
         const micBtn = document.getElementById('micBtn');
         const searchInput = document.getElementById('searchInput');
-
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
         if (SpeechRecognition) {
             const recognition = new SpeechRecognition();
             recognition.lang = 'ar-SA';
-            recognition.continuous = false;
-            recognition.interimResults = false;
-
             micBtn.addEventListener('click', () => {
-                if (micBtn.classList.contains('listening')) {
-                    recognition.stop();
-                } else {
-                    recognition.start();
-                }
+                if (micBtn.classList.contains('listening')) { recognition.stop(); } 
+                else { recognition.start(); }
             });
-
-            recognition.onstart = () => {
-                micBtn.classList.add('listening');
-                searchInput.placeholder = "جاري الاستماع إليك... تحدث الآن";
+            recognition.onstart = () => { micBtn.classList.add('listening'); };
+            recognition.onresult = (e) => {
+                const text = e.results[0][0].transcript;
+                searchInput.value = text;
+                searchInput.dispatchEvent(new Event('input'));
             };
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                searchInput.value = transcript;
-                filterEmployees(transcript);
-            };
-
-            recognition.onerror = (event) => {
-                console.error("خطأ في الميكروفون:", event.error);
-                micBtn.classList.remove('listening');
-                searchInput.placeholder = "ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)";
-            };
-
-            recognition.onend = () => {
-                micBtn.classList.remove('listening');
-                searchInput.placeholder = "ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)";
-            };
+            recognition.onend = () => { micBtn.classList.remove('listening'); };
         } else {
             micBtn.style.display = 'none';
         }
 
-        fetchEmployeesData();
+        loadData();
     </script>
 </body>
 </html>
