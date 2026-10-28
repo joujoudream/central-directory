@@ -49,6 +49,202 @@
     "الطابق": "First Floor"
   },
   {
+    "اسم الموظف": "Rania Khoury - رانيا خوري",
+    "القسم": "IT Department",
+    "الرقم الداخلي": 106,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ghassan Chatila - غسان شتيلا",
+    "القسم": "IT Department",
+    "الرقم الداخلي": 116,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Adnan Yassin - عدنان ياسين",
+    "القسم": "IT Department",
+    "الرقم الداخلي": 114,
+    "رقم الجوال": "71101290",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Khalid Itanii - خالد عيتاني",
+    "القسم": "Contracts Department",
+    "الرقم الداخلي": 170,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Zeina Takoush - زينة تقوش",
+    "القسم": "Contracts Department",
+    "الرقم الداخلي": 188,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Meschline Nader - ميشلين نادر",
+    "القسم": "BIM&Digital Services Department",
+    "الرقم الداخلي": 118,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "fouad El Zeinne - فؤاد الزين",
+    "القسم": "Business Operations Department",
+    "الرقم الداخلي": 189,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Nada Yasser - ندى ياسر",
+    "القسم": "Proposals Department",
+    "الرقم الداخلي": 135,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ahmad kanaan - أحمد كنعان",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": 155,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Lina khadra - لينا خضرا",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": 176,
+    "رقم الجوال": "70474575",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Boukily - محمد بوكيلي",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": 199,
+    "رقم الجوال": "70032308",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rodolphe Harb - رودولف حرب",
+    "القسم": "Quantity Surveying Department",
+    "الرقم الداخلي": 199,
+    "رقم الجوال": "03059068",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Flora El Jabbour - فلورا الجبور",
+    "القسم": "Quality Department",
+    "الرقم الداخلي": 151,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Haythem Fares - هيثم فارس",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 198,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Omar Othman - عمر عثمان",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 159,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad hajjar - محمد حجار",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 177,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Oula Natour - علا ناطور",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 177,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ali Abdelaal - علي عبد العال",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 180,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Alaa Moussa - علاء موسى",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 161,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Ali Hindi - علي هندي",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 162,
+    "رقم الجوال": "03697887",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Cloud Abboud - كلود عبود",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 152,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Mohamad Chams'ddine - محمد شمس الدين",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 174,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rabih Kamourieh - ربيع قمورية",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 157,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Omar Najmddine - عمر نجم الدين",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 153,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Rasha Balkis - رشا بلقيس",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 185,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Firas Safiaddine - فراس صفي الدين",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 156,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Jamal Bernawi - جمال برناوي",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 172,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
+    "اسم الموظف": "Bassima Hamoud - باسمة حمود",
+    "القسم": "Supervision Department",
+    "الرقم الداخلي": 154,
+    "رقم الجوال": "-",
+    "الطابق": "First Floor"
+  },
+  {
     "اسم الموظف": "Shadia Najmeddine - شادية نجم الدين",
     "القسم": "Administration Department",
     "الرقم الداخلي": 9,
