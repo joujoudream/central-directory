@@ -8,6 +8,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- SheetJS for Excel Reading -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -105,7 +107,7 @@
         </div>
 
         <!-- Action Row -->
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-3 pt-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3 pt-2">
           
           <!-- Total Employees Badge -->
           <div class="w-full bg-blue-900 border border-blue-800 rounded-xl p-3 flex items-center justify-between px-4 shadow-sm">
@@ -128,6 +130,13 @@
             طباعة حسب الطابق
           </a>
 
+          <!-- Import Excel Button (Amber) -->
+          <label class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm cursor-pointer">
+            <i data-lucide="upload" class="w-4 h-4"></i>
+            <span>استيراد شيت Excel</span>
+            <input type="file" id="excel-file-input" accept=".xlsx, .xls, .csv" onchange="importExcel(event)" class="hidden">
+          </label>
+
           <!-- Export Excel Button (Green) -->
           <button type="button" onclick="exportToCSV()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-xs md:text-sm">
             <i data-lucide="download" class="w-4 h-4"></i>
@@ -140,7 +149,7 @@
             <span id="submit-btn-text">حفظ البيانات</span>
           </button>
 
-          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm">
+          <button id="cancel-edit-btn" type="button" onclick="cancelEdit()" class="hidden w-full bg-slate-500 hover:bg-slate-600 text-white font-bold py-3 px-4 rounded-xl shadow-sm transition flex items-center justify-center gap-2 text-sm col-span-full">
             <i data-lucide="x" class="w-4 h-4"></i>
             إلغاء التعديل
           </button>
@@ -200,13 +209,13 @@
         if (item) {
           try {
             const parsed = JSON.parse(item);
-            if (Array.isArray(parsed)) {
+            if (Array.isArray(parsed) && parsed.length > 0) {
               parsed.forEach(r => {
-                const empName = r.empName || r.name || r.employeeName || '';
-                const dept = r.dept || r.department || '';
-                const ext = r.ext || r.extension || '-';
-                const cell = r.cell || r.cellular || r.phone || '-';
-                const floor = r.floor || '-';
+                const empName = r.empName || r['اسم الموظف'] || r.name || r.employeeName || '';
+                const dept = r.dept || r['القسم'] || r.department || '';
+                const ext = r.ext || r['الرقم الداخلي'] || r.extension || '-';
+                const cell = r.cell || r['رقم الجوال'] || r.cellular || r.phone || '-';
+                const floor = r.floor || r['الطابق'] || '-';
                 const id = r.id || (empName + ext);
 
                 if (empName && !uniqueIds.has(id)) {
@@ -449,6 +458,71 @@
         saveAndRefresh();
         resetForm();
       }
+    }
+
+    function importExcel(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const firstSheetName = workbook.SheetNames[0];
+          const worksheet = workbook.Sheets[firstSheetName];
+          const jsonRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+          if (jsonRows.length <= 1) {
+            alert('الملف فارغ أو لا يحتوي على بيانات كافية!');
+            return;
+          }
+
+          const headers = jsonRows[0].map(h => String(h || '').trim());
+          const parsedRecords = [];
+
+          for (let i = 1; i < jsonRows.length; i++) {
+            const row = jsonRows[i];
+            if (!row || row.length === 0) continue;
+
+            let dept = '', floor = '', empName = '', ext = '', cell = '';
+            
+            row.forEach((val, idx) => {
+              const header = headers[idx] || '';
+              const strVal = String(val !== undefined && val !== null ? val : '').trim();
+              if (header.includes('قسم') || header.includes('Dept')) dept = strVal;
+              else if (header.includes('طابق') || header.includes('Floor')) floor = strVal;
+              else if (header.includes('اسم') || header.includes('Name')) empName = strVal;
+              else if (header.includes('داخلي') || header.includes('Ext')) ext = strVal;
+              else if (header.includes('جوال') || header.includes('Cell') || header.includes('Phone')) cell = strVal;
+            });
+
+            if (!empName && row[2]) empName = String(row[2]).trim();
+            if (empName) {
+              parsedRecords.push({
+                id: Date.now() + i,
+                dept: dept || (row[0] ? String(row[0]).trim() : 'غير محدد'),
+                floor: floor || (row[1] ? String(row[1]).trim() : '-'),
+                empName: empName,
+                ext: ext || (row[3] ? String(row[3]).trim() : '-'),
+                cell: cell || (row[4] ? String(row[4]).trim() : '-')
+              });
+            }
+          }
+
+          if (parsedRecords.length > 0) {
+            records = parsedRecords;
+            saveAndRefresh();
+            alert(`تم بنجاح استيراد وتحديث ${records.length} موظفاً من ملف الإكسل!`);
+          } else {
+            alert('تعذر قراءة الأسماء من الملف، تأكد من مطابقة الأعمدة.');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('حدث خطأ أثناء قراءة ملف الإكسل.');
+        }
+      };
+      reader.readAsArrayBuffer(file);
     }
 
     function exportToCSV() {
