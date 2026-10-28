@@ -6,8 +6,6 @@
   <title>Khatib & Alami - شاشة البحث السريع للسنترال</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -43,11 +41,15 @@
                placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" 
                class="w-full pr-4 pl-14 py-4 rounded-2xl border-2 border-indigo-100 focus:border-indigo-600 focus:ring-4 focus:ring-indigo-100 outline-none text-lg transition shadow-sm">
         
-        <!-- Voice Search Button -->
+        <!-- Voice Search Button with Direct SVG Mic Icon -->
         <button id="mic-btn" onclick="toggleVoiceSearch()" type="button" 
                 class="absolute left-3 p-3 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition flex items-center justify-center" 
                 title="البحث الصوتي">
-          <i data-lucide="mic" class="w-6 h-6"></i>
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+            <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
+            <line x1="12" x2="12" y1="19" y2="22"/>
+          </svg>
         </button>
       </div>
 
@@ -203,11 +205,6 @@
         `;
         container.appendChild(card);
       });
-
-      // تفعيل رندر الأيقونات من مكتبة Lucide
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
     }
 
     // دعم البحث الصوتي مع معالجة الهاء والتاء المربوطة
@@ -249,12 +246,7 @@
       recognition.start();
     }
 
-    window.onload = function() {
-      loadData();
-      if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-      }
-    };
+    window.onload = loadData;
   </script>
 </body>
 </html>
