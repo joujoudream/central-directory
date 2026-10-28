@@ -105,43 +105,36 @@
 <script>
   let employees = [];
 
-  // قاموس تحويل الأسماء الشائعة من العربية إلى الإنجليزية
-  const arabicToEnglishMap = {
-    "شادية": "shadia", "شادي": "shadi", "وليد": "walid", "أحمد": "ahmad", "احمد": "ahmad",
-    "محمد": "mohamad", "محمد": "muhammad", "علي": "ali", "حسن": "hasan", "حسين": "hussein",
-    "فادي": "fadi", "رامي": "rami", "خالد": "khalid", "زياد": "ziad", "سارة": "sara",
-    "رانيا": "rania", "غسان": "ghassan", "عدنان": "adnan", "هاني": "hani", "سامر": "samer",
-    "طارق": "tarek", "نبيل": "nabil", "جوزيف": "joseph", "جورج": "george", "ميشيل": "michel",
-    "إي تي": "it", "جي اي اس": "gis", "ادارة": "admin", "صيانة": "maintenance"
+  // قاموس شامل للأسماء الشائعة بالعربية وما يقابلها بالإنجليزية
+  const nameTranslation = {
+    "وليد": "walid", "مراد": "murad", "محمد": "mohamad", "احمد": "ahmad", "أحمد": "ahmad",
+    "علي": "ali", "حسن": "hasan", "حسين": "hussein", "فادي": "fadi", "رامي": "rami",
+    "خالد": "khalid", "زياد": "ziad", "سارة": "sara", "رانيا": "rania", "غسان": "ghassan",
+    "عدنان": "adnan", "هاني": "hani", "سامر": "samer", "طارق": "tarek", "نبيل": "nabil",
+    "شادية": "shadia", "شادي": "shadi", "بلال": "bilal", "جواد": "jawad", "يوسف": "youssef"
   };
 
-  // دالة تنظيف النص والتحويل التلقائي
-  function cleanText(text) {
-    if (!text) return "";
-    let str = text.toLowerCase().trim();
-    
-    // إزالة التشكيل والهمزات العربية
-    str = str.replace(/[أإآ]/g, "ا").replace(/ة/g, "ه");
+  function prepareQuery(input) {
+    if (!input) return [];
+    let original = input.toLowerCase().trim();
+    let translated = original;
 
-    // استبدال الكلمات العربية بالإنجليزية إن وجدت في القاموس
-    for (let key in arabicToEnglishMap) {
-      if (str.includes(key)) {
-        str = str.replace(key, arabicToEnglishMap[key]);
+    // استبدال الكلمات العربية بما يقابلها في القاموس
+    for (let ar in nameTranslation) {
+      if (translated.includes(ar)) {
+        translated = translated.replace(ar, nameTranslation[ar]);
       }
     }
-    return str;
+    return [original, translated];
   }
 
-  // جلب البيانات من ملف data.json أو localStorage
   async function loadData() {
     const statusEl = document.getElementById("status");
     try {
-      // تجربة القراءة من LocalStorage أولاً (للجهاز الأساسي)
       const localData = localStorage.getItem("centralData");
       if (localData) {
         employees = JSON.parse(localData);
       } else {
-        // الفتح من الأجهزة والهواتف الأخرى عبر data.json
         const response = await fetch("data.json");
         if (!response.ok) throw new Error();
         employees = await response.json();
@@ -153,25 +146,29 @@
   }
 
   function filterData() {
-    const query = document.getElementById("searchInput").value;
-    const cleanedQuery = cleanText(query);
+    const rawInput = document.getElementById("searchInput").value;
     const resultsContainer = document.getElementById("results");
     resultsContainer.innerHTML = "";
 
-    if (!cleanedQuery) return;
+    if (!rawInput.trim()) return;
+
+    const searchTerms = prepareQuery(rawInput);
 
     const filtered = employees.filter(emp => {
-      const name = cleanText(emp.name);
-      const dept = cleanText(emp.department);
-      const floor = cleanText(emp.floor);
-      const ext = emp.extension ? emp.extension.toString() : "";
-      const mob = emp.mobile ? emp.mobile.toString() : "";
+      const name = emp.name ? emp.name.toLowerCase() : "";
+      const dept = emp.department ? emp.department.toLowerCase() : "";
+      const floor = emp.floor ? emp.floor.toLowerCase() : "";
+      const ext = emp.extension ? emp.extension.toString().toLowerCase() : "";
+      const mob = emp.mobile ? emp.mobile.toString().toLowerCase() : "";
 
-      return name.includes(cleanedQuery) || 
-             dept.includes(cleanedQuery) || 
-             floor.includes(cleanedQuery) || 
-             ext.includes(cleanedQuery) || 
-             mob.includes(cleanedQuery);
+      // التحقق مما إذا كان أي مصطلح بحث (عربي أو مترجم) موجوداً في بيانات الموظف
+      return searchTerms.some(term => 
+        name.includes(term) || 
+        dept.includes(term) || 
+        floor.includes(term) || 
+        ext.includes(term) || 
+        mob.includes(term)
+      );
     });
 
     if (filtered.length === 0) {
@@ -191,7 +188,6 @@
     });
   }
 
-  // البحث الصوتي
   function startVoiceRecognition() {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
       alert("البحث الصوتي غير مدعوم على هذا المتصفح.");
