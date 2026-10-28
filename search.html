@@ -227,17 +227,20 @@
     <script>
         let allEmployees = [];
 
-        // دالة تحويل الحروف العربية إلى إنجليزية تلقائياً لأي اسم يتم كتابته
+        // دالة تحويل متقدمة تتجاهل التاء المربوطة والتشكيل وتحول الحروف بدقة
         function arabicToEnglishTransliteration(text) {
             if (!text) return '';
+            // استبدال التاء المربوطة بألف أو حذف تأثيرها الصوتي لكي تتطابق مع shadia
+            let cleaned = text.replace(/ة/g, 'ه').replace(/ى/g, 'ا');
+            
             const charMap = {
                 'أ': 'a', 'إ': 'a', 'آ': 'a', 'ا': 'a', 'ب': 'b', 'ت': 't', 'ث': 'th',
                 'ج': 'j', 'ح': 'h', 'خ': 'kh', 'د': 'd', 'ذ': 'dh', 'ر': 'r', 'ز': 'z',
                 'س': 's', 'ش': 'sh', 'ص': 's', 'ض': 'd', 'ط': 't', 'ظ': 'z', 'ع': 'a',
                 'غ': 'gh', 'ف': 'f', 'ق': 'q', 'ك': 'k', 'ل': 'l', 'م': 'm', 'ن': 'n',
-                'ه': 'h', 'و': 'w', 'ي': 'y', 'ى': 'a', 'ئ': 'e', 'ء': 'a', 'ة': 'h'
+                'ه': 'h', 'و': 'w', 'ي': 'y', 'ئ': 'e', 'ء': 'a'
             };
-            return text.split('').map(char => charMap[char] || char).join('');
+            return cleaned.split('').map(char => charMap[char] || char).join('');
         }
 
         async function fetchEmployeesData() {
