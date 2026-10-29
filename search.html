@@ -22,7 +22,7 @@
     }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8">
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 relative">
 
   <div class="max-w-5xl mx-auto space-y-6">
 
@@ -75,8 +75,29 @@
 
   </div>
 
+  <!-- 📱 زر عائم في الزاوية السفلى لإظهار أو إخفاء الـ QR عند الطلب -->
+  <div class="fixed bottom-5 left-5 z-50 flex flex-col items-end">
+    
+    <!-- صندوق عرض الـ QR (مخفي افتراضياً) -->
+    <div id="qr-popup" class="hidden bg-white p-3 rounded-2xl shadow-2xl border border-slate-200 text-center mb-2 flex flex-col items-center transition-all duration-300">
+      <img src="qr.jpg" alt="QR Code" class="w-28 h-28 object-contain rounded-lg mb-1">
+      <span class="text-[11px] font-bold text-slate-700">امسح للفتح على الجوال</span>
+    </div>
+
+    <!-- زر التفعيل -->
+    <button onclick="toggleQR()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-full shadow-lg font-bold text-sm flex items-center gap-2 transition transform hover:scale-105">
+      <span>📱 QR Code</span>
+    </button>
+  </div>
+
   <script>
     let employeesData = [];
+
+    // دالة إظهار وإخفاء الـ QR Code عند الضغط على الزر
+    function toggleQR() {
+      const popup = document.getElementById('qr-popup');
+      popup.classList.toggle('hidden');
+    }
 
     async function loadData() {
       try {
