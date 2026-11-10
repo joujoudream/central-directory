@@ -1,273 +1,170 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Khatib & Alami - شاشة البحث السريع للسنترال</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-    }
-    @keyframes pulse-ring {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.15); opacity: 0.4; }
-      100% { transform: scale(0.95); opacity: 0.8; }
-    }
-    .listening-ring {
-      animation: pulse-ring 1.5s infinite;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; }
+    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 relative">
+<body class="bg-slate-100 min-h-screen text-slate-800 p-4">
 
-  <div class="max-w-5xl mx-auto space-y-6">
-
-    <!-- Header -->
-    <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 text-center space-y-2 relative overflow-hidden">
-      <div class="absolute top-0 right-0 left-0 h-2 bg-gradient-to-r from-blue-700 via-indigo-600 to-sky-500"></div>
-      <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Khatib & Alami Company</h1>
-      <div class="text-xl font-bold text-indigo-600 tracking-wide">شاشة البحث السريع للسنترال</div>
-      <div class="text-sm font-bold text-red-600 pt-1">S,Walid Murad</div>
-    </header>
-
-    <!-- Search Box Section -->
-    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6 space-y-4">
-      <div class="flex items-center gap-3 bg-white rounded-2xl border-2 border-indigo-100 focus-within:border-indigo-600 focus-within:ring-4 focus-within:ring-indigo-100 transition shadow-sm px-4 py-3">
-        
-        <!-- Voice Search Button -->
-        <button id="mic-btn" onclick="toggleVoiceSearch()" type="button" 
-                class="p-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-600 transition flex items-center justify-center shrink-0" 
-                title="البحث الصوتي">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-            <path d="M19 10v1a7 7 0 0 1-14 0v-1"/>
-            <line x1="12" x2="12" y1="19" y2="22"/>
-          </svg>
-        </button>
-
-        <!-- Search Input Field -->
-        <input type="text" id="search-input" oninput="handleSearch()" 
-               placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" 
-               class="w-full py-2 outline-none text-lg bg-transparent text-slate-800 text-right">
-        
-      </div>
-
-      <!-- Results Counter -->
-      <div class="flex items-center justify-between text-sm font-bold text-indigo-600 px-2">
-        <div id="listening-status" class="text-purple-600 hidden flex items-center gap-2">
-          <span class="w-3 h-3 bg-purple-600 rounded-full inline-block listening-ring"></span>
-          جاري الاستماع... تحدث الآن
+    <div class="max-w-3xl mx-auto space-y-4">
+        <!-- Header -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+            <div>
+                <h1 class="text-xl font-bold text-blue-900">شاشة البحث السريع للسنترال</h1>
+                <p class="text-xs text-slate-500">S,Walid Murad - Khatib & Alami</p>
+            </div>
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                <i class="fa-solid fa-phone text-lg"></i>
+            </div>
         </div>
-        <div class="mr-auto">
-          عدد النتائج: <span id="results-count" class="font-mono text-base">0</span>
-        </div>
-      </div>
-    </section>
 
-    <!-- Results Grid -->
-    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <!-- Cards will be injected here -->
+        <!-- Search Bar -->
+        <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-2">
+            <div class="relative flex-1">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" class="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-sm">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400"></i>
+            </div>
+            <button id="voiceBtn" onclick="toggleVoiceSearch()" class="w-12 h-12 bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-xl flex items-center justify-center transition border border-slate-200" title="البحث الصوتي">
+                <i class="fa-solid fa-microphone text-lg" id="micIcon"></i>
+            </button>
+        </div>
+
+        <!-- Status Bar -->
+        <div id="statusText" class="text-xs text-slate-500 px-2 flex justify-between items-center">
+            <span>عدد النتائج: <strong id="resultCount">0</strong></span>
+            <span id="listeningIndicator" class="text-rose-500 hidden font-bold"><i class="fa-solid fa-circle-dot fa-beat"></i> جاري الاستماع...</span>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsList" class="space-y-2">
+            <!-- سيتم تعبئة النتائج هنا تلقائياً -->
+        </div>
     </div>
 
-  </div>
+    <script>
+        let contactsData = [];
 
-  <!-- 📱 زر عائم في الزاوية السفلى لإظهار أو إخفاء الـ QR عند الطلب -->
-  <div class="fixed bottom-5 left-5 z-50 flex flex-col items-end">
-    
-    <!-- صندوق عرض الـ QR (مخفي افتراضياً) -->
-    <div id="qr-popup" class="hidden bg-white p-3 rounded-2xl shadow-2xl border border-slate-200 text-center mb-2 flex flex-col items-center transition-all duration-300">
-      <img src="qr.jpeg" alt="QR Code" class="w-28 h-28 object-contain rounded-lg mb-1">
-      <span class="text-[11px] font-bold text-slate-700">امسح للفتح على الجوال</span>
-    </div>
+        // 1. دالة تنظيف وتوحيد النصوص (تتجاهل الهمزات، والتشكيل، والتاء المربوطة)
+        function normalizeArabic(text) {
+            if (!text) return "";
+            return text.toString()
+                .toLowerCase()
+                .replace(/[أإآء]/g, "ا")
+                .replace(/ى/g, "ي")
+                .replace(/ة/g, "ه")
+                .replace(/[\u064B-\u0652]/g, "") // إزالة التشكيل
+                .trim();
+        }
 
-    <!-- زر التفعيل -->
-    <button onclick="toggleQR()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2.5 rounded-full shadow-lg font-bold text-sm flex items-center gap-2 transition transform hover:scale-105">
-      <span>📱 QR Code</span>
-    </button>
-  </div>
+        // 2. دالة البحث الذكية المتسامحة مع الأخطاء الصوتية والهمزات
+        function smartSearch(query, list) {
+            const cleanQuery = normalizeArabic(query);
+            if (!cleanQuery) return list;
 
-  <script>
-    let employeesData = [];
+            const queryTokens = cleanQuery.split(/\s+/);
 
-    // دالة إظهار وإخفاء الـ QR Code عند الضغط على الزر
-    function toggleQR() {
-      const popup = document.getElementById('qr-popup');
-      popup.classList.toggle('hidden');
-    }
+            return list.filter(contact => {
+                const contactInfo = normalizeArabic(`
+                    ${contact["اسم الموظف"] || ""} 
+                    ${contact["القسم"] || ""} 
+                    ${contact["الرقم الداخلي"] || ""} 
+                    ${contact["رقم الجوال"] || ""}
+                    ${contact["الطابق"] || ""}
+                `);
 
-    async function loadData() {
-      try {
-        const keysToSearch = [
-          'ka_central_records', 
-          'central_directory_records', 
-          'employees', 
-          'records', 
-          'ka_records', 
-          'central_records'
-        ];
-        
-        let loaded = false;
-        for (let k of keysToSearch) {
-          const item = localStorage.getItem(k);
-          if (item) {
-            const parsed = JSON.parse(item);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              employeesData = parsed.map(r => ({
-                name: r.empName || r['اسم الموظف'] || r.name || '',
-                dept: r.dept || r['القسم'] || '',
-                ext: r.ext || r['الرقم الداخلي'] || '-',
-                cell: r.cell || r['رقم الجوال'] || '-',
-                floor: r.floor || r['الطابق'] || '-'
-              }));
-              loaded = true;
-              break;
+                return queryTokens.every(token => contactInfo.includes(token));
+            });
+        }
+
+        // جلب البيانات من ملف data.json
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                contactsData = data;
+                renderResults(contactsData);
+            })
+            .catch(err => console.error("Error loading JSON:", err));
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            const filtered = smartSearch(query, contactsData);
+            renderResults(filtered);
+        }
+
+        function renderResults(list) {
+            const container = document.getElementById('resultsList');
+            document.getElementById('resultCount').textContent = list.length;
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-slate-400 text-sm border border-slate-200">لا توجد نتائج مطابقة</div>`;
+                return;
             }
-          }
+
+            list.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between';
+                item.innerHTML = `
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">${c["اسم الموظف"]}</h3>
+                        <p class="text-xs text-slate-500 mt-1">${c["القسم"]} • ${c["الطابق"]}</p>
+                    </div>
+                    <div class="text-left flex items-center gap-2">
+                        ${c["رقم الجوال"] && c["رقم الجوال"] !== "-" ? `<span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-xl text-xs border border-emerald-100"><i class="fa-solid fa-mobile-screen ml-1"></i>${c["رقم الجوال"]}</span>` : ''}
+                        <span class="bg-blue-50 text-blue-700 font-bold px-3 py-1 rounded-xl text-sm border border-blue-100">
+                            <i class="fa-solid fa-phone text-xs ml-1"></i> ${c["الرقم الداخلي"]}
+                        </span>
+                    </div>
+                `;
+                container.appendChild(item);
+            });
         }
 
-        if (!loaded) {
-          const response = await fetch('data.json');
-          const data = await response.json();
-          employeesData = data.map(r => ({
-            name: r['اسم الموظف'] || '',
-            dept: r['القسم'] || '',
-            ext: r['الرقم الداخلي'] || '-',
-            cell: r['رقم الجوال'] || '-',
-            floor: r['الطابق'] || '-'
-          }));
+        // 3. نظام التعرف الصوتي (Speech Recognition)
+        let recognition = null;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ar-LB'; // اللغة العربية
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = function(event) {
+                const voiceText = event.results[0][0].transcript;
+                document.getElementById('searchInput').value = voiceText;
+                handleSearch();
+                stopListeningUI();
+            };
+
+            recognition.onerror = function() {
+                stopListeningUI();
+            };
+
+            recognition.onend = function() {
+                stopListeningUI();
+            };
         }
 
-        displayResults(employeesData);
-      } catch (error) {
-        console.error("خطأ في تحميل البيانات:", error);
-      }
-    }
+        function toggleVoiceSearch() {
+            if (!recognition) {
+                alert("البحث الصوتي غير مدعوم في متصفحك الحالي.");
+                return;
+            }
+            document.getElementById('listeningIndicator').classList.remove('hidden');
+            document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-rose-600';
+            recognition.start();
+        }
 
-    function normalizeArabic(text) {
-      if (!text) return '';
-      return text.toString().toLowerCase()
-        .replace(/ة/g, 'ه')   
-        .replace(/أ|إ|آ/g, 'ا')  
-        .replace(/ى/g, 'ي');  
-    }
-
-    function handleSearch() {
-      const query = document.getElementById('search-input').value.trim();
-      const normalizedQuery = normalizeArabic(query);
-
-      if (!query) {
-        displayResults(employeesData);
-        return;
-      }
-
-      const filtered = employeesData.filter(emp => {
-        const normName = normalizeArabic(emp.name);
-        const normDept = normalizeArabic(emp.dept);
-        const normExt = normalizeArabic(emp.ext);
-        const normCell = normalizeArabic(emp.cell);
-        const normFloor = normalizeArabic(emp.floor);
-
-        return normName.includes(normalizedQuery) ||
-               normDept.includes(normalizedQuery) ||
-               normExt.includes(normalizedQuery) ||
-               normCell.includes(normalizedQuery) ||
-               normFloor.includes(normalizedQuery);
-      });
-
-      displayResults(filtered);
-    }
-
-    function displayResults(data) {
-      const container = document.getElementById('results-container');
-      const countEl = document.getElementById('results-count');
-      container.innerHTML = '';
-      countEl.textContent = data.length;
-
-      if (data.length === 0) {
-        container.innerHTML = `
-          <div class="col-span-full text-center p-10 bg-white rounded-2xl border border-slate-200 text-slate-400 font-semibold text-lg shadow-sm">
-            لا توجد نتائج مطابقة للبحث
-          </div>
-        `;
-        return;
-      }
-
-      data.forEach(emp => {
-        const card = document.createElement('div');
-        card.className = 'bg-white rounded-2xl shadow-sm border border-slate-200 p-5 space-y-3 hover:shadow-md transition flex flex-col justify-between';
-        
-        card.innerHTML = `
-          <div>
-            <div class="text-lg font-extrabold text-slate-900 border-b border-slate-100 pb-2 mb-2 text-center">
-              ${emp.name}
-            </div>
-            <div class="space-y-1.5 text-sm">
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">القسم:</span>
-                <span class="font-bold text-slate-700">${emp.dept}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">الداخلي:</span>
-                <span class="font-mono font-bold text-indigo-600">${emp.ext}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">الجوال:</span>
-                <span class="font-mono font-bold text-slate-700">${emp.cell}</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="text-slate-400 font-medium">الطابق:</span>
-                <span class="font-medium text-slate-700">${emp.floor}</span>
-              </div>
-            </div>
-          </div>
-        `;
-        container.appendChild(card);
-      });
-    }
-
-    function toggleVoiceSearch() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert('متصفحك لا يدعم خاصية البحث الصوتي.');
-        return;
-      }
-
-      const recognition = new SpeechRecognition();
-      recognition.lang = 'ar-LB';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      const micBtn = document.getElementById('mic-btn');
-      const statusEl = document.getElementById('listening-status');
-
-      recognition.onstart = function() {
-        micBtn.classList.add('bg-purple-600', 'text-white');
-        statusEl.classList.remove('hidden');
-      };
-
-      recognition.onresult = function(event) {
-        const speechResult = event.results[0][0].transcript;
-        document.getElementById('search-input').value = speechResult;
-        handleSearch();
-      };
-
-      recognition.onerror = function() {
-        alert('حدث خطأ أثناء الاستماع الصوتي، يرجى المحاولة مرة أخرى.');
-      };
-
-      recognition.onsend = recognition.onend = function() {
-        micBtn.classList.remove('bg-purple-600', 'text-white');
-        statusEl.classList.add('hidden');
-      };
-
-      recognition.start();
-    }
-
-    window.onload = loadData;
-  </script>
+        function stopListeningUI() {
+            document.getElementById('listeningIndicator').classList.add('hidden');
+            document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-slate-600';
+        }
+    </script>
 </body>
 </html>
