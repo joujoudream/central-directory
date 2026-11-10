@@ -3,357 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تقرير الطباعة حسب الطابق - Khatib & Alami</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #2563eb;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --border: #e2e8f0;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* شريط التحكم العلوي */
-        .controls-card {
-            background: #fff;
-            border-radius: 12px;
-            padding: 16px 24px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        .btn-action {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 18px;
-            font-size: 15px;
-            font-weight: 700;
-            border-radius: 8px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .btn-print {
-            background-color: #2563eb;
-            color: white;
-            border: none;
-        }
-
-        .btn-back {
-            background-color: #ffffff;
-            color: #475569;
-            border: 1px solid #cbd5e1;
-        }
-
-        .select-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .select-floor {
-            padding: 8px 14px;
-            font-size: 15px;
-            font-weight: 700;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            outline: none;
-            color: #1e293b;
-            background-color: #fff;
-        }
-
-        /* الهيدر الرئيسي */
-        .header-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 15px;
-            border: 1px solid var(--border);
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-
-        .company-title {
-            font-size: 24px;
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .page-subtitle {
-            font-size: 14px;
-            font-weight: 700;
-            color: #475569;
-            margin-top: 4px;
-        }
-
-        .author-tag {
-            font-size: 13px;
-            font-weight: 700;
-            color: #dc2626;
-            margin-top: 4px;
-        }
-
-        /* كتلة الجدول */
-        .floor-block {
-            background: #fff;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            margin-bottom: 20px;
-            overflow: hidden;
-            break-inside: avoid;
-            page-break-inside: avoid;
-        }
-
-        .floor-title-bar {
-            background: #0f172a;
-            color: #ffffff;
-            padding: 10px 16px;
-            font-size: 16px;
-            font-weight: 800;
-            text-align: right;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        th {
-            background-color: #0f172a;
-            color: #ffffff;
-            font-weight: 800;
-            font-size: 15px;
-        }
-
-        .emp-name {
-            font-size: 16px;
-            font-weight: 800;
-            color: #0f172a;
-            text-align: right;
-            width: 45%;
-        }
-
-        .ext-badge {
-            font-size: 16px;
-            font-weight: 800;
-            color: #2563eb;
-            text-align: center;
-            width: 27.5%;
-        }
-
-        .mobile-text {
-            font-size: 15px;
-            font-weight: 700;
-            color: #334155;
-            text-align: center;
-            width: 27.5%;
-        }
-
-        /* تنسيق الطباعة المباشر بدون انقسام الترويسة */
-        @media print {
-            body { 
-                background: white !important; 
-                padding: 0 !important; 
-                margin: 0 !important;
-            }
-            .no-print { 
-                display: none !important; 
-            }
-            .container { 
-                max-width: 100% !important; 
-                width: 100% !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            .header-card { 
-                border: none !important; 
-                padding: 0 0 10px 0 !important; 
-                margin-bottom: 10px !important;
-                box-shadow: none !important;
-                break-inside: avoid !important;
-                page-break-inside: avoid !important;
-                page-break-after: avoid !important;
-                break-after: avoid !important;
-            }
-            .floor-block { 
-                border: 1px solid #cbd5e1 !important; 
-                margin-bottom: 15px !important;
-                box-shadow: none !important;
-                break-inside: avoid !important;
-                page-break-inside: avoid !important;
-            }
-            @page {
-                size: A4;
-                margin: 10mm;
-            }
-        }
+        body { font-family: system-ui, -apple-system, sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-slate-100 min-h-screen text-slate-800 p-4">
 
-    <div class="container">
-        <!-- شريط التحكم العلوي -->
-        <div class="controls-card no-print">
-            <button class="btn-action btn-print" onclick="window.print()">🖨️ طباعة الآن</button>
-            <a href="index.html" class="btn-action btn-back">➔ الرجوع للصفحة الرئيسية</a>
-            <div class="select-group">
-                <label style="font-weight:700;">اختر الطابق للطباعة:</label>
-                <select id="floorSelect" class="select-floor" onchange="renderReport()">
-                    <option value="all">جميع الطوابق</option>
-                    <option value="First Basement">First Basement</option>
-                    <option value="Ground Floor">Ground Floor</option>
-                    <option value="First Floor">First Floor</option>
-                    <option value="Second Floor">Second Floor</option>
-                    <option value="Third Floor">Third Floor</option>
-                    <option value="Fourth Floor">Fourth Floor</option>
-                    <option value="Fifth Floor">Fifth Floor</option>
-                </select>
+    <div class="max-w-3xl mx-auto space-y-4">
+        <!-- Header -->
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
+            <div>
+                <h1 class="text-xl font-bold text-blue-900">السنترال السريع - Khatib & Alami</h1>
+                <p class="text-xs text-slate-500">S,Walid Murad</p>
+            </div>
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                <i class="fa-solid fa-phone text-lg"></i>
             </div>
         </div>
 
-        <!-- الهيدر الرئيسي -->
-        <div class="header-card">
-            <h1 class="company-title">Khatib & Alami Company</h1>
-            <div class="page-subtitle">CENTRAL DIRECTORY - FLOOR REPORT</div>
-            <div class="author-tag">S,Walid Mrad - Printing & Archiving</div>
+        <!-- Search Bar -->
+        <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-2">
+            <div class="relative flex-1">
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="إبحث عن اسم الموظف، القسم، أو الرقم..." class="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-sm">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3.5 text-slate-400"></i>
+            </div>
+            <button id="voiceBtn" onclick="toggleVoiceSearch()" class="w-12 h-12 bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-xl flex items-center justify-center transition border border-slate-200">
+                <i class="fa-solid fa-microphone text-lg" id="micIcon"></i>
+            </button>
         </div>
 
-        <!-- حاوية الطوابق المطبوعة -->
-        <div id="reportContainer">جاري إعداد التقرير...</div>
+        <!-- Status Bar -->
+        <div id="statusText" class="text-xs text-slate-500 px-2 flex justify-between">
+            <span>عدد النتائج: <strong id="resultCount">0</strong></span>
+            <span id="listeningIndicator" class="text-rose-500 hidden font-bold"><i class="fa-solid fa-circle-dot fa-beat"></i> جاري الاستماع...</span>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsList" class="space-y-2">
+            <!-- Results populated here -->
+        </div>
     </div>
 
     <script>
-        let allData = [];
+        let contactsData = [];
 
-        function loadData() {
-            const keys = ['central_directory_data', 'directory_data', 'employees', 'contacts'];
-            for (let key of keys) {
-                const stored = localStorage.getItem(key);
-                if (stored) {
-                    try {
-                        let parsed = JSON.parse(stored);
-                        if (Array.isArray(parsed) && parsed.length > 0) {
-                            allData = parsed;
-                            break;
-                        }
-                    } catch(e) {}
-                }
-            }
-
-            if (!allData || allData.length === 0) {
-                fetch('data.json?v=' + Date.now())
-                    .then(res => res.json())
-                    .then(data => {
-                        allData = data;
-                        renderReport();
-                    })
-                    .catch(() => renderReport());
-            } else {
-                renderReport();
-            }
+        // 1. دالة توحيد وتنظيف النصوص (Normalizer)
+        function normalizeText(text) {
+            if (!text) return "";
+            return text.toString()
+                .toLowerCase()
+                .replace(/[أإآء]/g, "ا")
+                .replace(/ى/g, "ي")
+                .replace(/ة/g, "ه")
+                .replace(/[\u064B-\u0652]/g, "")
+                .trim();
         }
 
-        function isFloorMatch(empFloorRaw, selectedFloor) {
-            if (!empFloorRaw) return false;
-            let empF = empFloorRaw.toString().toLowerCase().replace(/\s+/g, ' ').trim();
-            let selF = selectedFloor.toLowerCase().replace(/\s+/g, ' ').trim();
+        // 2. دالة البحث التفاعلية ذكية الكلمات
+        function searchContacts(query, list) {
+            const cleanQuery = normalizeText(query);
+            if (!cleanQuery) return list;
 
-            if (empF === selF) return true;
-            if (selF.includes('basement')) return empF.includes('basement') || empF.includes('b1');
-            if (selF.includes('fifth') || selF.includes('5th')) return empF.includes('fifth') || empF.includes('5th') || empF.includes('5');
+            const queryTokens = cleanQuery.split(/\s+/);
 
-            return false;
+            return list.filter(contact => {
+                const searchableContent = normalizeText(`
+                    ${contact["اسم الموظف"] || ""} 
+                    ${contact["القسم"] || ""} 
+                    ${contact["الرقم الداخلي"] || ""} 
+                    ${contact["رقم الجوال"] || ""}
+                    ${contact["الطابق"] || ""}
+                `);
+
+                return queryTokens.every(token => searchableContent.includes(token));
+            });
         }
 
-        function renderReport() {
-            const selected = document.getElementById('floorSelect').value;
-            const container = document.getElementById('reportContainer');
+        // جلب البيانات من data.json
+        fetch('data.json')
+            .then(res => res.json())
+            .then(data => {
+                contactsData = data;
+                renderResults(contactsData);
+            })
+            .catch(err => console.error("Error loading JSON:", err));
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value;
+            const filtered = searchContacts(query, contactsData);
+            renderResults(filtered);
+        }
+
+        function renderResults(list) {
+            const container = document.getElementById('resultsList');
+            document.getElementById('resultCount').textContent = list.length;
             container.innerHTML = '';
 
-            const grouped = {};
-
-            allData.forEach(emp => {
-                let rawFloor = emp.floor || emp.Floor || 'طابق غير محدد';
-                let fName = rawFloor.trim();
-
-                if (selected !== 'all' && !isFloorMatch(fName, selected)) {
-                    return;
-                }
-
-                if (!grouped[fName]) grouped[fName] = [];
-                grouped[fName].push(emp);
-            });
-
-            if (Object.keys(grouped).length === 0) {
-                container.innerHTML = '<div style="text-align:center; padding: 30px; font-weight:bold; color:#64748b; background:#fff; border-radius:8px; border:1px solid #e2e8f0;">لا يوجد موظفون مسجلون في هذا الطابق حالياً.</div>';
+            if (list.length === 0) {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl text-center text-slate-400 text-sm border">لا توجد نتائج مطابقة</div>`;
                 return;
             }
 
-            for (let floorName in grouped) {
-                let employees = grouped[floorName];
-
-                let rows = employees.map(emp => `
-                    <tr>
-                        <td class="emp-name">${emp.name || emp.empName || emp.Name || '-'}</td>
-                        <td class="ext-badge">${emp.extension || emp.ext || emp.Ext || '-'}</td>
-                        <td class="mobile-text">${emp.mobile || emp.cell || emp.Mobile || '-'}</td>
-                    </tr>
-                `).join('');
-
-                container.innerHTML += `
-                    <div class="floor-block">
-                        <div class="floor-title-bar">
-                            🏢 ${floorName}
-                        </div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th style="text-align: right;">اسم الموظف</th>
-                                    <th style="text-align: center;">الرقم الداخلي (Ext)</th>
-                                    <th style="text-align: center;">رقم الجوال</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${rows}
-                            </tbody>
-                        </table>
+            list.forEach(c => {
+                const item = document.createElement('div');
+                item.className = 'bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between';
+                item.innerHTML = `
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-sm">${c["اسم الموظف"]}</h3>
+                        <p class="text-xs text-slate-500 mt-1">${c["القسم"]} • ${c["الطابق"]}</p>
+                    </div>
+                    <div class="text-left">
+                        <span class="inline-block bg-blue-50 text-blue-700 font-bold px-3 py-1 rounded-xl text-sm border border-blue-100">
+                            <i class="fa-solid fa-phone text-xs ml-1"></i> ${c["الرقم الداخلي"]}
+                        </span>
                     </div>
                 `;
-            }
+                container.appendChild(item);
+            });
         }
 
-        loadData();
+        // 3. محرك التعرف الصوتي (Speech Recognition)
+        let recognition = null;
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ar-LB';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onresult = function(event) {
+                const voiceText = event.results[0][0].transcript;
+                document.getElementById('searchInput').value = voiceText;
+                handleSearch();
+                stopListeningUI();
+            };
+
+            recognition.onerror = function() {
+                stopListeningUI();
+            };
+
+            recognition.onend = function() {
+                stopListeningUI();
+            };
+        }
+
+        function toggleVoiceSearch() {
+            if (!recognition) {
+                alert("البحث الصوتي غير مدعوم في متصفحك الحالي.");
+                return;
+            }
+            document.getElementById('listeningIndicator').classList.remove('hidden');
+            document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-rose-600';
+            recognition.start();
+        }
+
+        function stopListeningUI() {
+            document.getElementById('listeningIndicator').classList.add('hidden');
+            document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-slate-600';
+        }
     </script>
 </body>
 </html>
