@@ -32,7 +32,7 @@
                     <p class="text-xs text-slate-500">S,Walid Murad - Khatib & Alami</p>
                 </div>
             </div>
-            <!-- زر تثبيت التطبيق يظهر تلقائياً على الهاتف -->
+            <!-- زر تثبيت التطبيق -->
             <button id="installAppBtn" class="hidden bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition flex items-center gap-1.5">
                 <i class="fa-solid fa-download"></i> تثبيت التطبيق
             </button>
@@ -62,7 +62,7 @@
     <script>
         let contactsData = [];
 
-        // 1. دالة تنظيف وتوحيد النصوص
+        // 1. دالة تنظيف وتوحيد النصوص (إزالة الهمزات والتشكيل والمسافات الزائدة)
         function normalizeArabic(text) {
             if (!text) return "";
             return text.toString()
@@ -74,11 +74,12 @@
                 .trim();
         }
 
-        // 2. دالة البحث الذكية
+        // 2. دالة البحث الذكية (تقسم الجملة إلى كلمات منفصلة وتبحث عن كل كلمة في سجل الموظف)
         function smartSearch(query, list) {
             const cleanQuery = normalizeArabic(query);
             if (!cleanQuery) return list;
 
+            // تقسيم الكلمات المنطوقة إلى مصفوفة كلمات مستقلة (Tokens)
             const queryTokens = cleanQuery.split(/\s+/);
 
             return list.filter(contact => {
@@ -90,6 +91,7 @@
                     ${contact["الطابق"] || ""}
                 `);
 
+                // الشرط: يجب أن تتواجد *جميع* الكلمات المطلوبة (مثل "متري" و "صابا") داخل بيانات الموظف بغض النظر عن ترتيبها
                 return queryTokens.every(token => contactInfo.includes(token));
             });
         }
