@@ -62,7 +62,7 @@
                 .trim();
         }
 
-        // 2. دالة البحث الذكية المتسامحة مع الأخطاء الصوتية والهمزات
+        // 2. دالة البحث الذكية (تتحقق من الكلمة في أي مكان داخل بيانات الموظف)
         function smartSearch(query, list) {
             const cleanQuery = normalizeArabic(query);
             if (!cleanQuery) return list;
@@ -78,6 +78,7 @@
                     ${contact["الطابق"] || ""}
                 `);
 
+                // البحث عن الكلمات في أي جزء من معلومات الموظف
                 return queryTokens.every(token => contactInfo.includes(token));
             });
         }
@@ -137,7 +138,6 @@
 
             recognition.onresult = function(event) {
                 const voiceText = event.results[0][0].transcript;
-                // وضع النص المنطوق داخل خانة البحث وتفعيل البحث فوراً
                 document.getElementById('searchInput').value = voiceText;
                 handleSearch();
                 stopListeningUI();
@@ -155,7 +155,7 @@
 
         function toggleVoiceSearch() {
             if (!recognition) {
-                alert("البحث الصوتي غير مدعوم في متصفحك الحالي. يجدر استخدام متصفح كروم.");
+                alert("البحث الصوتي غير مدعوم في متصفحك الحالي. يرجى استخدام متصفح كروم.");
                 return;
             }
             try {
