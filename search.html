@@ -62,15 +62,16 @@
     <script>
         let contactsData = [];
 
-        // قاموس المرادفات الذكية لمعالجة أخطاء الميكروفون
+        // قاموس المرادفات الذكية الشامل لمعالجة أخطاء الميكروفون والتنوين
         const nameAliases = {
-            "مثلي": "متري",
-            "مثلي صابا": "mitri saba",
-            "متري صابا": "mitri saba",
-            "متري": "mitri"
+            "مترا": "mitri",
+            "متري": "mitri",
+            "مثلي": "mitri",
+            "مترا صابا": "mitri saba",
+            "متري صابا": "mitri saba"
         };
 
-        // 1. دالة تنظيف وتوحيد النصوص ومعالجة الحروف المتقاربة
+        // 1. دالة تنظيف وتوحيد النصوص (تتعامل مع الهمزات، التنوين، وحروف المد)
         function normalizeArabic(text) {
             if (!text) return "";
             let cleaned = text.toString()
@@ -78,11 +79,11 @@
                 .replace(/[أإآء]/g, "ا")
                 .replace(/ى/g, "ي")
                 .replace(/ة/g, "ه")
-                .replace(/ث/g, "ت") // توحيد الثاء والتاء لتجنب خطأ الميكروفون
-                .replace(/[\u064B-\u0652]/g, "")
+                .replace(/ث/g, "ت")
+                .replace(/[\u064B-\u0652]/g, "") // إزالة التشكيل والتنوين
                 .trim();
 
-            // فحص المرادفات الذكية
+            // فحص المرادفات الذكية الموسعة
             for (let alias in nameAliases) {
                 if (cleaned.includes(alias)) {
                     cleaned += " " + nameAliases[alias];
