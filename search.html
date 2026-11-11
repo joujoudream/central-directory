@@ -62,16 +62,15 @@
     <script>
         let contactsData = [];
 
-        // قاموس المرادفات الذكية الشامل لمعالجة أخطاء الميكروفون والتنوين
+        // قاموس المرادفات الذكية: ربط "مثلي" أو "مترا" أو "متري" بالاسم الإنجليزي والبحث عنه فوراً
         const nameAliases = {
-            "مترا": "mitri",
-            "متري": "mitri",
-            "مثلي": "mitri",
-            "مترا صابا": "mitri saba",
-            "متري صابا": "mitri saba"
+            "مثلي": "mitri saba",
+            "متري": "mitri saba",
+            "مترا": "mitri saba",
+            "صابا": "mitri saba"
         };
 
-        // 1. دالة تنظيف وتوحيد النصوص (تتعامل مع الهمزات، التنوين، وحروف المد)
+        // 1. دالة تنظيف وتوحيد النصوص
         function normalizeArabic(text) {
             if (!text) return "";
             let cleaned = text.toString()
@@ -79,11 +78,10 @@
                 .replace(/[أإآء]/g, "ا")
                 .replace(/ى/g, "ي")
                 .replace(/ة/g, "ه")
-                .replace(/ث/g, "ت")
-                .replace(/[\u064B-\u0652]/g, "") // إزالة التشكيل والتنوين
+                .replace(/[\u064B-\u0652]/g, "")
                 .trim();
 
-            // فحص المرادفات الذكية الموسعة
+            // فحص المرادفات وتوسيع نص البحث ليشمل الكلمة الإنجليزية المطلوبة
             for (let alias in nameAliases) {
                 if (cleaned.includes(alias)) {
                     cleaned += " " + nameAliases[alias];
