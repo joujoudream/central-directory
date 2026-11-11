@@ -1,0 +1,22 @@
+{
+  "name": "شاشة البحث السريع للسنترال - Khatib & Alami",
+  "short_name": "سنترال K&A",
+  "description": "دليل البحث السريع والبحث الصوتي لموظفي شركة خطيب وعلمي",
+  "start_url": "./search.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "K&A Central.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "K&A Central.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
