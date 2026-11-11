@@ -2,12 +2,20 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>شاشة البحث السريع للسنترال - Khatib & Alami</title>
+    
+    <!-- إعدادات تطبيق الهاتف PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="K&A Central.jpeg">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: system-ui, -apple-system, sans-serif; }
+        body { font-family: system-ui, -apple-system, sans-serif; -webkit-tap-highlight-color: transparent; }
     </style>
 </head>
 <body class="bg-slate-50 min-h-screen text-slate-800 p-4">
@@ -15,13 +23,19 @@
     <div class="max-w-3xl mx-auto space-y-4">
         <!-- Header -->
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 flex items-center justify-between">
-            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-md">
-                <i class="fa-solid fa-phone text-lg"></i>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-md">
+                    <i class="fa-solid fa-phone text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-blue-900">شاشة البحث السريع للسنترال</h1>
+                    <p class="text-xs text-slate-500">S,Walid Murad - Khatib & Alami</p>
+                </div>
             </div>
-            <div class="text-left">
-                <h1 class="text-lg font-bold text-blue-900">شاشة البحث السريع للسنترال</h1>
-                <p class="text-xs text-slate-500">S,Walid Murad - Khatib & Alami</p>
-            </div>
+            <!-- زر تثبيت التطبيق يظهر تلقائياً على الهاتف -->
+            <button id="installAppBtn" class="hidden bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-3 py-2 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-download"></i> تثبيت التطبيق
+            </button>
         </div>
 
         <!-- Search Bar -->
@@ -42,15 +56,13 @@
         </div>
 
         <!-- Results Container -->
-        <div id="resultsList" class="space-y-2">
-            <!-- سيتم تعبئة النتائج هنا -->
-        </div>
+        <div id="resultsList" class="space-y-2"></div>
     </div>
 
     <script>
         let contactsData = [];
 
-        // 1. دالة تنظيف وتوحيد النصوص (تتجاهل الهمزات، والتشكيل، والتاء المربوطة)
+        // 1. دالة تنظيف وتوحيد النصوص
         function normalizeArabic(text) {
             if (!text) return "";
             return text.toString()
@@ -58,11 +70,11 @@
                 .replace(/[أإآء]/g, "ا")
                 .replace(/ى/g, "ي")
                 .replace(/ة/g, "ه")
-                .replace(/[\u064B-\u0652]/g, "") // إزالة التشكيل
+                .replace(/[\u064B-\u0652]/g, "")
                 .trim();
         }
 
-        // 2. دالة البحث الذكية (تتحقق من الكلمة في أي مكان داخل بيانات الموظف)
+        // 2. دالة البحث الذكية
         function smartSearch(query, list) {
             const cleanQuery = normalizeArabic(query);
             if (!cleanQuery) return list;
@@ -78,7 +90,6 @@
                     ${contact["الطابق"] || ""}
                 `);
 
-                // البحث عن الكلمات في أي جزء من معلومات الموظف
                 return queryTokens.every(token => contactInfo.includes(token));
             });
         }
@@ -112,27 +123,27 @@
                 const item = document.createElement('div');
                 item.className = 'bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between';
                 item.innerHTML = `
-                    <div class="text-left flex items-center gap-2">
-                        ${c["رقم الجوال"] && c["رقم الجوال"] !== "-" ? `<span class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-xl text-xs border border-emerald-100"><i class="fa-solid fa-mobile-screen ml-1"></i>${c["رقم الجوال"]}</span>` : ''}
-                        <span class="bg-blue-50 text-blue-700 font-bold px-3 py-1 rounded-xl text-sm border border-blue-100">
-                            <i class="fa-solid fa-phone text-xs ml-1"></i> ${c["الرقم الداخلي"]}
-                        </span>
-                    </div>
                     <div class="text-right">
                         <h3 class="font-bold text-slate-800 text-sm">${c["اسم الموظف"]}</h3>
                         <p class="text-xs text-slate-500 mt-1">${c["القسم"]} • ${c["الطابق"]}</p>
+                    </div>
+                    <div class="text-left flex items-center gap-2">
+                        ${c["رقم الجوال"] && c["رقم الجوال"] !== "-" ? `<a href="tel:${c["رقم الجوال"]}" class="bg-emerald-50 text-emerald-700 px-2.5 py-1 rounded-xl text-xs border border-emerald-100"><i class="fa-solid fa-mobile-screen ml-1"></i>${c["رقم الجوال"]}</a>` : ''}
+                        <span class="bg-blue-50 text-blue-700 font-bold px-3 py-1 rounded-xl text-sm border border-blue-100">
+                            <i class="fa-solid fa-phone text-xs ml-1"></i> ${c["الرقم الداخلي"]}
+                        </span>
                     </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        // 3. نظام التعرف الصوتي المباشر والفعال (Speech Recognition)
+        // 3. نظام التعرف الصوتي
         let recognition = null;
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.lang = 'ar-LB'; // اللغة العربية
+            recognition.lang = 'ar-LB';
             recognition.continuous = false;
             recognition.interimResults = false;
 
@@ -143,14 +154,8 @@
                 stopListeningUI();
             };
 
-            recognition.onerror = function(event) {
-                console.error("Speech recognition error", event.error);
-                stopListeningUI();
-            };
-
-            recognition.onend = function() {
-                stopListeningUI();
-            };
+            recognition.onerror = () => stopListeningUI();
+            recognition.onend = () => stopListeningUI();
         }
 
         function toggleVoiceSearch() {
@@ -163,7 +168,6 @@
                 document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-rose-600 fa-beat';
                 recognition.start();
             } catch (e) {
-                console.log(e);
                 recognition.stop();
                 stopListeningUI();
             }
@@ -173,6 +177,30 @@
             document.getElementById('listeningIndicator').classList.add('hidden');
             document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-slate-600';
         }
+
+        // 4. تسجيل Service Worker وتفعيل زر التثبيت
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
+            });
+        }
+
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.remove('hidden');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.classList.add('hidden');
+                deferredPrompt = null;
+            }
+        });
     </script>
 </body>
 </html>
