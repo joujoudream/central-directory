@@ -38,14 +38,21 @@
             </button>
         </div>
 
-        <!-- Search Bar -->
+        <!-- Search Bar with Dual Voice Buttons (AR & EN) -->
         <div class="bg-white p-3 rounded-2xl shadow-sm border border-slate-200 flex items-center gap-2">
-            <button id="voiceBtn" onclick="toggleVoiceSearch()" class="w-12 h-12 bg-slate-100 hover:bg-blue-50 text-slate-600 hover:text-blue-600 rounded-xl flex items-center justify-center transition border border-slate-200" title="البحث الصوتي">
-                <i class="fa-solid fa-microphone text-lg" id="micIcon"></i>
+            <!-- زر البحث الصوتي بالعربية -->
+            <button id="voiceBtnAr" onclick="startVoiceSearch('ar-LB')" class="px-3 h-12 bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 rounded-xl flex items-center justify-center gap-1 transition border border-slate-200 font-bold text-xs" title="بحث صوتي عربي">
+                <i class="fa-solid fa-microphone text-base" id="micIconAr"></i> عربي
             </button>
+            
+            <!-- زر البحث الصوتي بالإنجليزية -->
+            <button id="voiceBtnEn" onclick="startVoiceSearch('en-US')" class="px-3 h-12 bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 rounded-xl flex items-center justify-center gap-1 transition border border-slate-200 font-bold text-xs" title="بحث صوتي إنجليزي">
+                <i class="fa-solid fa-microphone text-base" id="micIconEn"></i> EN
+            </button>
+
             <div class="relative flex-1">
-                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث بالعربية أو الإنجليزية (اسم، داخلي، قسم...)" class="w-full pr-4 pl-10 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-sm">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400"></i>
+                <input type="text" id="searchInput" oninput="handleSearch()" placeholder="ابحث بالاسم، الداخلي، القسم..." class="w-full pr-3 pl-9 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 text-sm">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3.5 text-slate-400"></i>
             </div>
         </div>
 
@@ -62,8 +69,8 @@
     <script>
         let contactsData = [];
 
-        // قاموس يعتمد التهجئة الإنجليزية أولاً لتجاوز أخطاء الحروف الصوتية العربية للميكروفون
-        const phoneticAliases = {
+        // قاموس الاستبدال الذكي: يستبدل الكلمة الخاطئة كلياً بالكلمة الصحيحة بدلاً من إضافتها
+        const phoneticReplacements = {
             "مثلي": "mitri",
             "متري": "mitri",
             "مترا": "mitri",
@@ -73,32 +80,35 @@
             "ياغي": "yaghi"
         };
 
-        // 1. دالة معالجة وتوحيد النصوص للبحث المزدوج
-        function normalizeText(text) {
+        // 1. دالة معالجة وتوحيد النصوص (مع الاستبدال الفعلي للكلمات)
+        function normalizeText(text, isQuery = false) {
             if (!text) return "";
-            let cleaned = text.toString().toLowerCase().trim();
-
-            // تحويل الكلمات العربية المنطوقة الخاطئة إلى مفتاحها الإنجليزي الأساسي الموجود في data.json
-            for (let arabicKey in phoneticAliases) {
-                if (cleaned.includes(arabicKey)) {
-                    cleaned += " " + phoneticAliases[arabicKey];
-                }
-            }
-
-            // تنظيف عام للحروف العربية والمسافات
-            return cleaned
+            let cleaned = text.toString()
+                .toLowerCase()
                 .replace(/[أإآء]/g, "ا")
                 .replace(/ى/g, "ي")
                 .replace(/ة/g, "ه")
-                .replace(/[\u064B-\u0652]/g, "");
+                .replace(/[\u064B-\u0652]/g, "")
+                .trim();
+
+            // إذا كان النص قادماً من مربع البحث، نقوم باستبدال الكلمات الخاطئة بالكلمات الإنجليزية المطابقة
+            if (isQuery) {
+                for (let wrongWord in phoneticReplacements) {
+                    const regex = new RegExp(wrongWord, "g");
+                    cleaned = cleaned.replace(regex, phoneticReplacements[wrongWord]);
+                }
+            }
+
+            return cleaned;
         }
 
-        // 2. دالة البحث الذكية بالاعتماد على مصفوفة الكلمات (Tokens)
+        // 2. دالة البحث الذكية
         function smartSearch(query, list) {
-            const cleanQuery = normalizeText(query);
+            const cleanQuery = normalizeText(query, true);
             if (!cleanQuery) return list;
 
-            const queryTokens = cleanQuery.split(/\s+/);
+            // إزالة "ال" التعريف من بداية الكلمات لتطابق (الهندي -> هندي)
+            const queryTokens = cleanQuery.split(/\s+/).map(t => t.replace(/^ال/, ""));
 
             return list.filter(contact => {
                 const contactInfo = normalizeText(`
@@ -107,9 +117,8 @@
                     ${contact["الرقم الداخلي"] || ""} 
                     ${contact["رقم الجوال"] || ""}
                     ${contact["الطابق"] || ""}
-                `);
+                `, false);
 
-                // يجب أن تتطابق جميع الكلمات المدخلة أو المرادفة مع بيانات الموظف
                 return queryTokens.every(token => contactInfo.includes(token));
             });
         }
@@ -158,12 +167,11 @@
             });
         }
 
-        // 3. نظام التعرف الصوتي
+        // 3. نظام التعرف الصوتي المزدوج (عربي / إنجليزي)
         let recognition = null;
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
-            recognition.lang = 'ar-LB';
             recognition.continuous = false;
             recognition.interimResults = false;
 
@@ -178,24 +186,31 @@
             recognition.onend = () => stopListeningUI();
         }
 
-        function toggleVoiceSearch() {
+        function startVoiceSearch(langCode) {
             if (!recognition) {
-                alert("البحث الصوتي غير مدعوم في متصفحك الحالي. يرجى استخدام متصفح كروم.");
+                alert("البحث الصوتي غير مدعوم في متصفحك الحالي.");
                 return;
             }
             try {
-                document.getElementById('listeningIndicator').classList.remove('hidden');
-                document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-rose-600 fa-beat';
-                recognition.start();
-            } catch (e) {
                 recognition.stop();
-                stopListeningUI();
-            }
+            } catch (e) {}
+
+            setTimeout(() => {
+                recognition.lang = langCode;
+                document.getElementById('listeningIndicator').classList.remove('hidden');
+                if (langCode === 'ar-LB') {
+                    document.getElementById('micIconAr').className = 'fa-solid fa-microphone text-base text-rose-600 fa-beat';
+                } else {
+                    document.getElementById('micIconEn').className = 'fa-solid fa-microphone text-base text-rose-600 fa-beat';
+                }
+                recognition.start();
+            }, 100);
         }
 
         function stopListeningUI() {
             document.getElementById('listeningIndicator').classList.add('hidden');
-            document.getElementById('micIcon').className = 'fa-solid fa-microphone text-lg text-slate-600';
+            document.getElementById('micIconAr').className = 'fa-solid fa-microphone text-base';
+            document.getElementById('micIconEn').className = 'fa-solid fa-microphone text-base';
         }
 
         // 4. تسجيل Service Worker وتفعيل زر التثبيت
