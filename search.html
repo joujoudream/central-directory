@@ -62,47 +62,46 @@
     <script>
         let contactsData = [];
 
-        // قاموس المرادفات الذكية لضمان مطابقة النطق الصوتي مع البيانات المخزنة تماماً
-        const nameAliases = {
-            "علي هندي": "ali hindi",
-            "الهندي": "ali hindi",
-            "علي ياغي": "yaغي", 
-            "ياغي": "yaغي",
-            "متري": "mitri saba",
-            "مثلي": "mitri saba",
-            "مترا": "mitri saba",
-            "صابا": "mitri saba"
+        // قاموس يعتمد التهجئة الإنجليزية أولاً لتجاوز أخطاء الحروف الصوتية العربية للميكروفون
+        const phoneticAliases = {
+            "مثلي": "mitri",
+            "متري": "mitri",
+            "مترا": "mitri",
+            "صابا": "saba",
+            "الهندي": "hindi",
+            "هندي": "hindi",
+            "ياغي": "yaghi"
         };
 
-        // 1. دالة تنظيف وتوحيد النصوص
-        function normalizeArabic(text) {
+        // 1. دالة معالجة وتوحيد النصوص للبحث المزدوج
+        function normalizeText(text) {
             if (!text) return "";
-            let cleaned = text.toString()
-                .toLowerCase()
+            let cleaned = text.toString().toLowerCase().trim();
+
+            // تحويل الكلمات العربية المنطوقة الخاطئة إلى مفتاحها الإنجليزي الأساسي الموجود في data.json
+            for (let arabicKey in phoneticAliases) {
+                if (cleaned.includes(arabicKey)) {
+                    cleaned += " " + phoneticAliases[arabicKey];
+                }
+            }
+
+            // تنظيف عام للحروف العربية والمسافات
+            return cleaned
                 .replace(/[أإآء]/g, "ا")
                 .replace(/ى/g, "ي")
                 .replace(/ة/g, "ه")
-                .replace(/[\u064B-\u0652]/g, "")
-                .trim();
-
-            // تطبيق المرادفات الذكية لتوسيع البحث عند النطق الصوتي للألقاب
-            for (let alias in nameAliases) {
-                if (cleaned.includes(alias)) {
-                    cleaned += " " + nameAliases[alias];
-                }
-            }
-            return cleaned;
+                .replace(/[\u064B-\u0652]/g, "");
         }
 
-        // 2. دالة البحث الذكية
+        // 2. دالة البحث الذكية بالاعتماد على مصفوفة الكلمات (Tokens)
         function smartSearch(query, list) {
-            const cleanQuery = normalizeArabic(query);
+            const cleanQuery = normalizeText(query);
             if (!cleanQuery) return list;
 
             const queryTokens = cleanQuery.split(/\s+/);
 
             return list.filter(contact => {
-                const contactInfo = normalizeArabic(`
+                const contactInfo = normalizeText(`
                     ${contact["اسم الموظف"] || ""} 
                     ${contact["القسم"] || ""} 
                     ${contact["الرقم الداخلي"] || ""} 
@@ -110,6 +109,7 @@
                     ${contact["الطابق"] || ""}
                 `);
 
+                // يجب أن تتطابق جميع الكلمات المدخلة أو المرادفة مع بيانات الموظف
                 return queryTokens.every(token => contactInfo.includes(token));
             });
         }
